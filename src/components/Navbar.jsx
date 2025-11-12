@@ -480,13 +480,13 @@ export default function Navbar() {
         {/* Desktop Buttons */}
         <div className="hidden lg:flex items-center space-x-4">
           <a
-            href="#"
+            href="/login"
             className="border border-indigo-600 text-indigo-600 px-5 py-2 rounded-lg hover:bg-indigo-50 transition font-medium"
           >
             Login
           </a>
           <a
-            href="#"
+            href="/login"
             className="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700 transition font-medium"
           >
             Free Account

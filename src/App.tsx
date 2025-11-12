@@ -12,6 +12,7 @@ import { Toaster } from "./components/ui/toaster";
 import { ResumeProvider } from "./context/ResumeContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import LoginPage from "./pages/auth/LoginPage";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/final-resume" element={<FinalResume />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
+            <Route path="/login" element={<LoginPage />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
