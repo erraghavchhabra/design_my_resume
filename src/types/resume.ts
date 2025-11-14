@@ -74,7 +74,20 @@ export interface ResumeData {
   achievements: Achievement[];
   languages: Language[];
   interests: Interest[];
-  template: 'modern' | 'classic' | 'minimal' | 'professional' | 'creative' | 'executive' | 'compact' | 'elegant' | 'bold' | 'technical' | 'academic' | 'infographic' | 'timeline';
+  template:
+    | "modern"
+    | "classic"
+    | "minimal"
+    | "professional"
+    | "creative"
+    | "executive"
+    | "compact"
+    | "elegant"
+    | "bold"
+    | "technical"
+    | "academic"
+    | "infographic"
+    | "timeline";
   themeColor: string;
   fontFamily: string;
 }
@@ -88,7 +101,8 @@ export const defaultResumeData: ResumeData = {
     headline: "Senior Software Engineer",
   },
   summary: {
-    content: "Passionate software engineer with 5+ years of experience building scalable web applications. Specialized in React, TypeScript, and modern frontend technologies.",
+    content:
+      "Passionate software engineer with 5+ years of experience building scalable web applications. Specialized in React, TypeScript, and modern frontend technologies.",
   },
   experience: [
     {
@@ -99,7 +113,8 @@ export const defaultResumeData: ResumeData = {
       endDate: "",
       current: true,
       location: "San Francisco, CA",
-      description: "Led development of customer-facing web applications using React and TypeScript. Improved performance by 40% through optimization techniques.",
+      description:
+        "Led development of customer-facing web applications using React and TypeScript. Improved performance by 40% through optimization techniques.",
     },
     {
       id: "2",
@@ -109,7 +124,8 @@ export const defaultResumeData: ResumeData = {
       endDate: "2020-12",
       current: false,
       location: "Remote",
-      description: "Built responsive web applications and collaborated with design team to implement pixel-perfect UI components.",
+      description:
+        "Built responsive web applications and collaborated with design team to implement pixel-perfect UI components.",
     },
   ],
   education: [
@@ -120,7 +136,8 @@ export const defaultResumeData: ResumeData = {
       field: "Computer Science",
       startDate: "2015-09",
       endDate: "2019-05",
-      description: "Graduated with honors. Focus on software engineering and web development.",
+      description:
+        "Graduated with honors. Focus on software engineering and web development.",
     },
   ],
   skills: [
@@ -135,14 +152,16 @@ export const defaultResumeData: ResumeData = {
     {
       id: "1",
       title: "E-commerce Platform",
-      description: "Built a full-stack e-commerce platform with React, Node.js, and MongoDB. Implemented payment processing and order management.",
+      description:
+        "Built a full-stack e-commerce platform with React, Node.js, and MongoDB. Implemented payment processing and order management.",
       link: "https://github.com/johndoe/ecommerce",
       technologies: ["React", "Node.js", "MongoDB", "Stripe"],
     },
     {
       id: "2",
       title: "Task Management App",
-      description: "Created a real-time task management application with drag-and-drop functionality using React and Firebase.",
+      description:
+        "Created a real-time task management application with drag-and-drop functionality using React and Firebase.",
       technologies: ["React", "Firebase", "Material-UI"],
     },
   ],
@@ -171,6 +190,6 @@ export const defaultResumeData: ResumeData = {
     { id: "4", name: "Tech Blogging" },
   ],
   template: "modern",
-  themeColor: "#dc2626",
+  themeColor: "#4F46E5",
   fontFamily: "Inter",
 };

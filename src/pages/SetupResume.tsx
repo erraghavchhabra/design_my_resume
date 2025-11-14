@@ -9,25 +9,29 @@ import { ArrowRight, ArrowLeft } from "lucide-react";
 import { useResume } from "../context/ResumeContext";
 import ModernTemplate from "../components/resume/ModernTemplate";
 import ClassicTemplate from "../components/resume/ClassicTemplate";
-import MinimalTemplate from "../components/resume/MinimalTemplate";
-import ProfessionalTemplate from "../components/resume/ProfessionalTemplate";
-import CreativeTemplate from "../components/resume/CreativeTemplate";
-import ExecutiveTemplate from "../components/resume/ExecutiveTemplate";
-import CompactTemplate from "../components/resume/CompactTemplate";
-import ElegantTemplate from "../components/resume/ElegantTemplate";
-import BoldTemplate from "../components/resume/BoldTemplate";
-import TechnicalTemplate from "../components/resume/TechnicalTemplate";
-import AcademicTemplate from "../components/resume/AcademicTemplate";
-import InfographicTemplate from "../components/resume/InfographicTemplate";
-import TimelineTemplate from "../components/resume/TimelineTemplate";
+import ExecutiveProTemplate from "../components/resume/ExecutiveProTemplate";
+// import MinimalTemplate from "../components/resume/MinimalTemplate";
+// import ProfessionalTemplate from "../components/resume/ProfessionalTemplate";
+// import CreativeTemplate from "../components/resume/CreativeTemplate";
+// import ExecutiveTemplate from "../components/resume/ExecutiveTemplate";
+// import CompactTemplate from "../components/resume/CompactTemplate";
+// import ElegantTemplate from "../components/resume/ElegantTemplate";
+// import BoldTemplate from "../components/resume/BoldTemplate";
+// import TechnicalTemplate from "../components/resume/TechnicalTemplate";
+// import AcademicTemplate from "../components/resume/AcademicTemplate";
+// import InfographicTemplate from "../components/resume/InfographicTemplate";
+// import TimelineTemplate from "../components/resume/TimelineTemplate";
+// import ModernProfessionalTemplate from "../components/resume/ModernProfessionalTemplate";
 
 const templates = [
   { id: "modern", name: "Modern", preview: ModernTemplate },
   { id: "classic", name: "Classic", preview: ClassicTemplate },
+  { id: "executive", name: "Executive Pro", preview: ExecutiveProTemplate },
+  // { id: 'modern', name: 'Modern Professional', preview: ModernProfessionalTemplate },
   // { id: "minimal", name: "Minimal", preview: MinimalTemplate },
   // { id: "professional", name: "Professional", preview: ProfessionalTemplate },
   // { id: "creative", name: "Creative", preview: CreativeTemplate },
-  { id: "executive", name: "Executive", preview: ExecutiveTemplate },
+  // { id: "executive", name: "Executive", preview: ExecutiveTemplate },
   // { id: "compact", name: "Compact", preview: CompactTemplate },
   // { id: "elegant", name: "Elegant", preview: ElegantTemplate },
   // { id: "bold", name: "Bold", preview: BoldTemplate },
@@ -38,12 +42,25 @@ const templates = [
 ];
 
 const themeColors = [
-  { name: "Teal", value: "#1e8675" },
-  { name: "Blue", value: "#3b82f6" },
-  { name: "Purple", value: "#8b5cf6" },
-  { name: "Red", value: "#ef4444" },
-  { name: "Green", value: "#10b981" },
-  { name: "Orange", value: "#f97316" },
+  { name: "Indigo", value: "#4F46E5" },
+  { name: "Red", value: "#dc2626" },
+  { name: "Blue", value: "#2563eb" },
+  { name: "Green", value: "#16a34a" },
+  { name: "Purple", value: "#9333ea" },
+  { name: "Orange", value: "#ea580c" },
+  { name: "Teal", value: "#0d9488" },
+  { name: "Pink", value: "#db2777" },
+  { name: "Indigo", value: "#4f46e5" },
+
+  { name: "Navy", value: "#1e3a8a" },
+  { name: "Slate", value: "#475569" },
+  { name: "Forest Green", value: "#065f46" },
+  { name: "Maroon", value: "#7f1d1d" },
+  { name: "Cyan", value: "#0891b2" },
+  { name: "Gold", value: "#b45309" },
+  { name: "Steel", value: "#64748b" },
+  { name: "Brown", value: "#78350f" },
+  { name: "Sky Blue", value: "#0ea5e9" },
 ];
 
 const SetupResume = () => {
@@ -56,9 +73,9 @@ const SetupResume = () => {
   const [selectedTemplate, setSelectedTemplate] = useState<string>(
     resumeData.template || "modern"
   );
-  const [selectedColor, setSelectedColor] = useState(
-    resumeData.themeColor || "#1e8675"
-  );
+  console.log(651651, resumeData.themeColor);
+
+  const [selectedColor, setSelectedColor] = useState(resumeData.themeColor);
 
   const handleStart = () => {
     if (!fullName.trim()) return;
@@ -158,7 +175,10 @@ const SetupResume = () => {
                     key={color.value}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => setSelectedColor(color.value)}
+                    onClick={() => {
+                      setSelectedColor(color.value);
+                      setThemeColor(color.value);
+                    }}
                     className={`w-14 h-14 rounded-full transition-all ${
                       selectedColor === color.value
                         ? "ring-4 ring-primary ring-offset-2"

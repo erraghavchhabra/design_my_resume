@@ -19,17 +19,19 @@ import InterestsForm from "../components/builder/InterestsForm";
 
 import ModernTemplate from "../components/resume/ModernTemplate";
 import ClassicTemplate from "../components/resume/ClassicTemplate";
-import MinimalTemplate from "../components/resume/MinimalTemplate";
-import ProfessionalTemplate from "../components/resume/ProfessionalTemplate";
-import CreativeTemplate from "../components/resume/CreativeTemplate";
-import ExecutiveTemplate from "../components/resume/ExecutiveTemplate";
-import CompactTemplate from "../components/resume/CompactTemplate";
-import ElegantTemplate from "../components/resume/ElegantTemplate";
-import BoldTemplate from "../components/resume/BoldTemplate";
-import TechnicalTemplate from "../components/resume/TechnicalTemplate";
-import AcademicTemplate from "../components/resume/AcademicTemplate";
-import InfographicTemplate from "../components/resume/InfographicTemplate";
-import TimelineTemplate from "../components/resume/TimelineTemplate";
+import ExecutiveProTemplate from "../components/resume/ExecutiveProTemplate";
+// import MinimalTemplate from "../components/resume/MinimalTemplate";
+// import ProfessionalTemplate from "../components/resume/ProfessionalTemplate";
+// import CreativeTemplate from "../components/resume/CreativeTemplate";
+// import ExecutiveTemplate from "../components/resume/ExecutiveTemplate";
+// import CompactTemplate from "../components/resume/CompactTemplate";
+// import ElegantTemplate from "../components/resume/ElegantTemplate";
+// import BoldTemplate from "../components/resume/BoldTemplate";
+// import TechnicalTemplate from "../components/resume/TechnicalTemplate";
+// import AcademicTemplate from "../components/resume/AcademicTemplate";
+// import InfographicTemplate from "../components/resume/InfographicTemplate";
+// import TimelineTemplate from "../components/resume/TimelineTemplate";
+// import ModernProfessionalTemplate from "../components/resume/ModernProfessionalTemplate";
 
 const Builder = () => {
   const navigate = useNavigate();
@@ -42,17 +44,19 @@ const Builder = () => {
   const templates = [
     { id: "modern", name: "Modern", preview: ModernTemplate },
     { id: "classic", name: "Classic", preview: ClassicTemplate },
-    { id: "minimal", name: "Minimal", preview: MinimalTemplate },
-    { id: "professional", name: "Professional", preview: ProfessionalTemplate },
-    { id: "creative", name: "Creative", preview: CreativeTemplate },
-    { id: "executive", name: "Executive", preview: ExecutiveTemplate },
-    { id: "compact", name: "Compact", preview: CompactTemplate },
-    { id: "elegant", name: "Elegant", preview: ElegantTemplate },
-    { id: "bold", name: "Bold", preview: BoldTemplate },
-    { id: "technical", name: "Technical", preview: TechnicalTemplate },
-    { id: "academic", name: "Academic", preview: AcademicTemplate },
-    { id: "infographic", name: "Infographic", preview: InfographicTemplate },
-    { id: "timeline", name: "Timeline", preview: TimelineTemplate },
+    { id: 'executive', name: 'Executive Pro', preview: ExecutiveProTemplate },
+  // { id: 'modern', name: 'Modern Professional', preview: ModernProfessionalTemplate },
+    // { id: "minimal", name: "Minimal", preview: MinimalTemplate },
+    // { id: "professional", name: "Professional", preview: ProfessionalTemplate },
+    // { id: "creative", name: "Creative", preview: CreativeTemplate },
+    // { id: "executive", name: "Executive", preview: ExecutiveTemplate },
+    // { id: "compact", name: "Compact", preview: CompactTemplate },
+    // { id: "elegant", name: "Elegant", preview: ElegantTemplate },
+    // { id: "bold", name: "Bold", preview: BoldTemplate },
+    // { id: "technical", name: "Technical", preview: TechnicalTemplate },
+    // { id: "academic", name: "Academic", preview: AcademicTemplate },
+    // { id: "infographic", name: "Infographic", preview: InfographicTemplate },
+    // { id: "timeline", name: "Timeline", preview: TimelineTemplate },
   ];
   useEffect(() => {
     const stepParam = searchParams.get("step");

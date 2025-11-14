@@ -1,7 +1,7 @@
-import { useResume } from '../../context/ResumeContext';
-import { Button } from '../ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
-import { Palette, Type } from 'lucide-react';
+import { useResume } from "../../context/ResumeContext";
+import { Button } from "../ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import { Palette, Type } from "lucide-react";
 
 interface ThemeCustomizerProps {
   open: boolean;
@@ -9,27 +9,36 @@ interface ThemeCustomizerProps {
 }
 
 const themeColors = [
-  { name: 'Red', value: '#dc2626', light: '#fee2e2' },
-  { name: 'Blue', value: '#2563eb', light: '#dbeafe' },
-  { name: 'Green', value: '#16a34a', light: '#dcfce7' },
-  { name: 'Purple', value: '#9333ea', light: '#f3e8ff' },
-  { name: 'Orange', value: '#ea580c', light: '#ffedd5' },
-  { name: 'Teal', value: '#0d9488', light: '#ccfbf1' },
-  { name: 'Pink', value: '#db2777', light: '#fce7f3' },
-  { name: 'Indigo', value: '#4f46e5', light: '#e0e7ff' },
-  { name: 'Emerald', value: '#059669', light: '#d1fae5' },
-  { name: 'Amber', value: '#d97706', light: '#fef3c7' },
+  { name: "Indigo", value: "#4F46E5" },
+  { name: "Red", value: "#dc2626" },
+  { name: "Blue", value: "#2563eb" },
+  { name: "Green", value: "#16a34a" },
+  { name: "Purple", value: "#9333ea" },
+  { name: "Orange", value: "#ea580c" },
+  { name: "Teal", value: "#0d9488" },
+  { name: "Pink", value: "#db2777" },
+  { name: "Indigo", value: "#4f46e5" },
+
+  { name: "Navy", value: "#1e3a8a" },
+  { name: "Slate", value: "#475569" },
+  { name: "Forest Green", value: "#065f46" },
+  { name: "Maroon", value: "#7f1d1d" },
+  { name: "Cyan", value: "#0891b2" },
+  { name: "Gold", value: "#b45309" },
+  { name: "Steel", value: "#64748b" },
+  { name: "Brown", value: "#78350f" },
+  { name: "Sky Blue", value: "#0ea5e9" },
 ];
 
 const fonts = [
-  { name: 'Inter', value: 'Inter' },
-  { name: 'Roboto', value: 'Roboto' },
-  { name: 'Open Sans', value: 'Open Sans' },
-  { name: 'Lato', value: 'Lato' },
-  { name: 'Montserrat', value: 'Montserrat' },
-  { name: 'Playfair Display', value: 'Playfair Display' },
-  { name: 'Merriweather', value: 'Merriweather' },
-  { name: 'Poppins', value: 'Poppins' },
+  { name: "Inter", value: "Inter" },
+  { name: "Roboto", value: "Roboto" },
+  { name: "Open Sans", value: "Open Sans" },
+  { name: "Lato", value: "Lato" },
+  { name: "Montserrat", value: "Montserrat" },
+  { name: "Playfair Display", value: "Playfair Display" },
+  { name: "Merriweather", value: "Merriweather" },
+  { name: "Poppins", value: "Poppins" },
 ];
 
 const ThemeCustomizer = ({ open, onClose }: ThemeCustomizerProps) => {
@@ -64,8 +73,8 @@ const ThemeCustomizer = ({ open, onClose }: ThemeCustomizerProps) => {
                   onClick={() => handleColorChange(color.value)}
                   className={`relative h-16 rounded-lg transition-all hover:scale-105 ${
                     resumeData.themeColor === color.value
-                      ? 'ring-2 ring-offset-2 ring-primary'
-                      : ''
+                      ? "ring-2 ring-offset-2 ring-primary"
+                      : ""
                   }`}
                   style={{ backgroundColor: color.value }}
                   title={color.name}
@@ -104,7 +113,9 @@ const ThemeCustomizer = ({ open, onClose }: ThemeCustomizerProps) => {
               {fonts.map((font) => (
                 <Button
                   key={font.value}
-                  variant={resumeData.fontFamily === font.value ? 'default' : 'outline'}
+                  variant={
+                    resumeData.fontFamily === font.value ? "default" : "outline"
+                  }
                   className="h-auto py-4 justify-start"
                   onClick={() => handleFontChange(font.value)}
                   style={{ fontFamily: font.value }}

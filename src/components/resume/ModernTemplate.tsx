@@ -1,31 +1,40 @@
-import { ResumeData } from '../../types/resume';
-import { Mail, Phone, MapPin, Globe } from 'lucide-react';
+import { ResumeData } from "../../types/resume";
+import { Mail, Phone, MapPin } from "lucide-react";
+import EditBox from "./EditBox";
 
 interface ModernTemplateProps {
   data: ResumeData;
+  editMod?: boolean;
 }
 
-const ModernTemplate = ({ data }: ModernTemplateProps) => {
+const ModernTemplate = ({ data, editMod }: ModernTemplateProps) => {
   const formatDate = (date: string) => {
-    if (!date) return '';
-    const [year, month] = date.split('-');
+    if (!date) return "";
+    const [year, month] = date.split("-");
     return `${month}/${year}`;
   };
 
-  const themeColor = data.themeColor || '#dc2626';
-  const fontFamily = data.fontFamily || 'Inter';
+  const themeColor = data.themeColor || "#dc2626";
+  const fontFamily = data.fontFamily || "Inter";
 
   return (
     <div className="p-12 text-gray-900" style={{ fontFamily }}>
       {/* Header */}
-      <header className="mb-8 pb-6" style={{ borderBottom: `4px solid ${themeColor}` }}>
-        <div className="flex items-start justify-between">
+      <header
+        className="mb-8 pb-6"
+        style={{ borderBottom: `4px solid ${themeColor}` }}
+      >
+        <div className="flex items-start justify-between relative group">
+          {editMod && <EditBox href={`/builder?step=0&mode=edit`} />}
           <div className="flex-1">
             <h1 className="text-4xl font-bold text-gray-900 mb-2">
-              {data.personalInfo.fullName || 'Your Name'}
+              {data.personalInfo.fullName || "Your Name"}
             </h1>
-            <p className="text-xl font-semibold mb-3" style={{ color: themeColor }}>
-              {data.personalInfo.headline || 'Professional Title'}
+            <p
+              className="text-xl font-semibold mb-3"
+              style={{ color: themeColor }}
+            >
+              {data.personalInfo.headline || "Professional Title"}
             </p>
             <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-600">
               {data.personalInfo.email && (
@@ -61,8 +70,12 @@ const ModernTemplate = ({ data }: ModernTemplateProps) => {
 
       {/* Summary */}
       {data.summary.content && (
-        <section className="mb-6">
-          <h2 className="text-lg font-bold mb-2 uppercase tracking-wide" style={{ color: themeColor }}>
+        <section className="mb-6 relative group">
+          {editMod && <EditBox href={`/builder?step=1&mode=edit`} />}
+          <h2
+            className="text-lg font-bold mb-2 uppercase tracking-wide"
+            style={{ color: themeColor }}
+          >
             Professional Summary
           </h2>
           <p className="text-sm text-gray-700 leading-relaxed">
@@ -73,8 +86,12 @@ const ModernTemplate = ({ data }: ModernTemplateProps) => {
 
       {/* Experience */}
       {data.experience.length > 0 && (
-        <section className="mb-6">
-          <h2 className="text-lg font-bold mb-3 uppercase tracking-wide" style={{ color: themeColor }}>
+        <section className="mb-6 relative group">
+          {editMod && <EditBox href={`/builder?step=2&mode=edit`} />}
+          <h2
+            className="text-lg font-bold mb-3 uppercase tracking-wide"
+            style={{ color: themeColor }}
+          >
             Work Experience
           </h2>
           <div className="space-y-4">
@@ -87,13 +104,16 @@ const ModernTemplate = ({ data }: ModernTemplateProps) => {
                   </div>
                   <div className="text-right text-sm text-gray-600">
                     <p>
-                      {formatDate(exp.startDate)} - {exp.current ? 'Present' : formatDate(exp.endDate)}
+                      {formatDate(exp.startDate)} -{" "}
+                      {exp.current ? "Present" : formatDate(exp.endDate)}
                     </p>
                     {exp.location && <p className="text-xs">{exp.location}</p>}
                   </div>
                 </div>
                 {exp.description && (
-                  <p className="text-sm text-gray-700 mt-1">{exp.description}</p>
+                  <p className="text-sm text-gray-700 mt-1">
+                    {exp.description}
+                  </p>
                 )}
               </div>
             ))}
@@ -103,8 +123,12 @@ const ModernTemplate = ({ data }: ModernTemplateProps) => {
 
       {/* Education */}
       {data.education.length > 0 && (
-        <section className="mb-6">
-          <h2 className="text-lg font-bold mb-3 uppercase tracking-wide" style={{ color: themeColor }}>
+        <section className="mb-6 relative group">
+          {editMod && <EditBox href={`/builder?step=3&mode=edit`} />}
+          <h2
+            className="text-lg font-bold mb-3 uppercase tracking-wide"
+            style={{ color: themeColor }}
+          >
             Education
           </h2>
           <div className="space-y-3">
@@ -122,7 +146,9 @@ const ModernTemplate = ({ data }: ModernTemplateProps) => {
                   </p>
                 </div>
                 {edu.description && (
-                  <p className="text-sm text-gray-700 mt-1">{edu.description}</p>
+                  <p className="text-sm text-gray-700 mt-1">
+                    {edu.description}
+                  </p>
                 )}
               </div>
             ))}
@@ -132,8 +158,12 @@ const ModernTemplate = ({ data }: ModernTemplateProps) => {
 
       {/* Skills */}
       {data.skills.length > 0 && (
-        <section className="mb-6">
-          <h2 className="text-lg font-bold mb-2 uppercase tracking-wide" style={{ color: themeColor }}>
+        <section className="mb-6 relative group">
+          {editMod && <EditBox href={`/builder?step=4&mode=edit`} />}
+          <h2
+            className="text-lg font-bold mb-2 uppercase tracking-wide"
+            style={{ color: themeColor }}
+          >
             Skills
           </h2>
           <div className="flex flex-wrap gap-2">
@@ -141,10 +171,10 @@ const ModernTemplate = ({ data }: ModernTemplateProps) => {
               <span
                 key={skill.id}
                 className="px-3 py-1 text-sm rounded-full border"
-                style={{ 
+                style={{
                   backgroundColor: `${themeColor}15`,
                   color: themeColor,
-                  borderColor: `${themeColor}40`
+                  borderColor: `${themeColor}40`,
                 }}
               >
                 {skill.name}
@@ -156,19 +186,26 @@ const ModernTemplate = ({ data }: ModernTemplateProps) => {
 
       {/* Projects */}
       {data.projects.length > 0 && (
-        <section className="mb-6">
-          <h2 className="text-lg font-bold mb-3 uppercase tracking-wide" style={{ color: themeColor }}>
+        <section className="mb-6 relative group">
+          {" "}
+          {editMod && <EditBox href={`/builder?step=5&mode=edit`} />}
+          <h2
+            className="text-lg font-bold mb-3 uppercase tracking-wide"
+            style={{ color: themeColor }}
+          >
             Projects
           </h2>
           <div className="space-y-3">
             {data.projects.map((project) => (
               <div key={project.id}>
                 <h3 className="font-bold text-gray-900">{project.title}</h3>
-                <p className="text-sm text-gray-700 mt-1">{project.description}</p>
+                <p className="text-sm text-gray-700 mt-1">
+                  {project.description}
+                </p>
                 {project.technologies.length > 0 && (
                   <p className="text-xs text-gray-600 mt-1">
-                    <span className="font-semibold">Technologies:</span>{' '}
-                    {project.technologies.join(', ')}
+                    <span className="font-semibold">Technologies:</span>{" "}
+                    {project.technologies.join(", ")}
                   </p>
                 )}
               </div>
@@ -180,14 +217,20 @@ const ModernTemplate = ({ data }: ModernTemplateProps) => {
       <div className="grid grid-cols-2 gap-6">
         {/* Languages */}
         {data.languages.length > 0 && (
-          <section>
-            <h2 className="text-lg font-bold mb-2 uppercase tracking-wide" style={{ color: themeColor }}>
+          <section className="relative group">
+            {editMod && <EditBox href={`/builder?step=7&mode=edit`} />}
+            <h2
+              className="text-lg font-bold mb-2 uppercase tracking-wide"
+              style={{ color: themeColor }}
+            >
               Languages
             </h2>
             <div className="space-y-1">
               {data.languages.map((lang) => (
                 <div key={lang.id} className="text-sm">
-                  <span className="font-semibold text-gray-900">{lang.name}</span>
+                  <span className="font-semibold text-gray-900">
+                    {lang.name}
+                  </span>
                   <span className="text-gray-600"> - {lang.proficiency}</span>
                 </div>
               ))}
@@ -197,12 +240,17 @@ const ModernTemplate = ({ data }: ModernTemplateProps) => {
 
         {/* Interests */}
         {data.interests.length > 0 && (
-          <section>
-            <h2 className="text-lg font-bold mb-2 uppercase tracking-wide" style={{ color: themeColor }}>
+          <section className="relative group">
+            {editMod && <EditBox href={`/builder?step=8&mode=edit`} />}
+
+            <h2
+              className="text-lg font-bold mb-2 uppercase tracking-wide"
+              style={{ color: themeColor }}
+            >
               Interests
             </h2>
             <p className="text-sm text-gray-700">
-              {data.interests.map((interest) => interest.name).join(', ')}
+              {data.interests.map((interest) => interest.name).join(", ")}
             </p>
           </section>
         )}
