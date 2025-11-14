@@ -73,7 +73,6 @@ const SetupResume = () => {
   const [selectedTemplate, setSelectedTemplate] = useState<string>(
     resumeData.template || "modern"
   );
-  console.log(651651, resumeData.themeColor);
 
   const [selectedColor, setSelectedColor] = useState(resumeData.themeColor);
 

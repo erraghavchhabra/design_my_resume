@@ -30,6 +30,7 @@ const ClassicTemplate = ({ data, editMod }: ClassicTemplateProps) => {
 
   const themeColor = data.themeColor || "#1e3a8a";
   const fontFamily = data.fontFamily || "Inter";
+  console.log(651651 , fontFamily)
 
   return (
     <div className="flex min-h-full" style={{ fontFamily }}>

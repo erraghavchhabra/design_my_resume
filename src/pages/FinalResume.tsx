@@ -194,9 +194,9 @@ const FinalResume = () => {
         </div>
       </header>
 
-      <div className="flex h-[calc(100vh-73px)]">
+      <div className="flex h-[calc(100vh-76.8px)] justify-between  relative">
         {/* Left Sidebar - Templates & Customization */}
-        <div className="w-80 border-r border-border overflow-y-auto bg-muted/20">
+        <div className="w-80 border-r border-border overflow-y-auto bg-muted/20 ">
           <Tabs defaultValue="templates" className="w-full">
             <TabsList className="w-full rounded-none border-b">
               <TabsTrigger value="templates" className="flex-1">
@@ -308,39 +308,8 @@ const FinalResume = () => {
         </div>
 
         {/* Right Side - Preview & Download */}
-        <div className="flex-1 overflow-y-auto bg-muted/30 p-8">
-          <div className="max-w-4xl mx-auto space-y-6">
-            {/* Download Buttons */}
-            <Card className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="font-semibold mb-1">Download Your Resume</h2>
-                  <p className="text-sm text-muted-foreground">
-                    Choose your preferred format
-                  </p>
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    onClick={() => handleDownload("pdf")}
-                    disabled={isDownloading}
-                    size="lg"
-                  >
-                    <Download className="h-4 w-4 mr-2" />
-                    PDF
-                  </Button>
-                  <Button
-                    onClick={() => handleDownload("docx")}
-                    disabled={isDownloading}
-                    variant="outline"
-                    size="lg"
-                  >
-                    <FileText className="h-4 w-4 mr-2" />
-                    DOCX
-                  </Button>
-                </div>
-              </div>
-            </Card>
-
+        <div className="flex-1 overflow-y-auto bg-muted/30 p-8 custom_scrollbar">
+          <div className="flex items-start gap-5 justify-center">
             {/* Resume Preview */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -349,7 +318,7 @@ const FinalResume = () => {
             >
               <div
                 ref={resumeRef}
-                className="bg-white shadow-2xl mx-auto"
+                className="bg-white shadow-2xl mx-auto rounded-sm"
                 style={{
                   width: "210mm",
                   minHeight: "297mm",
@@ -359,7 +328,39 @@ const FinalResume = () => {
                 {renderTemplate()}
               </div>
             </motion.div>
+            {/* Download Buttons */}
           </div>
+        </div>
+        <div className="bg-muted/30 p-8 px-5">
+          <Card className="p-4 ">
+            <div className="flex flex-col items-start gap-5 justify-between">
+              <div>
+                <h2 className="font-semibold mb-1">Download Your Resume</h2>
+                <p className="text-sm text-muted-foreground">
+                  Choose your preferred format
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  onClick={() => handleDownload("pdf")}
+                  disabled={isDownloading}
+                  size="lg"
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  PDF
+                </Button>
+                <Button
+                  onClick={() => handleDownload("docx")}
+                  disabled={isDownloading}
+                  variant="outline"
+                  size="lg"
+                >
+                  <FileText className="h-4 w-4 mr-2" />
+                  DOCX
+                </Button>
+              </div>
+            </div>
+          </Card>
         </div>
       </div>
     </div>
