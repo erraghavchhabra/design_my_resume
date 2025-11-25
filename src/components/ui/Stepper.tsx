@@ -110,6 +110,7 @@ export default function Stepper({
                   {showMenu ? (
                     <StepIndicator
                       step={stepNumber}
+                      complateStep={step?.complateStep}
                       disableStepIndicators={disableStepIndicators}
                       currentStep={currentStep}
                       onClickStep={(clicked) => {
@@ -122,6 +123,7 @@ export default function Stepper({
                       <TooltipTrigger>
                         <StepIndicator
                           step={stepNumber}
+                          complateStep={step?.complateStep}
                           disableStepIndicators={disableStepIndicators}
                           currentStep={currentStep}
                           onClickStep={(clicked) => {
@@ -338,10 +340,12 @@ interface StepIndicatorProps {
   currentStep: number;
   onClickStep: (clicked: number) => void;
   disableStepIndicators?: boolean;
+  complateStep?: boolean;
 }
 
 function StepIndicator({
   step,
+  complateStep,
   currentStep,
   onClickStep,
   disableStepIndicators = false,
@@ -351,7 +355,9 @@ function StepIndicator({
       ? "active"
       : currentStep < step
       ? "inactive"
-      : "complete";
+      : complateStep
+      ? "complete"
+      : "uncomplete";
 
   const handleClick = () => {
     if (step !== currentStep && !disableStepIndicators) {
@@ -368,21 +374,38 @@ function StepIndicator({
     >
       <motion.div
         variants={{
-          inactive: { scale: 1, backgroundColor: "#212D59", color: "#212D59" },
-          active: { scale: 1, backgroundColor: "#5227FF", color: "#212D59" },
-          complete: { scale: 1, backgroundColor: "#5227FF", color: "#F9F9F9" },
+          inactive: {
+            scale: 1,
+            backgroundColor: "#212D59",
+            color: "#4D577A",
+            border: "1px solid #4D577A",
+          },
+          active: {
+            scale: 1,
+            backgroundColor: "#5227FF",
+            color: "#FFFFFF",
+            border: "none",
+          },
+          complete: {
+            scale: 1,
+            backgroundColor: "#5227FF",
+            color: "#F9F9F9",
+            border: "none",
+          },
+          uncomplete: {
+            scale: 1,
+            backgroundColor: "#1B2446",
+            color: "#6B7598",
+            border: "1px dashed #4D577A",
+          },
         }}
-        transition={{ duration: 0.3 }}
-        className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-semibold ${
-          status === "inactive" && "border border-[#4D577A]"
-        }`}
+        transition={{ duration: 0.25 }}
+        className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-semibold"
       >
         {status === "complete" ? (
           <CheckIcon className="h-4 w-4 text-white" />
-        ) : status === "active" ? (
-          <span className="text-white">{step}</span>
         ) : (
-          <span className="">{step}</span>
+          <span>{step}</span>
         )}
       </motion.div>
     </motion.div>

@@ -7,6 +7,7 @@ import { Card } from "../ui/card";
 import { Plus, Trash2 } from "lucide-react";
 import { useResume } from "../../context/ResumeContext";
 import { Experience } from "../../types/resume";
+import { CustomOnlyDateSelector } from "../ui/CustomOnlyDateSelector";
 
 const ExperienceForm = () => {
   const { resumeData, updateResumeData } = useResume();
@@ -103,28 +104,29 @@ const ExperienceForm = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Start Date</Label>
-                  <Input
-                    type="month"
-                    value={exp.startDate}
-                    onChange={(e) =>
-                      updateExperience(exp.id, "startDate", e.target.value)
-                    }
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label>End Date</Label>
-                  <Input
-                    type="month"
-                    value={exp.endDate}
-                    onChange={(e) =>
-                      updateExperience(exp.id, "endDate", e.target.value)
-                    }
-                    disabled={exp.current}
-                  />
-                </div>
+                <CustomOnlyDateSelector
+                  label="Start Date"
+                  value={exp.startDate}
+                  onChange={(val) =>
+                    updateExperience(
+                      exp.id,
+                      "startDate",
+                      new Date(val)?.toISOString()
+                    )
+                  }
+                />
+                <CustomOnlyDateSelector
+                  label="End Date"
+                  value={exp.endDate}
+                  disabled={exp.current}
+                  onChange={(val) =>
+                    updateExperience(
+                      exp.id,
+                      "endDate",
+                      new Date(val)?.toISOString()
+                    )
+                  }
+                />
               </div>
 
               <div className="flex items-center space-x-2">

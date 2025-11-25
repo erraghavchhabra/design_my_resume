@@ -55,7 +55,18 @@ const SummaryForm = () => {
   const isAdded = (text: string) => {
     return resumeData.summary.content.includes(text);
   };
+  const isEditorEmpty = (html: string) => {
+    if (!html) return true;
 
+    const cleaned = html
+      .replace(/<p>/g, "")
+      .replace(/<\/p>/g, "")
+      .replace(/<br\s*\/?>/g, "")
+      .replace(/&nbsp;/g, "")
+      .trim();
+
+    return cleaned.length === 0;
+  };
   const handleAddSuggestion = (text: string) => {
     const current = resumeData.summary.content.trim();
 
@@ -66,7 +77,7 @@ const SummaryForm = () => {
       return;
     }
 
-    const updated = `${current}<br/><br/>${text}`;
+    const updated = `${current}${!isEditorEmpty(resumeData.summary.content) ? "<br/>" : ""}${text}`;
     handleChange(updated);
   };
 
@@ -176,7 +187,9 @@ const SummaryForm = () => {
                 <button
                   type="button"
                   className="px-2 py-1 rounded hover:bg-gray-100 underline"
-                  onClick={() => editor?.chain().focus().toggleUnderline?.().run()}
+                  onClick={() =>
+                    editor?.chain().focus().toggleUnderline?.().run()
+                  }
                 >
                   U
                 </button>

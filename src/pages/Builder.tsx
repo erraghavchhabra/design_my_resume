@@ -494,7 +494,18 @@ const Builder = () => {
       setIsEditMode(true);
     }
   }, [searchParams]);
+  const isEditorEmpty = (html: string) => {
+    if (!html) return true;
 
+    const cleaned = html
+      .replace(/<p>/g, "")
+      .replace(/<\/p>/g, "")
+      .replace(/<br\s*\/?>/g, "")
+      .replace(/&nbsp;/g, "")
+      .trim();
+
+    return cleaned.length === 0;
+  };
   const tempSteps = [
     {
       id: "basic",
@@ -502,6 +513,12 @@ const Builder = () => {
       introtitle: "Let’s start with your",
       description:
         "Share your contact information so employers can reach you easily.",
+      complateStep:
+        resumeData.personalInfo?.fullName &&
+        resumeData.personalInfo?.headline &&
+        resumeData.personalInfo?.email &&
+        resumeData.personalInfo?.phone &&
+        resumeData.personalInfo?.location,
     },
     {
       id: "summary",
@@ -509,6 +526,7 @@ const Builder = () => {
       introtitle: "Craft a powerful professional",
       description:
         "Use expert suggestions or write your own compelling introduction.",
+      complateStep: !isEditorEmpty(resumeData.summary.content),
     },
     {
       id: "experience",
@@ -516,6 +534,7 @@ const Builder = () => {
       introtitle: "Showcase your work",
       description:
         "Highlight achievements, responsibilities, and measurable results.",
+      complateStep: resumeData.experience.length > 0,
     },
     {
       id: "education",
@@ -523,6 +542,7 @@ const Builder = () => {
       introtitle: "Now, let’s add your",
       description:
         "Include schools, programs, certifications, and graduation dates.",
+      complateStep: resumeData.education.length > 0,
     },
     {
       id: "skills",
@@ -530,6 +550,7 @@ const Builder = () => {
       introtitle: "Time to highlight your",
       description:
         "Use expertly written suggestions to optimize your skills section.",
+      complateStep: resumeData.skills.length > 0,
     },
     {
       id: "projects",
@@ -537,24 +558,28 @@ const Builder = () => {
       introtitle: "Show the impact of your",
       description:
         "Share accomplishments that prove your abilities and expertise.",
+      complateStep: resumeData.projects.length > 0,
     },
     {
       id: "achievements",
       title: "Achievements",
       introtitle: "Let’s celebrate your",
       description: "Awards, recognitions, and milestones go here.",
+      complateStep: resumeData.achievements.length > 0,
     },
     {
       id: "languages",
       title: "Languages",
       introtitle: "Tell employers about your",
       description: "Show employers your communication strengths.",
+      complateStep: resumeData.languages.length > 0,
     },
     {
       id: "interests",
       title: "Interests",
       introtitle: "Share a bit about your",
       description: "Share hobbies and passions that make you unique.",
+      complateStep: resumeData.interests.length > 0,
     },
   ];
   const template = templates.find((t) => t.id === resumeData.template);

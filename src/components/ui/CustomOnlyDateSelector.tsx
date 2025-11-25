@@ -22,6 +22,7 @@ type CustomOnlyDateSelectorProps = {
   error?: string;
   placeholder?: string;
   className?: string;
+  disabled?: boolean;
 };
 
 export function CustomOnlyDateSelector({
@@ -30,6 +31,7 @@ export function CustomOnlyDateSelector({
   onChange,
   error,
   placeholder = "Select a date",
+  disabled,
   className = "",
 }: CustomOnlyDateSelectorProps) {
   return (
@@ -45,6 +47,7 @@ export function CustomOnlyDateSelector({
               !value && "text-muted-foreground",
               className
             )}
+            disabled={disabled}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
             {value ? format(value, "PPP") : placeholder}

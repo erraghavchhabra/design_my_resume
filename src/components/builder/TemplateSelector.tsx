@@ -47,19 +47,19 @@ const TemplateSelector = ({ open, onClose }: TemplateSelectorProps) => {
         </DialogHeader>
 
         <div className="grid grid-cols-3 gap-4 py-4">
-          {templates.map((template) => (
+          {templates.map((template, index) => (
             <div
-              key={template.id}
-              onClick={() => handleSelect(template.id)}
+              key={index}
+              onClick={() => handleSelect(template?.id)}
               className={`cursor-pointer rounded-lg border-2 p-4 transition-smooth hover:shadow-md ${
-                resumeData.template === template.id
+                resumeData?.template === template?.id
                   ? 'border-primary shadow-md ring-2 ring-primary/20'
                   : 'border-border'
               }`}
             >
-              <div className={`aspect-[8.5/11] rounded ${template.preview} mb-3`} />
-              <p className="font-semibold text-sm text-center mb-1">{template.name}</p>
-              <p className="text-xs text-muted-foreground text-center">{template.description}</p>
+              <div className={`aspect-[8.5/11] rounded ${template?.preview} mb-3`} />
+              <p className="font-semibold text-sm text-center mb-1">{template?.name}</p>
+              <p className="text-xs text-muted-foreground text-center">{template?.description}</p>
             </div>
           ))}
         </div>
