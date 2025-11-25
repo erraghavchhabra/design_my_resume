@@ -165,7 +165,7 @@ body {
   font-family: "Red Hat Display", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  /* overflow: auto; */
 }
 html {
   overflow-x: hidden;
@@ -334,30 +334,69 @@ h6 {
 footer {
   padding-top: 230px !important;
 }
-/* Custom Scrollbar Class */
+/* Hide scrollbar for Chrome, Safari, Edge */
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+.scrollbar-hidden {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for IE, Edge Legacy */
+.scrollbar-hidden {
+  -ms-overflow-style: none;
+}
+.custom_scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #c8ccd8 #f2f3f7;
+}
+
+/* Chrome, Edge, Safari */
 .custom_scrollbar::-webkit-scrollbar {
   width: 8px;
-  height: 8px;
 }
 
+/* ✅ Remove ALL scrollbar buttons */
+.custom_scrollbar::-webkit-scrollbar-button,
+.custom_scrollbar::-webkit-scrollbar-button:single-button,
+.custom_scrollbar::-webkit-scrollbar-button:start:decrement,
+.custom_scrollbar::-webkit-scrollbar-button:end:increment {
+  display: none;
+  width: 0;
+  height: 0;
+  background: transparent;
+  border: none;
+}
+
+/* Track */
 .custom_scrollbar::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #f2f3f7;
+  border-radius: 999px;
 }
 
+/* Thumb */
 .custom_scrollbar::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 10px;
+  background-color: #c8ccd8;
+  border-radius: 999px;
+  border: 2px solid #f2f3f7;
 }
 
 .custom_scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background-color: #adb3c4;
+}
+/* Remove focus outline / border from TipTap editor */
+.tiptap-editor .ProseMirror {
+  outline: none !important;
 }
 
-/* Firefox Support */
-.custom_scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: #888 #f1f1f1;
+.tiptap-editor .ProseMirror:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
 }
+
 @media (max-width: 992px) {
   .ms-nav {
     background: #fff;

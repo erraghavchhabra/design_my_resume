@@ -44,8 +44,8 @@ const AchievementsForm = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold mb-2">Achievements & Awards</h2>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-4xl font-bold mb-1">Achievements & Awards</p>
+          <p className="text-md text-muted-foreground">
             Highlight your notable achievements and awards
           </p>
         </div>
@@ -57,7 +57,7 @@ const AchievementsForm = () => {
 
       <div className="space-y-4">
         {resumeData.achievements.map((achievement: any) => (
-          <Card key={achievement.id} className="p-4">
+          <div key={achievement.id} className="rounded-2xl bg-[#F7F7FB] p-6">
             <div className="space-y-4">
               <div className="flex items-start justify-between">
                 <h3 className="font-semibold">Achievement Entry</h3>
@@ -106,12 +106,13 @@ const AchievementsForm = () => {
                       e.target.value
                     )
                   }
+                  className="resize-none"
                   placeholder="Recognized for outstanding performance and leadership..."
                   rows={2}
                 />
               </div>
             </div>
-          </Card>
+          </div>
         ))}
 
         {resumeData.achievements.length === 0 && (

@@ -12,7 +12,7 @@ const buttonVariants = cva(
       variant: {
         // Default (your indigo design)
         default:
-          "bg-indigo-600 text-white hover:bg-indigo-700 shadow-md hover:shadow-lg px-8 py-3 text-lg",
+          "bg-indigo-600 text-white px-8 py-3 text-lg rounded-md shadow-md hover:shadow-2xl hover:bg-indigo-700 transition-all duration-200",
 
         // Secondary (soft gray)
         secondary:
@@ -23,16 +23,17 @@ const buttonVariants = cva(
           "border border-indigo-600 text-indigo-600 hover:bg-indigo-50 px-6 py-2",
 
         // Ghost (minimal)
-        ghost:
-          "bg-transparent text-indigo-600 hover:bg-indigo-50 px-4 py-2",
+        ghost: "bg-transparent text-indigo-600 hover:bg-indigo-50 px-4 py-2",
 
         // Destructive / Danger
-        destructive:
-          "bg-red-600 text-white hover:bg-red-700 px-6 py-2",
+        destructive: "bg-red-600 text-white hover:bg-red-700 px-6 py-2",
 
         // Gradient Button
         gradient:
           "bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white shadow-lg hover:opacity-90 px-8 py-3 text-lg rounded-lg",
+        // border
+        border:
+          " text-gray-600   px-6 py-2 text-base w-full rounded-md border border-input bg-background",
       },
       size: {
         sm: "h-9 px-3 text-sm",

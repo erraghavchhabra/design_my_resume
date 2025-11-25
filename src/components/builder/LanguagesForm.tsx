@@ -1,22 +1,34 @@
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
-import { Label } from '../ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Card } from '../ui/card';
-import { Plus, Trash2 } from 'lucide-react';
-import { useResume } from '../../context/ResumeContext';
-import { Language } from '../../types/resume';
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { Card } from "../ui/card";
+import { Plus, Trash2 } from "lucide-react";
+import { useResume } from "../../context/ResumeContext";
+import { Language } from "../../types/resume";
 
 const LanguagesForm = () => {
   const { resumeData, updateResumeData } = useResume();
 
-  const proficiencyLevels = ['Native', 'Fluent', 'Advanced', 'Intermediate', 'Beginner'];
+  const proficiencyLevels = [
+    "Native",
+    "Fluent",
+    "Advanced",
+    "Intermediate",
+    "Beginner",
+  ];
 
   const addLanguage = () => {
     const newLanguage: Language = {
       id: Date.now().toString(),
-      name: '',
-      proficiency: 'Intermediate',
+      name: "",
+      proficiency: "Intermediate",
     };
     updateResumeData({
       languages: [...resumeData.languages, newLanguage],
@@ -25,13 +37,13 @@ const LanguagesForm = () => {
 
   const removeLanguage = (id: string) => {
     updateResumeData({
-      languages: resumeData.languages.filter((lang:any) => lang.id !== id),
+      languages: resumeData.languages.filter((lang: any) => lang.id !== id),
     });
   };
 
   const updateLanguage = (id: string, field: keyof Language, value: string) => {
     updateResumeData({
-      languages: resumeData.languages.map((lang:any) =>
+      languages: resumeData.languages.map((lang: any) =>
         lang.id === id ? { ...lang, [field]: value } : lang
       ),
     });
@@ -41,8 +53,8 @@ const LanguagesForm = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold mb-2">Languages</h2>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-4xl font-bold mb-1">Languages</p>
+          <p className="text-md text-muted-foreground">
             Add languages you speak and your proficiency level
           </p>
         </div>
@@ -53,8 +65,8 @@ const LanguagesForm = () => {
       </div>
 
       <div className="space-y-4">
-        {resumeData.languages.map((language:any) => (
-          <Card key={language.id} className="p-4">
+        {resumeData.languages.map((language: any) => (
+          <div key={language.id} className="rounded-2xl bg-[#F7F7FB] p-6">
             <div className="flex items-start gap-4">
               <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -62,7 +74,7 @@ const LanguagesForm = () => {
                   <Input
                     value={language.name}
                     onChange={(e) =>
-                      updateLanguage(language.id, 'name', e.target.value)
+                      updateLanguage(language.id, "name", e.target.value)
                     }
                     placeholder="English"
                   />
@@ -73,7 +85,7 @@ const LanguagesForm = () => {
                   <Select
                     value={language.proficiency}
                     onValueChange={(value) =>
-                      updateLanguage(language.id, 'proficiency', value)
+                      updateLanguage(language.id, "proficiency", value)
                     }
                   >
                     <SelectTrigger>
@@ -99,7 +111,7 @@ const LanguagesForm = () => {
                 <Trash2 className="h-4 w-4 text-destructive" />
               </Button>
             </div>
-          </Card>
+          </div>
         ))}
 
         {resumeData.languages.length === 0 && (

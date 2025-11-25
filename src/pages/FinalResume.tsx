@@ -9,17 +9,35 @@ import {
   TabsList,
   TabsTrigger,
 } from "../components/ui/tabs";
-import { ArrowLeft, Download, Edit2, FileText } from "lucide-react";
+import {
+  ArrowLeft,
+  Check,
+  Download,
+  Edit2,
+  FileDown,
+  FileText,
+  Mail,
+  Printer,
+  Save,
+} from "lucide-react";
 import { useResume } from "../context/ResumeContext";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { toast } from "sonner";
 import ModernTemplate from "../components/resume/ModernTemplate";
 import ClassicTemplate from "../components/resume/ClassicTemplate";
-import ExecutiveProTemplate from "../components/resume/ExecutiveProTemplate";
+import CreativeTemplate from "../components/resume/CreativeTemplate";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../components/ui/dialog";
+// import ExecutiveProTemplate from "../components/resume/ExecutiveProTemplate";
 // import MinimalTemplate from "../components/resume/MinimalTemplate";
 // import ProfessionalTemplate from "../components/resume/ProfessionalTemplate";
-// import CreativeTemplate from "../components/resume/CreativeTemplate";
 // import ExecutiveTemplate from "../components/resume/ExecutiveTemplate";
 // import CompactTemplate from "../components/resume/CompactTemplate";
 // import ElegantTemplate from "../components/resume/ElegantTemplate";
@@ -31,9 +49,47 @@ import ExecutiveProTemplate from "../components/resume/ExecutiveProTemplate";
 // import ModernProfessionalTemplate from "../components/resume/ModernProfessionalTemplate";
 
 const templates = [
-  { id: "modern", name: "Modern", preview: ModernTemplate },
-  { id: "classic", name: "Classic", preview: ClassicTemplate },
-  { id: "executive", name: "Executive Pro", preview: ExecutiveProTemplate },
+  {
+    id: "modern",
+    name: "Modern",
+    preview: ModernTemplate,
+    steps: [
+      "basic",
+      "summary",
+      "experience",
+      "education",
+      "skills",
+      "projects",
+      "languages",
+      "interests",
+    ],
+    profileImage: true,
+  },
+  {
+    id: "classic",
+    name: "Classic",
+    preview: ClassicTemplate,
+    steps: [
+      "basic",
+      "summary",
+      "experience",
+      "education",
+      "skills",
+      "projects",
+      "achievements",
+      "languages",
+      "interests",
+    ],
+    profileImage: true,
+  },
+  {
+    id: "creative",
+    name: "Creative",
+    preview: CreativeTemplate,
+    steps: ["basic", "summary", "experience", "education", "skills"],
+    profileImage: false,
+  },
+  // { id: "executive", name: "Executive Pro", preview: ExecutiveProTemplate },
   // {
   //   id: "modern",
   //   name: "Modern Professional",
@@ -41,7 +97,6 @@ const templates = [
   // },
   // { id: 'minimal', name: 'Minimal', preview: MinimalTemplate },
   // { id: 'professional', name: 'Professional', preview: ProfessionalTemplate },
-  // { id: 'creative', name: 'Creative', preview: CreativeTemplate },
   // { id: "executive", name: "Executive", preview: ExecutiveTemplate },
   // { id: 'compact', name: 'Compact', preview: CompactTemplate },
   // { id: 'elegant', name: 'Elegant', preview: ElegantTemplate },
@@ -53,25 +108,16 @@ const templates = [
 ];
 
 const themeColors = [
-  { name: "Indigo", value: "#4F46E5" },
-  { name: "Red", value: "#dc2626" },
-  { name: "Blue", value: "#2563eb" },
-  { name: "Green", value: "#16a34a" },
-  { name: "Purple", value: "#9333ea" },
-  { name: "Orange", value: "#ea580c" },
-  { name: "Teal", value: "#0d9488" },
-  { name: "Pink", value: "#db2777" },
-  { name: "Indigo", value: "#4f46e5" },
-
-  { name: "Navy", value: "#1e3a8a" },
-  { name: "Slate", value: "#475569" },
-  { name: "Forest Green", value: "#065f46" },
-  { name: "Maroon", value: "#7f1d1d" },
-  { name: "Cyan", value: "#0891b2" },
-  { name: "Gold", value: "#b45309" },
-  { name: "Steel", value: "#64748b" },
-  { name: "Brown", value: "#78350f" },
-  { name: "Sky Blue", value: "#0ea5e9" },
+  { name: "Indigo", value: "#4F46E5" }, // modern + professional
+  { name: "Blue", value: "#2563EB" }, // clean corporate blue
+  { name: "Navy", value: "#1E3A8A" }, // deep premium resume color
+  { name: "Teal", value: "#0D9488" }, // fresh, modern design
+  { name: "Maroon", value: "#7F1D1D" }, // bold, classy, serious
+  { name: "Purple", value: "#9333EA" }, // elegant + standout
+  { name: "Slate", value: "#475569" }, // neutral modern gray-blue
+  { name: "Sky Blue", value: "#0EA5E9" }, // bright highlight color
+  { name: "Gold", value: "#B45309" }, // premium highlight gold
+  { name: "Green", value: "#16A34A" }, // subtle success color
 ];
 
 const fonts = [
@@ -84,23 +130,85 @@ const fonts = [
   { name: "Merriweather", value: "Merriweather" },
   { name: "Poppins", value: "Poppins" },
 ];
-const editSections = [
-  { id: 0, label: "Personal Information", icon: "user" },
-  { id: 1, label: "Summary", icon: "file-text" },
-  { id: 2, label: "Experience", icon: "briefcase" },
-  { id: 3, label: "Education & Training", icon: "graduation-cap" },
-  { id: 4, label: "Skills", icon: "code" },
-  { id: 5, label: "Projects", icon: "folder" },
-  { id: 6, label: "Achievements & Awards", icon: "trophy" },
-  { id: 7, label: "Languages", icon: "globe" },
-  { id: 8, label: "Interests & Hobbies", icon: "heart" },
+const tempSteps = [
+  {
+    step: 0,
+    id: "basic",
+    title: "Basic Info",
+    introtitle: "Let’s start with your",
+    description:
+      "Share your contact information so employers can reach you easily.",
+  },
+  {
+    step: 1,
+    id: "summary",
+    title: "Summary",
+    introtitle: "Craft a powerful professional",
+    description:
+      "Use expert suggestions or write your own compelling introduction.",
+  },
+  {
+    step: 2,
+    id: "experience",
+    title: "Experience",
+    introtitle: "Showcase your work",
+    description:
+      "Highlight achievements, responsibilities, and measurable results.",
+  },
+  {
+    step: 3,
+    id: "education",
+    title: "Education",
+    introtitle: "Now, let’s add your",
+    description:
+      "Include schools, programs, certifications, and graduation dates.",
+  },
+  {
+    step: 4,
+    id: "skills",
+    title: "Skills",
+    introtitle: "Time to highlight your",
+    description:
+      "Use expertly written suggestions to optimize your skills section.",
+  },
+  {
+    step: 5,
+    id: "projects",
+    title: "Projects",
+    introtitle: "Show the impact of your",
+    description:
+      "Share accomplishments that prove your abilities and expertise.",
+  },
+  {
+    step: 6,
+    id: "achievements",
+    title: "Achievements",
+    introtitle: "Let’s celebrate your",
+    description: "Awards, recognitions, and milestones go here.",
+  },
+  {
+    step: 7,
+    id: "languages",
+    title: "Languages",
+    introtitle: "Tell employers about your",
+    description: "Show employers your communication strengths.",
+  },
+  {
+    step: 8,
+    id: "interests",
+    title: "Interests",
+    introtitle: "Share a bit about your",
+    description: "Share hobbies and passions that make you unique.",
+  },
 ];
 const FinalResume = () => {
   const navigate = useNavigate();
   const { resumeData, setTemplate, setThemeColor, setFontFamily } = useResume();
   const [isDownloading, setIsDownloading] = useState(false);
   const resumeRef = useRef<HTMLDivElement>(null);
-
+  const [donwloadDialog, setDonwloadDialog] = useState(false);
+  const template = templates.find((t) => t.id === resumeData.template);
+  const steps = tempSteps?.filter((s) => template?.steps?.includes(s.id));
   const handleDownload = async (format: "pdf" | "docx") => {
     setIsDownloading(true);
     try {
@@ -152,6 +260,7 @@ const FinalResume = () => {
 
         pdf.save(`${resumeData.personalInfo.fullName || "resume"}.pdf`);
         toast.success("Resume downloaded as PDF!");
+        setDonwloadDialog(false);
       } else {
         toast.info("DOCX export coming soon!");
       }
@@ -172,198 +281,272 @@ const FinalResume = () => {
     navigate(`/builder?step=${stepId}&mode=edit`);
   };
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-20">
-        <div className="max-w-full mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => navigate("/builder")}
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <div>
-              <h1 className="text-lg font-semibold">Your Resume</h1>
-              <p className="text-xs text-muted-foreground">
-                {resumeData.personalInfo.fullName}
-              </p>
-            </div>
-          </div>
-        </div>
-      </header>
+    <section className="bg-[#212D59]  ">
+      <div className="min-h-screen  max-w-7xl mx-auto w-full pt-8 ">
+        <img src="/assets/svg/ftlogo.svg" alt="logo" className="w-32" />
+        <div className="flex gap-8 mt-12 relative ">
+          {/* Left Sidebar - Templates & Customization */}
+          <div className="w-72 max-h-[90vh]  sticky top-4">
+            <div className=" bg-muted/20 rounded-md h-full overflow-hidden">
+              <Tabs defaultValue="templates" className="w-full">
+                <TabsList className="w-full rounded-none border-b bg-muted/30 text-black">
+                  <TabsTrigger value="templates" className="flex-1">
+                    Templates
+                  </TabsTrigger>
+                  <TabsTrigger value="customize" className="flex-1">
+                    Customize
+                  </TabsTrigger>
+                </TabsList>
 
-      <div className="flex h-[calc(100vh-76.8px)] justify-between  relative">
-        {/* Left Sidebar - Templates & Customization */}
-        <div className="w-80 border-r border-border overflow-y-auto bg-muted/20 ">
-          <Tabs defaultValue="templates" className="w-full">
-            <TabsList className="w-full rounded-none border-b">
-              <TabsTrigger value="templates" className="flex-1">
-                Templates
-              </TabsTrigger>
-              <TabsTrigger value="customize" className="flex-1">
-                Customize
-              </TabsTrigger>
-              <TabsTrigger value="edit" className="flex-1">
-                Edit
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="templates" className="p-4 space-y-4 mt-0">
-              <div className="space-y-3">
-                {templates.map((template) => (
-                  <Card
-                    key={template.id}
-                    className={`cursor-pointer transition-all p-3 hover:shadow-md ${
-                      resumeData.template === template.id
-                        ? "ring-2 ring-primary"
-                        : ""
-                    }`}
-                    onClick={() => setTemplate(template.id as any)}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-16 h-20 bg-muted rounded overflow-hidden flex-shrink-0">
-                        <div className="scale-[0.08] origin-top-left w-[800px] h-[1000px]">
-                          <template.preview data={resumeData} />
+                <TabsContent value="templates" className="p-4 space-y-4 mt-0">
+                  <div className="space-y-3">
+                    {templates.map((template) => (
+                      <Card
+                        key={template.id}
+                        className={`cursor-pointer bg-white/10 backdrop-blur text-white transition-all p-3 hover:shadow-md ${
+                          resumeData.template === template.id
+                            ? "ring-2 ring-primary"
+                            : ""
+                        }`}
+                        onClick={() => setTemplate(template.id as any)}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-16 h-20 bg-muted rounded overflow-hidden flex-shrink-0">
+                            <div className="scale-[0.08] origin-top-left w-[800px] h-[1000px]">
+                              <template.preview data={resumeData} />
+                            </div>
+                          </div>
+                          <div>
+                            <p className="font-medium">{template.name}</p>
+                            <p className="text-xs text-gray-400">
+                              {template.id === resumeData.template
+                                ? "Active"
+                                : "Click to apply"}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                      <div>
-                        <p className="font-medium">{template.name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {template.id === resumeData.template
-                            ? "Active"
-                            : "Click to apply"}
-                        </p>
-                      </div>
+                      </Card>
+                    ))}
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="customize" className="p-4 space-y-6 mt-0">
+                  <div>
+                    <p className="font-medium mb-3 text-white">Theme Color</p>
+                    <div className="flex items-center gap-2">
+                      {themeColors?.slice(0, 8).map((color) => (
+                        <motion.button
+                          key={color.value}
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => {
+                            setThemeColor(color.value);
+                          }}
+                          onMouseOver={() => {
+                            setThemeColor(color.value);
+                          }}
+                          className={`w-6 h-6 rounded-full border-[0.5px] border-white transition-all ${
+                            resumeData.themeColor === color.value
+                              ? "ring-1 ring-primary ring-offset-2"
+                              : "hover:ring-1 hover:ring-muted-foreground"
+                          }`}
+                          style={{ backgroundColor: color.value }}
+                          title={color.name}
+                        />
+                      ))}
                     </div>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
+                  </div>
 
-            <TabsContent value="customize" className="p-4 space-y-6 mt-0">
-              <div>
-                <h3 className="font-medium mb-3">Theme Color</h3>
-                <div className="grid grid-cols-5 gap-3">
-                  {themeColors.map((color) => (
-                    <button
-                      key={color.value}
-                      onClick={() => setThemeColor(color.value)}
-                      className={`w-10 h-10 rounded-md transition-all ${
-                        resumeData.themeColor === color.value
-                          ? "ring-2 ring-primary ring-offset-2"
-                          : "hover:ring-2 hover:ring-muted-foreground"
-                      }`}
-                      style={{ backgroundColor: color.value }}
-                      title={color.name}
-                    />
-                  ))}
-                </div>
-              </div>
+                  <div>
+                    <p className="font-medium mb-3 text-white">Font Family</p>
 
-              <div>
-                <h3 className="font-medium mb-3">Font Family</h3>
-                <div className="grid grid-cols-2 gap-2">
-                  {fonts.map((font) => (
-                    <Button
-                      key={font.value}
-                      variant={
-                        resumeData.fontFamily === font.value
-                          ? "default"
-                          : "outline"
-                      }
-                      className="w-full justify-start line-clamp-1"
-                      onClick={() => setFontFamily(font.value)}
-                      style={{ fontFamily: font.value }}
-                    >
-                      {font.name}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            </TabsContent>
-            <TabsContent value="edit" className="p-4 space-y-3 mt-0">
-              <div className="mb-4">
-                <h3 className="font-semibold text-sm mb-2">Resume Sections</h3>
-                <p className="text-xs text-muted-foreground">
-                  Click any section to edit it
-                </p>
-              </div>
-              <div className="space-y-2">
-                {editSections.map((section) => (
-                  <Button
-                    key={section.id}
-                    variant="outline"
-                    className="w-full justify-start gap-3  py-3"
-                    onClick={() => handleEditSection(section.id)}
-                  >
-                    <Edit2 className="h-4 w-4 text-primary" />
-                    <span className="text-left">{section.label}</span>
-                  </Button>
-                ))}
-              </div>
-            </TabsContent>
-          </Tabs>
-        </div>
+                    <div className="grid grid-cols-1 gap-2">
+                      {fonts.map((font) => {
+                        const isSelected = resumeData.fontFamily === font.value;
 
-        {/* Right Side - Preview & Download */}
-        <div className="flex-1 overflow-y-auto bg-muted/30 p-8 custom_scrollbar">
-          <div className="flex items-start gap-5 justify-center">
-            {/* Resume Preview */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div
-                ref={resumeRef}
-                className="bg-white shadow-2xl mx-auto rounded-sm"
-                style={{
-                  width: "210mm",
-                  minHeight: "297mm",
-                  maxWidth: "100%",
-                }}
-              >
-                {renderTemplate()}
-              </div>
-            </motion.div>
-            {/* Download Buttons */}
-          </div>
-        </div>
-        <div className="bg-muted/30 p-8 px-5">
-          <Card className="p-4 ">
-            <div className="flex flex-col items-start gap-5 justify-between">
-              <div>
-                <h2 className="font-semibold mb-1">Download Your Resume</h2>
-                <p className="text-sm text-muted-foreground">
-                  Choose your preferred format
-                </p>
-              </div>
-              <div className="flex gap-2">
-                <Button
-                  onClick={() => handleDownload("pdf")}
-                  disabled={isDownloading}
-                  size="lg"
-                >
-                  <Download className="h-4 w-4 mr-2" />
-                  PDF
-                </Button>
-                <Button
-                  onClick={() => handleDownload("docx")}
-                  disabled={isDownloading}
-                  variant="outline"
-                  size="lg"
-                >
-                  <FileText className="h-4 w-4 mr-2" />
-                  DOCX
-                </Button>
+                        return (
+                          <button
+                            key={font.value}
+                            onClick={() => setFontFamily(font.value)}
+                            style={{ fontFamily: font.value }}
+                            className={`
+            w-full text-left px-4 py-2 rounded-xl transition-all
+            border bg-white/10 backdrop-blur
+            text-white shadow-sm hover:shadow-md hover:bg-white/20 flex items-center justify-between
+            ${
+              isSelected
+                ? "border-indigo-400 shadow-lg bg-white/20"
+                : "border-white/10"
+            }
+          `}
+                          >
+                            {font.name}
+                            {isSelected && <Check className="h-4 w-4" />}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </div>
+            <div className=" w-full text-white text-[11px] flex items-center flex-col gap-2 mt-5">
+              <div className="flex items-center gap-2">
+                <a href="#" className=" border-r border-white pr-2">
+                  Terms & Conditions
+                </a>
+                <a href="#" className=" border-r border-white pr-2">
+                  Privacy Policy
+                </a>
+                <a href="#" className="">
+                  Contact Us
+                </a>
               </div>
             </div>
-          </Card>
+          </div>
+
+          {/* crenter Side - Preview & Download */}
+          <div className="flex-1 overflow-y-auto rounded-sm mb-6">
+            <div className="max-w-4xl mx-auto space-y-6">
+              {/* Resume Preview */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div
+                  ref={resumeRef}
+                  className="bg-white shadow-2xl mx-auto"
+                  style={{
+                    width: "210mm",
+                    minHeight: "297mm",
+                    maxWidth: "100%",
+                  }}
+                >
+                  {renderTemplate()}
+                </div>
+              </motion.div>
+            </div>
+          </div>
+          {/* Right Side */}
+          <div className="max-w-60  max-h-[90vh] w-full sticky top-4">
+            <div className="grid grid-cols-3 gap-2 w-full mb-8">
+              {[
+                {
+                  title: "Download",
+                  icon: <Save />,
+                  onClick: () => setDonwloadDialog(true),
+                  disabled: isDownloading,
+                },
+                {
+                  title: "Print",
+                  icon: <Printer />,
+                  onClick: () => toast.error("coming soon"),
+                },
+                {
+                  title: "Email",
+                  icon: <Mail />,
+                  onClick: () => toast.error("coming soon"),
+                },
+              ].map((item, index) => (
+                <button
+                  key={index}
+                  onClick={item.onClick}
+                  disabled={item.disabled}
+                  className="
+                    flex flex-col items-center justify-center
+                    bg-white rounded-md p-2 w-full
+                    shadow-sm text-[10px] hover:bg-primary text-black hover:text-white  hover:shadow-lg
+                    transition-all duration-200
+                    disabled:opacity-50 disabled:cursor-not-allowed
+                  "
+                >
+                  {item.icon}
+                  <span className="mt-2 font-semibold">{item.title}</span>
+                </button>
+              ))}
+            </div>
+            <div className="border-y-[1.5px] border-dashed border-white py-8">
+              <p className="text-base text-white">Resume Sections</p>
+              <div className="flex flex-col gap-3 ml-3 mt-5">
+                {steps.map((section, index) => {
+                  return (
+                    <button
+                      onClick={() => handleEditSection(section.step)}
+                      className="flex items-center gap-2"
+                    >
+                      <div className="bg-white flex items-center justify-center w-4 h-4 rounded-full font-semibold text-xs">
+                        {index + 1}
+                      </div>
+                      <div className="flex items-center gap-4 text-sm text-white group">
+                        <span className="text-left transition-all duration-300 group-hover:scale-105 origin-left">
+                          {section.title}
+                        </span>
+                        <Edit2 className="h-3 w-3  transition-all duration-300 opacity-0 group-hover:opacity-100" />
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+      <Dialog open={donwloadDialog} onOpenChange={setDonwloadDialog}>
+        {/* === Dialog Box === */}
+        <DialogContent
+          className="
+          max-w-sm rounded-2xl border bg-white/90 backdrop-blur-xl shadow-2xl 
+          animate-in fade-in-0 zoom-in-95 duration-200
+        "
+        >
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-center">
+              Choose a resume format
+            </DialogTitle>
+
+            <DialogDescription className="text-center text-gray-600 mt-1">
+              Select a file format to download your resume.
+            </DialogDescription>
+          </DialogHeader>
+
+          {/* === Options === */}
+          <div className="grid grid-cols-2 gap-4 py-4 mt-2">
+            <button
+              onClick={() => handleDownload("pdf")}
+              disabled={isDownloading}
+              className="
+              flex flex-col items-center justify-center gap-2 
+              bg-white border rounded-xl p-4 shadow-sm
+              hover:shadow-lg hover:bg-gray-50 transition-all duration-200
+            "
+            >
+              <FileText className="w-10 h-10 text-indigo-600" />
+              <span className="font-semibold">PDF</span>
+            </button>
+
+            <button
+              onClick={() => handleDownload("docx")}
+              disabled={isDownloading}
+              className="
+              flex flex-col items-center justify-center gap-2 
+              bg-white border rounded-xl p-4 shadow-sm
+              hover:shadow-lg hover:bg-gray-50 transition-all duration-200
+            "
+            >
+              <FileDown className="w-10 h-10 text-indigo-600" />
+              <span className="font-semibold">DOCX</span>
+            </button>
+          </div>
+
+          <DialogFooter>
+            <p className="w-full text-center text-xs text-gray-500">
+              You can switch format anytime.
+            </p>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </section>
   );
 };
 

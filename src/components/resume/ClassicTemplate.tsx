@@ -1,13 +1,19 @@
 import { ResumeData } from "../../types/resume";
 import { Mail, Phone, MapPin, Calendar, Award } from "lucide-react";
 import EditBox from "./EditBox";
+import HighLightBox from "./HighLightBox";
 
 interface ClassicTemplateProps {
   data: ResumeData;
   editMod?: boolean;
+  high_lightStep?: number;
 }
 
-const ClassicTemplate = ({ data, editMod }: ClassicTemplateProps) => {
+const ClassicTemplate = ({
+  data,
+  editMod,
+  high_lightStep,
+}: ClassicTemplateProps) => {
   const formatDate = (date: string) => {
     if (!date) return "";
     const [year, month] = date.split("-");
@@ -30,7 +36,6 @@ const ClassicTemplate = ({ data, editMod }: ClassicTemplateProps) => {
 
   const themeColor = data.themeColor || "#1e3a8a";
   const fontFamily = data.fontFamily || "Inter";
-  console.log(651651 , fontFamily)
 
   return (
     <div className="flex min-h-full" style={{ fontFamily }}>
@@ -42,6 +47,8 @@ const ClassicTemplate = ({ data, editMod }: ClassicTemplateProps) => {
         {/* Profile Image */}
         {data.personalInfo.profileImage && (
           <div className="mb-6 flex justify-center relative group">
+            {high_lightStep === 0 && <HighLightBox />}
+
             {editMod && <EditBox href={`/builder?step=0&mode=edit`} />}
             <img
               src={data.personalInfo.profileImage}
@@ -54,6 +61,8 @@ const ClassicTemplate = ({ data, editMod }: ClassicTemplateProps) => {
 
         {/* Contact Info */}
         <section className="mb-6 relative group">
+          {high_lightStep === 0 && <HighLightBox />}
+
           {editMod && <EditBox href={`/builder?step=0&mode=edit`} />}
           <h2
             className="text-lg font-bold mb-3 pb-1"
@@ -86,6 +95,8 @@ const ClassicTemplate = ({ data, editMod }: ClassicTemplateProps) => {
         {/* Skills */}
         {data.skills.length > 0 && (
           <section className="mb-6 relative group">
+            {high_lightStep === 4 && <HighLightBox />}
+
             {editMod && <EditBox href={`/builder?step=4&mode=edit`} />}
             <h2
               className="text-lg font-bold mb-3 pb-1"
@@ -110,6 +121,8 @@ const ClassicTemplate = ({ data, editMod }: ClassicTemplateProps) => {
         {/* Languages */}
         {data.languages.length > 0 && (
           <section className="mb-6 relative group">
+            {high_lightStep === 7 && <HighLightBox />}
+
             {editMod && <EditBox href={`/builder?step=7&mode=edit`} />}
             <h2
               className="text-lg font-bold mb-3 pb-1"
@@ -136,6 +149,8 @@ const ClassicTemplate = ({ data, editMod }: ClassicTemplateProps) => {
         {/* Interests */}
         {data.interests.length > 0 && (
           <section className="relative group">
+            {high_lightStep === 8 && <HighLightBox />}
+
             {editMod && <EditBox href={`/builder?step=8&mode=edit`} />}
             <h2
               className="text-lg font-bold mb-3 pb-1"
@@ -162,6 +177,8 @@ const ClassicTemplate = ({ data, editMod }: ClassicTemplateProps) => {
       <main className="w-2/3 p-8 bg-white">
         {/* Header */}
         <header className="mb-8 relative group">
+          {high_lightStep === 0 && <HighLightBox />}
+
           {editMod && <EditBox href={`/builder?step=0&mode=edit`} />}
 
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
@@ -175,6 +192,8 @@ const ClassicTemplate = ({ data, editMod }: ClassicTemplateProps) => {
         {/* Summary */}
         {data.summary.content && (
           <section className="mb-8 relative group">
+            {high_lightStep === 1 && <HighLightBox />}
+
             {editMod && <EditBox href={`/builder?step=1&mode=edit`} />}
             <h2
               className="text-xl font-bold mb-3 pb-1"
@@ -185,8 +204,11 @@ const ClassicTemplate = ({ data, editMod }: ClassicTemplateProps) => {
             >
               PROFESSIONAL SUMMARY
             </h2>
-            <p className="text-sm text-gray-700 leading-relaxed">
-              {data.summary.content}
+            <p
+              className="text-sm text-gray-700 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: data.summary.content }}
+            >
+              {/* {data.summary.content} */}
             </p>
           </section>
         )}
@@ -194,6 +216,8 @@ const ClassicTemplate = ({ data, editMod }: ClassicTemplateProps) => {
         {/* Experience */}
         {data.experience.length > 0 && (
           <section className="mb-8 relative group">
+            {high_lightStep === 2 && <HighLightBox />}
+
             {editMod && <EditBox href={`/builder?step=2&mode=edit`} />}
             <h2
               className="text-xl font-bold mb-3 pb-1"
@@ -235,6 +259,8 @@ const ClassicTemplate = ({ data, editMod }: ClassicTemplateProps) => {
         {/* Education */}
         {data.education.length > 0 && (
           <section className="mb-8 relative group">
+            {high_lightStep === 3 && <HighLightBox />}
+
             {editMod && <EditBox href={`/builder?step=3&mode=edit`} />}
             <h2
               className="text-xl font-bold mb-3 pb-1"
@@ -274,6 +300,8 @@ const ClassicTemplate = ({ data, editMod }: ClassicTemplateProps) => {
         {/* Projects */}
         {data.projects.length > 0 && (
           <section className="mb-8 relative group">
+            {high_lightStep === 5 && <HighLightBox />}
+
             {editMod && <EditBox href={`/builder?step=5&mode=edit`} />}
             <h2
               className="text-xl font-bold mb-3 pb-1"
@@ -316,6 +344,8 @@ const ClassicTemplate = ({ data, editMod }: ClassicTemplateProps) => {
         {/* Achievements */}
         {data.achievements.length > 0 && (
           <section className="relative group">
+            {high_lightStep === 6 && <HighLightBox />}
+
             {editMod && <EditBox href={`/builder?step=6&mode=edit`} />}
             <h2
               className="text-xl font-bold mb-3 pb-1"

@@ -1,6 +1,5 @@
 import React from "react";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
-import Logo from "../../assets/img/ftlogo.svg";
 
 const LoginPage = () => {
   return (
@@ -33,7 +32,7 @@ const LoginPage = () => {
 
       {/* Top Logo */}
       <div className="flex justify-center items-center space-x-2 mb-6">
-        <img src={Logo} alt="Logo" className="lg:w-[150px]" />
+        <img src="/assets/svg/ftlogo.svg" alt="Logo" className="lg:w-[150px]" />
       </div>
 
       {/* Center Form */}

@@ -9,7 +9,8 @@ import FinalResume from "./pages/FinalResume";
 import NotFound from "./pages/NotFound";
 import { Toaster } from "./components/ui/toaster";
 import { ResumeProvider } from "./context/ResumeContext";
-
+import LoginPage from "./pages/auth/LoginPage";
+import "react-day-picker/dist/style.css";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -17,7 +18,7 @@ const App = () => (
     <ResumeProvider>
       <TooltipProvider>
         <Toaster />
-        <Sonner />
+        <Sonner position="top-right"/>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -26,6 +27,7 @@ const App = () => (
             <Route path="/final-resume" element={<FinalResume />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
+            <Route path="/login" element={<LoginPage />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>

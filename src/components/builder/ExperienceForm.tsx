@@ -1,12 +1,12 @@
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
-import { Label } from '../ui/label';
-import { Textarea } from '../ui/textarea';
-import { Checkbox } from '../ui/checkbox';
-import { Card } from '../ui/card';
-import { Plus, Trash2 } from 'lucide-react';
-import { useResume } from '../../context/ResumeContext';
-import { Experience } from '../../types/resume';
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
+import { Checkbox } from "../ui/checkbox";
+import { Card } from "../ui/card";
+import { Plus, Trash2 } from "lucide-react";
+import { useResume } from "../../context/ResumeContext";
+import { Experience } from "../../types/resume";
 
 const ExperienceForm = () => {
   const { resumeData, updateResumeData } = useResume();
@@ -14,13 +14,13 @@ const ExperienceForm = () => {
   const addExperience = () => {
     const newExperience: Experience = {
       id: Date.now().toString(),
-      company: '',
-      position: '',
-      startDate: '',
-      endDate: '',
+      company: "",
+      position: "",
+      startDate: "",
+      endDate: "",
       current: false,
-      location: '',
-      description: '',
+      location: "",
+      description: "",
     };
     updateResumeData({
       experience: [...resumeData.experience, newExperience],
@@ -29,24 +29,30 @@ const ExperienceForm = () => {
 
   const removeExperience = (id: string) => {
     updateResumeData({
-      experience: resumeData.experience.filter((exp:any) => exp.id !== id),
+      experience: resumeData.experience.filter((exp: any) => exp.id !== id),
     });
   };
 
-  const updateExperience = (id: string, field: keyof Experience, value: any) => {
+  const updateExperience = (
+    id: string,
+    field: keyof Experience,
+    value: any
+  ) => {
     updateResumeData({
-      experience: resumeData.experience.map((exp:any) =>
+      experience: resumeData.experience.map((exp: any) =>
         exp.id === id ? { ...exp, [field]: value } : exp
       ),
     });
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
+      {/* Heading */}
+
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold mb-2">Work Experience</h2>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-4xl font-bold mb-1">Work Experience</p>
+          <p className="text-md text-muted-foreground">
             Add your professional work experience
           </p>
         </div>
@@ -57,8 +63,8 @@ const ExperienceForm = () => {
       </div>
 
       <div className="space-y-4">
-        {resumeData.experience.map((exp:any) => (
-          <Card key={exp.id} className="p-4">
+        {resumeData.experience.map((exp: any) => (
+          <div key={exp.id} className="rounded-2xl bg-[#F7F7FB] p-6">
             <div className="space-y-4">
               <div className="flex items-start justify-between">
                 <h3 className="font-semibold">Experience Entry</h3>
@@ -78,7 +84,7 @@ const ExperienceForm = () => {
                   <Input
                     value={exp.company}
                     onChange={(e) =>
-                      updateExperience(exp.id, 'company', e.target.value)
+                      updateExperience(exp.id, "company", e.target.value)
                     }
                     placeholder="Tech Corp"
                   />
@@ -89,7 +95,7 @@ const ExperienceForm = () => {
                   <Input
                     value={exp.position}
                     onChange={(e) =>
-                      updateExperience(exp.id, 'position', e.target.value)
+                      updateExperience(exp.id, "position", e.target.value)
                     }
                     placeholder="Senior Software Engineer"
                   />
@@ -103,7 +109,7 @@ const ExperienceForm = () => {
                     type="month"
                     value={exp.startDate}
                     onChange={(e) =>
-                      updateExperience(exp.id, 'startDate', e.target.value)
+                      updateExperience(exp.id, "startDate", e.target.value)
                     }
                   />
                 </div>
@@ -114,7 +120,7 @@ const ExperienceForm = () => {
                     type="month"
                     value={exp.endDate}
                     onChange={(e) =>
-                      updateExperience(exp.id, 'endDate', e.target.value)
+                      updateExperience(exp.id, "endDate", e.target.value)
                     }
                     disabled={exp.current}
                   />
@@ -126,7 +132,7 @@ const ExperienceForm = () => {
                   id={`current-${exp.id}`}
                   checked={exp.current}
                   onCheckedChange={(checked) =>
-                    updateExperience(exp.id, 'current', checked)
+                    updateExperience(exp.id, "current", checked)
                   }
                 />
                 <Label
@@ -142,7 +148,7 @@ const ExperienceForm = () => {
                 <Input
                   value={exp.location}
                   onChange={(e) =>
-                    updateExperience(exp.id, 'location', e.target.value)
+                    updateExperience(exp.id, "location", e.target.value)
                   }
                   placeholder="San Francisco, CA"
                 />
@@ -153,14 +159,15 @@ const ExperienceForm = () => {
                 <Textarea
                   value={exp.description}
                   onChange={(e) =>
-                    updateExperience(exp.id, 'description', e.target.value)
+                    updateExperience(exp.id, "description", e.target.value)
                   }
+                  className="resize-none"
                   placeholder="Describe your responsibilities and achievements..."
                   rows={4}
                 />
               </div>
             </div>
-          </Card>
+          </div>
         ))}
 
         {resumeData.experience.length === 0 && (

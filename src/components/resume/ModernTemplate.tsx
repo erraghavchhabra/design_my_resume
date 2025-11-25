@@ -1,13 +1,19 @@
 import { ResumeData } from "../../types/resume";
 import { Mail, Phone, MapPin } from "lucide-react";
 import EditBox from "./EditBox";
+import HighLightBox from "./HighLightBox";
 
 interface ModernTemplateProps {
   data: ResumeData;
   editMod?: boolean;
+  high_lightStep?: number;
 }
 
-const ModernTemplate = ({ data, editMod }: ModernTemplateProps) => {
+const ModernTemplate = ({
+  data,
+  editMod,
+  high_lightStep,
+}: ModernTemplateProps) => {
   const formatDate = (date: string) => {
     if (!date) return "";
     const [year, month] = date.split("-");
@@ -25,6 +31,7 @@ const ModernTemplate = ({ data, editMod }: ModernTemplateProps) => {
         style={{ borderBottom: `4px solid ${themeColor}` }}
       >
         <div className="flex items-start justify-between relative group">
+          {high_lightStep === 0 && <HighLightBox />}
           {editMod && <EditBox href={`/builder?step=0&mode=edit`} />}
           <div className="flex-1">
             <h1 className="text-4xl font-bold text-gray-900 mb-2">
@@ -71,6 +78,7 @@ const ModernTemplate = ({ data, editMod }: ModernTemplateProps) => {
       {/* Summary */}
       {data.summary.content && (
         <section className="mb-6 relative group">
+          {high_lightStep === 1 && <HighLightBox />}
           {editMod && <EditBox href={`/builder?step=1&mode=edit`} />}
           <h2
             className="text-lg font-bold mb-2 uppercase tracking-wide"
@@ -78,8 +86,8 @@ const ModernTemplate = ({ data, editMod }: ModernTemplateProps) => {
           >
             Professional Summary
           </h2>
-          <p className="text-sm text-gray-700 leading-relaxed">
-            {data.summary.content}
+          <p className="text-sm text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: data.summary.content }}>
+            {/* {data.summary.content} */}
           </p>
         </section>
       )}
@@ -87,6 +95,7 @@ const ModernTemplate = ({ data, editMod }: ModernTemplateProps) => {
       {/* Experience */}
       {data.experience.length > 0 && (
         <section className="mb-6 relative group">
+          {high_lightStep === 2 && <HighLightBox />}
           {editMod && <EditBox href={`/builder?step=2&mode=edit`} />}
           <h2
             className="text-lg font-bold mb-3 uppercase tracking-wide"
@@ -124,6 +133,7 @@ const ModernTemplate = ({ data, editMod }: ModernTemplateProps) => {
       {/* Education */}
       {data.education.length > 0 && (
         <section className="mb-6 relative group">
+          {high_lightStep === 3 && <HighLightBox />}
           {editMod && <EditBox href={`/builder?step=3&mode=edit`} />}
           <h2
             className="text-lg font-bold mb-3 uppercase tracking-wide"
@@ -159,6 +169,7 @@ const ModernTemplate = ({ data, editMod }: ModernTemplateProps) => {
       {/* Skills */}
       {data.skills.length > 0 && (
         <section className="mb-6 relative group">
+          {high_lightStep === 4 && <HighLightBox />}
           {editMod && <EditBox href={`/builder?step=4&mode=edit`} />}
           <h2
             className="text-lg font-bold mb-2 uppercase tracking-wide"
@@ -188,6 +199,7 @@ const ModernTemplate = ({ data, editMod }: ModernTemplateProps) => {
       {data.projects.length > 0 && (
         <section className="mb-6 relative group">
           {" "}
+          {high_lightStep === 5 && <HighLightBox />}
           {editMod && <EditBox href={`/builder?step=5&mode=edit`} />}
           <h2
             className="text-lg font-bold mb-3 uppercase tracking-wide"
@@ -218,7 +230,8 @@ const ModernTemplate = ({ data, editMod }: ModernTemplateProps) => {
         {/* Languages */}
         {data.languages.length > 0 && (
           <section className="relative group">
-            {editMod && <EditBox href={`/builder?step=7&mode=edit`} />}
+            {high_lightStep === 6 && <HighLightBox />}
+            {editMod && <EditBox href={`/builder?step=6&mode=edit`} />}
             <h2
               className="text-lg font-bold mb-2 uppercase tracking-wide"
               style={{ color: themeColor }}
@@ -241,7 +254,8 @@ const ModernTemplate = ({ data, editMod }: ModernTemplateProps) => {
         {/* Interests */}
         {data.interests.length > 0 && (
           <section className="relative group">
-            {editMod && <EditBox href={`/builder?step=8&mode=edit`} />}
+            {high_lightStep === 7 && <HighLightBox />}
+            {editMod && <EditBox href={`/builder?step=7&mode=edit`} />}
 
             <h2
               className="text-lg font-bold mb-2 uppercase tracking-wide"

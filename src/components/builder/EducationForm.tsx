@@ -1,11 +1,12 @@
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
-import { Label } from '../ui/label';
-import { Textarea } from '../ui/textarea';
-import { Card } from '../ui/card';
-import { Plus, Trash2 } from 'lucide-react';
-import { Education } from '../../types/resume';
-import { useResume } from '../../context/ResumeContext';
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
+import { Card } from "../ui/card";
+import { Plus, Trash2 } from "lucide-react";
+import { Education } from "../../types/resume";
+import { useResume } from "../../context/ResumeContext";
+import { CustomOnlyDateSelector } from "../ui/CustomOnlyDateSelector";
 
 const EducationForm = () => {
   const { resumeData, updateResumeData } = useResume();
@@ -13,12 +14,12 @@ const EducationForm = () => {
   const addEducation = () => {
     const newEducation: Education = {
       id: Date.now().toString(),
-      institution: '',
-      degree: '',
-      field: '',
-      startDate: '',
-      endDate: '',
-      description: '',
+      institution: "",
+      degree: "",
+      field: "",
+      startDate: "",
+      endDate: "",
+      description: "",
     };
     updateResumeData({
       education: [...resumeData.education, newEducation],
@@ -27,13 +28,17 @@ const EducationForm = () => {
 
   const removeEducation = (id: string) => {
     updateResumeData({
-      education: resumeData.education.filter((edu:any) => edu.id !== id),
+      education: resumeData.education.filter((edu: any) => edu.id !== id),
     });
   };
 
-  const updateEducation = (id: string, field: keyof Education, value: string) => {
+  const updateEducation = (
+    id: string,
+    field: keyof Education,
+    value: string
+  ) => {
     updateResumeData({
-      education: resumeData.education.map((edu:any) =>
+      education: resumeData.education.map((edu: any) =>
         edu.id === id ? { ...edu, [field]: value } : edu
       ),
     });
@@ -43,8 +48,8 @@ const EducationForm = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold mb-2">Education</h2>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-4xl font-bold mb-1">Education</p>
+          <p className="text-md text-muted-foreground">
             Add your educational background
           </p>
         </div>
@@ -55,8 +60,8 @@ const EducationForm = () => {
       </div>
 
       <div className="space-y-4">
-        {resumeData.education.map((edu:any) => (
-          <Card key={edu.id} className="p-4">
+        {resumeData.education.map((edu: any) => (
+          <div key={edu.id} className="rounded-2xl bg-[#F7F7FB] p-6">
             <div className="space-y-4">
               <div className="flex items-start justify-between">
                 <h3 className="font-semibold">Education Entry</h3>
@@ -75,7 +80,7 @@ const EducationForm = () => {
                 <Input
                   value={edu.institution}
                   onChange={(e) =>
-                    updateEducation(edu.id, 'institution', e.target.value)
+                    updateEducation(edu.id, "institution", e.target.value)
                   }
                   placeholder="University of California"
                 />
@@ -87,7 +92,7 @@ const EducationForm = () => {
                   <Input
                     value={edu.degree}
                     onChange={(e) =>
-                      updateEducation(edu.id, 'degree', e.target.value)
+                      updateEducation(edu.id, "degree", e.target.value)
                     }
                     placeholder="Bachelor of Science"
                   />
@@ -98,7 +103,7 @@ const EducationForm = () => {
                   <Input
                     value={edu.field}
                     onChange={(e) =>
-                      updateEducation(edu.id, 'field', e.target.value)
+                      updateEducation(edu.id, "field", e.target.value)
                     }
                     placeholder="Computer Science"
                   />
@@ -106,27 +111,28 @@ const EducationForm = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Start Date</Label>
-                  <Input
-                    type="month"
-                    value={edu.startDate}
-                    onChange={(e) =>
-                      updateEducation(edu.id, 'startDate', e.target.value)
-                    }
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label>End Date</Label>
-                  <Input
-                    type="month"
-                    value={edu.endDate}
-                    onChange={(e) =>
-                      updateEducation(edu.id, 'endDate', e.target.value)
-                    }
-                  />
-                </div>
+                <CustomOnlyDateSelector
+                  label="Start Date"
+                  value={edu.startDate}
+                  onChange={(val) =>
+                    updateEducation(
+                      edu.id,
+                      "startDate",
+                      new Date(val)?.toISOString()
+                    )
+                  }
+                />
+                <CustomOnlyDateSelector
+                  label="End Date"
+                  value={edu.startDate}
+                  onChange={(val) =>
+                    updateEducation(
+                      edu.id,
+                      "endDate",
+                      new Date(val)?.toISOString()
+                    )
+                  }
+                />
               </div>
 
               <div className="space-y-2">
@@ -134,14 +140,15 @@ const EducationForm = () => {
                 <Textarea
                   value={edu.description}
                   onChange={(e) =>
-                    updateEducation(edu.id, 'description', e.target.value)
+                    updateEducation(edu.id, "description", e.target.value)
                   }
+                  className="resize-none"
                   placeholder="Graduated with honors. Focus on software engineering..."
                   rows={3}
                 />
               </div>
             </div>
-          </Card>
+          </div>
         ))}
 
         {resumeData.education.length === 0 && (

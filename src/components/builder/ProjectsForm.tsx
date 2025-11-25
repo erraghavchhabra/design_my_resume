@@ -68,8 +68,8 @@ const ProjectsForm = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold mb-2">Projects</h2>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-4xl font-bold mb-1">Projects</p>
+          <p className="text-md text-muted-foreground">
             Showcase your personal and professional projects
           </p>
         </div>
@@ -80,8 +80,8 @@ const ProjectsForm = () => {
       </div>
 
       <div className="space-y-4">
-        {resumeData.projects.map((project:any) => (
-          <Card key={project.id} className="p-4">
+        {resumeData.projects.map((project: any) => (
+          <div key={project.id} className="rounded-2xl bg-[#F7F7FB] p-6">
             <div className="space-y-4">
               <div className="flex items-start justify-between">
                 <h3 className="font-semibold">Project Entry</h3>
@@ -113,6 +113,7 @@ const ProjectsForm = () => {
                   onChange={(e) =>
                     updateProject(project.id, "description", e.target.value)
                   }
+                  className="resize-none"
                   placeholder="Describe what the project does and your role..."
                   rows={3}
                 />
@@ -156,7 +157,7 @@ const ProjectsForm = () => {
 
                 {project.technologies.length > 0 && (
                   <div className="flex flex-wrap gap-2 mt-2">
-                    {project.technologies.map((tech:any, index:number) => (
+                    {project.technologies.map((tech: any, index: number) => (
                       <Badge
                         key={index}
                         variant="secondary"
@@ -175,7 +176,7 @@ const ProjectsForm = () => {
                 )}
               </div>
             </div>
-          </Card>
+          </div>
         ))}
 
         {resumeData.projects.length === 0 && (

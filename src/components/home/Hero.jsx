@@ -86,7 +86,6 @@ export default function Hero() {
                 content for your work experience section.
               </p>
             </div>
-            15
             <img
               src="/assets/img/resume.jpg"
               alt="Resume Builder"
