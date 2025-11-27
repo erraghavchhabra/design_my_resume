@@ -775,9 +775,9 @@ const Builder = () => {
       <div className="flex w-full md:max-h-screen md:overflow-hidden relative">
         {showStepIntro && (
           <>
-            <div className="pointer-events-none z-0 absolute top-40 -left-32 h-96 w-96 rounded-full bg-[#FDE4C8] blur-3xl opacity-60" />
-            <div className="pointer-events-none z-0 absolute -top-10 left-48 h-80 w-80 rounded-full bg-[#b29cdf] blur-[90px] opacity-50" />
-            <div className="pointer-events-none z-0 absolute top-2/4 right-20 h-[420px] w-[420px] rounded-full bg-[#DDE6FF] blur-[64px] opacity-70" />
+            <div className="pointer-events-none z-0 absolute top-5 md:top-40 -left-32 h-40 w-40 md:h-96 md:w-96 rounded-full bg-[#FDE4C8] blur-3xl opacity-60" />
+            <div className="pointer-events-none z-0 absolute -top-10 left-48 h-40 w-40  md:h-80 md:w-80 rounded-full bg-[#b29cdf] blur-[90px] opacity-50" />
+            <div className="pointer-events-none z-0 absolute top-3/4 md:top-2/4 max-md:left-0 md:right-20  h-40 w-40  md:h-[420px] md:w-[420px] rounded-full bg-[#DDE6FF] blur-[64px] opacity-70" />
           </>
         )}
         {/* CENTER FORM SECTION */}

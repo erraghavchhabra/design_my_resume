@@ -297,6 +297,7 @@ const FinalResume = () => {
     <section className="bg-[#212D59]  ">
       <div className="min-h-screen  max-w-7xl mx-auto w-full pt-8 max-md:flex items-center flex-col ">
         <img src="/assets/svg/ftlogo.svg" alt="logo" className="w-24 md:w-32" />
+        {/* =========>mobile<========= */}
         <div className="grid grid-cols-2 md:hidden items-center mt-5 gap-3">
           <Button
             variant="outline"
@@ -318,14 +319,15 @@ const FinalResume = () => {
           <div
             style={{
               transformOrigin: "left top",
-              width: "900px",
+              maxWidth: "380px",
+              width: "100%",
               maxHeight: "70vh",
             }}
-            className="overflow-hidden"
+            className="overflow-hidden mb-5"
           >
             <div
               style={{
-                transform: `scale(0.39)`,
+                transform: `scale(0.40)`,
                 transformOrigin: "left top",
                 width: "900px",
               }}
@@ -335,7 +337,7 @@ const FinalResume = () => {
             </div>
           </div>
         </div>
-        <div className=" md:hidden absolute bottom-0 left-0 grid grid-cols-3 gap-2 w-full bg-white p-2">
+        <div className=" md:hidden fixed bottom-0 left-0 grid grid-cols-3 gap-2 w-full bg-white p-2">
           {[
             {
               title: "Download",
@@ -371,6 +373,7 @@ const FinalResume = () => {
             </button>
           ))}
         </div>
+        {/* =========>mobile<========= */}
 
         <div className=" md:flex hidden  gap-8 mt-12 relative ">
           {/* Left Sidebar - Templates & Customization */}
