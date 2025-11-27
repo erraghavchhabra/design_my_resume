@@ -267,7 +267,7 @@ const ThemeCustomizer = ({ open, onClose }: ThemeCustomizerProps) => {
           </div>
           <div className="flex w-full  mt-3  items-center gap-2">
             <p>Colors</p>
-            {themeColors?.slice(0, 10).map((color) => (
+            {themeColors?.slice(0, 8).map((color) => (
               <motion.button
                 key={color.value}
                 whileHover={{ scale: 1.1 }}
