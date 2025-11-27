@@ -83,50 +83,54 @@ const SkillsForm = () => {
     );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Heading */}
       <div>
-        <p className="text-4xl font-bold mb-1">
+        <p className="text-2xl md:text-4xl font-bold mb-1">
           We recommend including 6-8 skills
         </p>
-        <p className="text-md text-muted-foreground">
+        <p className="text-sm md:text-md text-muted-foreground">
           Choose skills that align with the job requirements. Show employers
           you're confident of the work you do!
         </p>
       </div>
 
       {/* Main Box */}
-      <div className="rounded-2xl bg-[#F7F7FB] p-6">
+      <div className="rounded-2xl bg-[#F7F7FB] p-4 md:p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* LEFT — Suggestions */}
           <div className="flex flex-col h-full">
-            <div className="relative mb-4">
+            {/* Search Bar */}
+            <div className="relative mb-3 md:mb-4">
               <Input
-                placeholder="Search by job title"
+                placeholder="Search a skill..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-10"
+                className="pl-10 text-sm md:text-base"
               />
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             </div>
 
+            {/* Result count */}
             {search && (
-              <p className="text-sm text-muted-foreground mb-2">
-                Showing {filtered.length} results for{" "}
-                <span className="font-semibold">{search}</span>
+              <p className="text-xs md:text-sm text-muted-foreground mb-2">
+                Showing {filtered.length} results for
+                <span className="font-semibold"> {search}</span>
               </p>
             )}
 
-            <div className="flex-1 max-h-[360px] overflow-y-auto space-y-3 custom_scrollbar pr-2">
+            {/* Suggestions List */}
+            <div className="flex-1 max-h-[300px] md:max-h-[360px] overflow-y-auto space-y-2 md:space-y-3 custom_scrollbar pr-2">
               {filtered.map((skill) => {
                 const added = isAdded(skill);
 
                 return (
                   <div
                     key={skill}
-                    className={`flex items-center justify-between rounded-full px-4 py-2 border shadow-sm bg-white text-sm`}
+                    className="flex items-center justify-between rounded-full px-4 py-2 border shadow-sm bg-white text-xs md:text-sm"
                   >
                     <span>{skill}</span>
+
                     {added ? (
                       <Button
                         size="sm"
@@ -153,17 +157,19 @@ const SkillsForm = () => {
 
           {/* RIGHT — Selected Skills */}
           <div className="flex flex-col h-full">
-            <Label className="text-sm font-semibold mb-2">Your Skills</Label>
+            <Label className="text-xs md:text-sm font-semibold mb-2">
+              Your Skills
+            </Label>
 
-            <div className="bg-white rounded-xl border shadow-sm min-h-[260px] p-5">
+            <div className="bg-white rounded-xl border shadow-sm p-4 min-h-[230px] md:min-h-[260px]">
               {resumeData.skills.length > 0 ? (
-                <ul className=" text-sm flex flex-wrap gap-2">
+                <ul className="flex flex-wrap gap-2 text-xs md:text-sm">
                   {resumeData.skills.map((skill: any) => (
                     <li
                       key={skill.id}
-                      className="flex items-center justify-between group border rounded-full h-8 gap-2 p-2"
+                      className="flex items-center justify-between gap-1 md:gap-2 border rounded-full h-7 md:h-8 px-3"
                     >
-                      <span className="list-disc ">{skill.name}</span>
+                      <span>{skill.name}</span>
 
                       <button
                         onClick={() =>
@@ -173,15 +179,15 @@ const SkillsForm = () => {
                             ),
                           })
                         }
-                        className=" transition text-gray-500 hover:text-red-500"
+                        className="transition text-gray-500 hover:text-red-500"
                       >
-                        <X size={15} />
+                        <X size={14} />
                       </button>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs md:text-sm text-muted-foreground">
                   No skills added yet. Select skills from the left panel.
                 </p>
               )}

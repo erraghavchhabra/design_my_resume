@@ -2,6 +2,8 @@ import { useResume } from "../../context/ResumeContext";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Palette, Type } from "lucide-react";
+import { motion } from "framer-motion";
+
 import {
   Select,
   SelectContent,
@@ -14,6 +16,14 @@ import ClassicTemplate from "../resume/ClassicTemplate";
 import CreativeTemplate from "../resume/CreativeTemplate";
 import { Card } from "../ui/card";
 import { MotionConfig } from "framer-motion";
+import {
+  Sheet,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "../ui/sheet";
+import { useMediaQuery } from "../../lib/useMediaQuery";
 
 interface ThemeCustomizerProps {
   open: boolean;
@@ -71,7 +81,7 @@ const ThemeCustomizer = ({ open, onClose }: ThemeCustomizerProps) => {
   const renderTemplate = () => {
     const template = templates.find((t) => t.id === resumeData.template);
     const TemplateComponent = template?.preview || ModernTemplate;
-    return <TemplateComponent data={resumeData}  />;
+    return <TemplateComponent data={resumeData} />;
   };
   const handleColorChange = (color: string) => {
     updateResumeData({ themeColor: color });
@@ -80,13 +90,10 @@ const ThemeCustomizer = ({ open, onClose }: ThemeCustomizerProps) => {
   const handleFontChange = (font: string) => {
     updateResumeData({ fontFamily: font });
   };
-
-  return (
+  const isMobile = useMediaQuery("(max-width: 768px)");
+  return !isMobile ? (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-5xl p-0 overflow-hidden max-h-[90vh]">
-        {/* <DialogHeader>
-          <DialogTitle>Customize Theme</DialogTitle>
-        </DialogHeader> */}
+      <DialogContent className=" max-w-5xl p-0 overflow-hidden max-h-[90vh]">
         <div className="grid grid-cols-2 ">
           <div className="bg-gray-300 px-10 py-5">
             <div
@@ -101,7 +108,12 @@ const ThemeCustomizer = ({ open, onClose }: ThemeCustomizerProps) => {
             </div>
           </div>
           <div className=" bg-white p-7 relative">
-            <Button className="absolute top-[80vh] rounded-full right-9 " onClick={onClose}>Save</Button>
+            <Button
+              className="absolute top-[80vh] rounded-full right-9 "
+              onClick={onClose}
+            >
+              Save
+            </Button>
 
             <div>
               <div className="flex items-center gap-2 mb-3">
@@ -197,6 +209,83 @@ const ThemeCustomizer = ({ open, onClose }: ThemeCustomizerProps) => {
         </div>
       </DialogContent>
     </Dialog>
+  ) : (
+    <Sheet open={open} onOpenChange={onClose}>
+      <SheetContent
+        side="bottom"
+        className="h-auto min-h-[90vh] p-4 bg-background"
+      >
+        <SheetHeader>
+          <SheetTitle>Customize Resume</SheetTitle>
+        </SheetHeader>
+        <div className="flex  flex-col  gap-2 mt-5 max-h-[62vh] overflow-auto scrollbar-hidden">
+          <div className="grid grid-cols-2 gap-3 w-full  p-2 ">
+            {templates.map((template) => (
+              <Card
+                key={template.id}
+                className={`cursor-pointer transition-all overflow-hidden rounded-sm  hover:shadow-md ${
+                  resumeData.template === template.id
+                    ? "ring-2 ring-primary"
+                    : ""
+                }`}
+                onClick={() => setTemplate(template.id as any)}
+              >
+                <div className="w-full min-h-40 bg-white max-h-48 bg-muted rounded overflow-hidden flex-shrink-0">
+                  <div className="scale-[0.14] origin-top-left w-[1200px] h-[2000px]">
+                    <template.preview data={resumeData} />
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        <SheetFooter className="flex w-full  flex-col bg-white absolute bottom-0 left-0 p-2">
+          <div className="flex items-center justify-between gap-2 ">
+            <p>Font Family</p>
+
+            <Select
+              value={resumeData.fontFamily}
+              onValueChange={(value) => handleFontChange(value)}
+            >
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Select font" />
+              </SelectTrigger>
+
+              <SelectContent>
+                {fonts.map((font) => (
+                  <SelectItem
+                    key={font.value}
+                    value={font.value}
+                    style={{ fontFamily: font.value }} // preview inside dropdown
+                  >
+                    {font.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex w-full  mt-3  items-center gap-2">
+            <p>Colors</p>
+            {themeColors?.slice(0, 10).map((color) => (
+              <motion.button
+                key={color.value}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handleColorChange(color.value)}
+                className={`w-6 h-6 rounded-full transition-all ${
+                  resumeData.themeColor === color.value
+                    ? "ring-1 ring-primary ring-offset-2"
+                    : "hover:ring-1 hover:ring-muted-foreground"
+                }`}
+                style={{ backgroundColor: color.value }}
+                title={color.name}
+              />
+            ))}
+          </div>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
   );
 };
 

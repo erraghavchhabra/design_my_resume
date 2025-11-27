@@ -41,83 +41,103 @@ const AchievementsForm = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4">
+      {/* Heading */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
         <div>
-          <p className="text-4xl font-bold mb-1">Achievements & Awards</p>
-          <p className="text-md text-muted-foreground">
+          <p className="text-2xl md:text-4xl font-bold mb-1">
+            Achievements & Awards
+          </p>
+          <p className="text-sm md:text-md text-muted-foreground">
             Highlight your notable achievements and awards
           </p>
         </div>
-        <Button onClick={addAchievement} size="sm">
+
+        <Button
+          onClick={addAchievement}
+          size="sm"
+          className="self-start md:self-center"
+        >
           <Plus className="h-4 w-4 mr-2" />
           Add
         </Button>
       </div>
 
+      {/* Achievements List */}
       <div className="space-y-4">
         {resumeData.achievements.map((achievement: any) => (
-          <div key={achievement.id} className="rounded-2xl bg-[#F7F7FB] p-6">
-            <div className="space-y-4">
-              <div className="flex items-start justify-between">
-                <h3 className="font-semibold">Achievement Entry</h3>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => removeAchievement(achievement.id)}
-                  className="h-8 w-8"
-                >
-                  <Trash2 className="h-4 w-4 text-destructive" />
-                </Button>
-              </div>
+          <div
+            key={achievement.id}
+            className="rounded-xl md:rounded-2xl bg-[#F7F7FB] p-4 md:p-6"
+          >
+            {/* Entry Header */}
+            <div className="flex items-start justify-between mb-3">
+              <h3 className="font-semibold text-base md:text-lg">
+                Achievement Entry
+              </h3>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-7 w-7 md:h-8 md:w-8"
+                onClick={() => removeAchievement(achievement.id)}
+              >
+                <Trash2 className="h-4 w-4 text-destructive" />
+              </Button>
+            </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="md:col-span-2 space-y-2">
-                  <Label>Title</Label>
-                  <Input
-                    value={achievement.title}
-                    onChange={(e) =>
-                      updateAchievement(achievement.id, "title", e.target.value)
-                    }
-                    placeholder="Employee of the Year"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label>Year</Label>
-                  <Input
-                    value={achievement.date}
-                    onChange={(e) =>
-                      updateAchievement(achievement.id, "date", e.target.value)
-                    }
-                    placeholder="2023"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label>Description</Label>
-                <Textarea
-                  value={achievement.description}
+            {/* Inputs */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Title */}
+              <div className="md:col-span-2 space-y-2">
+                <Label>Title</Label>
+                <Input
+                  value={achievement.title}
                   onChange={(e) =>
-                    updateAchievement(
-                      achievement.id,
-                      "description",
-                      e.target.value
-                    )
+                    updateAchievement(achievement.id, "title", e.target.value)
                   }
-                  className="resize-none"
-                  placeholder="Recognized for outstanding performance and leadership..."
-                  rows={2}
+                  placeholder="Employee of the Year"
+                  className="text-sm md:text-base"
                 />
               </div>
+
+              {/* Year */}
+              <div className="space-y-2">
+                <Label>Year</Label>
+                <Input
+                  value={achievement.date}
+                  onChange={(e) =>
+                    updateAchievement(achievement.id, "date", e.target.value)
+                  }
+                  placeholder="2023"
+                  className="text-sm md:text-base"
+                />
+              </div>
+            </div>
+
+            {/* Description */}
+            <div className="space-y-2 mt-4">
+              <Label>Description (Optional)</Label>
+              <Textarea
+                rows={2}
+                value={achievement.description}
+                onChange={(e) =>
+                  updateAchievement(
+                    achievement.id,
+                    "description",
+                    e.target.value
+                  )
+                }
+                className="resize-none text-sm md:text-base"
+                placeholder="Recognized for outstanding performance and leadership..."
+              />
             </div>
           </div>
         ))}
 
+        {/* Empty View */}
         {resumeData.achievements.length === 0 && (
-          <div className="text-center py-8 text-muted-foreground">
-            <p>No achievements added yet. Click "Add" to get started.</p>
+          <div className="text-center py-6 md:py-8 text-muted-foreground text-sm md:text-base">
+            <p>No achievements added yet. Click the Add button above.</p>
           </div>
         )}
       </div>

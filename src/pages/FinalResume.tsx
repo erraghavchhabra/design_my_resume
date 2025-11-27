@@ -35,6 +35,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../components/ui/dialog";
+import ThemeCustomizer from "../components/builder/ThemeCustomizer";
+import { useMediaQuery } from "../lib/useMediaQuery";
+import {
+  Sheet,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "../components/ui/sheet";
 // import ExecutiveProTemplate from "../components/resume/ExecutiveProTemplate";
 // import MinimalTemplate from "../components/resume/MinimalTemplate";
 // import ProfessionalTemplate from "../components/resume/ProfessionalTemplate";
@@ -205,6 +214,8 @@ const FinalResume = () => {
   const navigate = useNavigate();
   const { resumeData, setTemplate, setThemeColor, setFontFamily } = useResume();
   const [isDownloading, setIsDownloading] = useState(false);
+  const [customizeDialog, setCustomizeDialog] = useState(false);
+  const [editSheet, setEditSheet] = useState(false);
   const resumeRef = useRef<HTMLDivElement>(null);
   const [donwloadDialog, setDonwloadDialog] = useState(false);
   const template = templates.find((t) => t.id === resumeData.template);
@@ -280,13 +291,90 @@ const FinalResume = () => {
   const handleEditSection = (stepId: number) => {
     navigate(`/builder?step=${stepId}&mode=edit`);
   };
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
   return (
     <section className="bg-[#212D59]  ">
-      <div className="min-h-screen  max-w-7xl mx-auto w-full pt-8 ">
-        <img src="/assets/svg/ftlogo.svg" alt="logo" className="w-32" />
-        <div className="flex gap-8 mt-12 relative ">
+      <div className="min-h-screen  max-w-7xl mx-auto w-full pt-8 max-md:flex items-center flex-col ">
+        <img src="/assets/svg/ftlogo.svg" alt="logo" className="w-24 md:w-32" />
+        <div className="grid grid-cols-2 md:hidden items-center mt-5 gap-3">
+          <Button
+            variant="outline"
+            className="w-full border-white text-white rounded-full"
+            onClick={() => setCustomizeDialog(true)}
+          >
+            Change
+          </Button>
+          <Button
+            variant="outline"
+            className="w-full border-white text-white rounded-full"
+            onClick={() => setEditSheet(true)}
+          >
+            Edit
+          </Button>
+        </div>
+        <div className=" md:hidden w-full px-4 mt-5 flex justify-center">
+          {/* Resume Preview */}
+          <div
+            style={{
+              transformOrigin: "left top",
+              width: "900px",
+              maxHeight: "70vh",
+            }}
+            className="overflow-hidden"
+          >
+            <div
+              style={{
+                transform: `scale(0.39)`,
+                transformOrigin: "left top",
+                width: "900px",
+              }}
+              className="bg-white shadow-xl border rounded-md overflow-hidden"
+            >
+              {renderTemplate()}
+            </div>
+          </div>
+        </div>
+        <div className=" md:hidden absolute bottom-0 left-0 grid grid-cols-3 gap-2 w-full bg-white p-2">
+          {[
+            {
+              title: "Download",
+              icon: <Save />,
+              onClick: () => setDonwloadDialog(true),
+              disabled: isDownloading,
+            },
+            {
+              title: "Print",
+              icon: <Printer />,
+              onClick: () => toast.error("coming soon"),
+            },
+            {
+              title: "Email",
+              icon: <Mail />,
+              onClick: () => toast.error("coming soon"),
+            },
+          ].map((item, index) => (
+            <button
+              key={index}
+              onClick={item.onClick}
+              disabled={item.disabled}
+              className="
+                    flex flex-col items-center justify-center
+                    bg-gray-200 rounded-md p-2 w-full
+                    shadow-sm text-[10px] hover:bg-primary text-black hover:text-white  hover:shadow-lg
+                    transition-all duration-200
+                    disabled:opacity-50 disabled:cursor-not-allowed
+                  "
+            >
+              {item.icon}
+              {/* <span className="mt-2 font-semibold">{item.title}</span> */}
+            </button>
+          ))}
+        </div>
+
+        <div className=" md:flex hidden  gap-8 mt-12 relative ">
           {/* Left Sidebar - Templates & Customization */}
-          <div className="w-72 max-h-[90vh]  sticky top-4">
+          <div className=" w-72 max-h-[90vh]  sticky top-4">
             <div className=" bg-muted/20 rounded-md h-full overflow-hidden">
               <Tabs defaultValue="templates" className="w-full">
                 <TabsList className="w-full rounded-none border-b bg-muted/30 text-black">
@@ -546,6 +634,72 @@ const FinalResume = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      <ThemeCustomizer
+        open={customizeDialog}
+        onClose={() => {
+          setCustomizeDialog(false);
+        }}
+      />
+      {isMobile && (
+        <Sheet open={editSheet} onOpenChange={setEditSheet}>
+          <SheetContent
+            side="bottom"
+            className="min-h-[92vh] p-4 bg-white rounded-t-3xl shadow-xl"
+          >
+            <SheetHeader className="pb-2">
+              <SheetTitle className="text-xl font-semibold text-center">
+                Edit Resume
+              </SheetTitle>
+            </SheetHeader>
+
+            <div className="py-5 space-y-4">
+              <h3 className="text-base font-medium text-gray-700">
+                Resume Sections
+              </h3>
+
+              <div className="flex flex-col gap-3 overflow-auto max-h-[70vh] pb-14">
+                {steps.map((section, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleEditSection(section.step)}
+                    className="
+                w-full text-left
+                bg-gray-100 hover:bg-gray-200
+                border border-gray-200
+                px-5 py-4
+                rounded-xl
+                flex justify-between items-center
+                transition
+              "
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-6 h-6 rounded-full bg-white border border-gray-300 flex items-center justify-center text-xs font-bold">
+                        {index + 1}
+                      </div>
+                      <span className="font-medium text-gray-900 text-base">
+                        {section.title}
+                      </span>
+                    </div>
+
+                    <Edit2 className="w-4 h-4 text-gray-600 group-hover:text-black" />
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Sticky Footer */}
+            <div className="absolute bottom-0 left-0 w-full p-4 bg-white border-t">
+              <Button
+                size="lg"
+                className="w-full rounded-full text-base py-6 font-semibold"
+                onClick={() => setEditSheet(false)}
+              >
+                Finish Editing
+              </Button>
+            </div>
+          </SheetContent>
+        </Sheet>
+      )}
     </section>
   );
 };

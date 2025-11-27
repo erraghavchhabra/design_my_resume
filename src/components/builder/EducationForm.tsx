@@ -45,15 +45,21 @@ const EducationForm = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4">
+      {/* Heading */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
         <div>
-          <p className="text-4xl font-bold mb-1">Education</p>
-          <p className="text-md text-muted-foreground">
+          <p className="text-2xl md:text-4xl font-bold mb-1">Education</p>
+          <p className="text-sm md:text-md text-muted-foreground">
             Add your educational background
           </p>
         </div>
-        <Button onClick={addEducation} size="sm">
+
+        <Button
+          onClick={addEducation}
+          size="sm"
+          className="self-start md:self-auto"
+        >
           <Plus className="h-4 w-4 mr-2" />
           Add
         </Button>
@@ -61,99 +67,110 @@ const EducationForm = () => {
 
       <div className="space-y-4">
         {resumeData.education.map((edu: any) => (
-          <div key={edu.id} className="rounded-2xl bg-[#F7F7FB] p-6">
-            <div className="space-y-4">
-              <div className="flex items-start justify-between">
-                <h3 className="font-semibold">Education Entry</h3>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => removeEducation(edu.id)}
-                  className="h-8 w-8"
-                >
-                  <Trash2 className="h-4 w-4 text-destructive" />
-                </Button>
-              </div>
+          <div
+            key={edu.id}
+            className="rounded-2xl bg-[#F7F7FB] p-4 md:p-6 space-y-5"
+          >
+            {/* Card Header */}
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm md:text-base font-semibold">
+                Education Entry
+              </h3>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => removeEducation(edu.id)}
+                className="h-8 w-8"
+              >
+                <Trash2 className="h-4 w-4 text-destructive" />
+              </Button>
+            </div>
 
-              <div className="space-y-2">
-                <Label>Institution</Label>
+            {/* Institution */}
+            <div className="space-y-1.5">
+              <Label className="text-xs md:text-sm">Institution</Label>
+              <Input
+                value={edu.institution}
+                onChange={(e) =>
+                  updateEducation(edu.id, "institution", e.target.value)
+                }
+                placeholder="University of California"
+              />
+            </div>
+
+            {/* Degree + Field */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+              <div className="space-y-1.5">
+                <Label className="text-xs md:text-sm">Degree</Label>
                 <Input
-                  value={edu.institution}
+                  value={edu.degree}
                   onChange={(e) =>
-                    updateEducation(edu.id, "institution", e.target.value)
+                    updateEducation(edu.id, "degree", e.target.value)
                   }
-                  placeholder="University of California"
+                  placeholder="Bachelor of Science"
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Degree</Label>
-                  <Input
-                    value={edu.degree}
-                    onChange={(e) =>
-                      updateEducation(edu.id, "degree", e.target.value)
-                    }
-                    placeholder="Bachelor of Science"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label>Field of Study</Label>
-                  <Input
-                    value={edu.field}
-                    onChange={(e) =>
-                      updateEducation(edu.id, "field", e.target.value)
-                    }
-                    placeholder="Computer Science"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <CustomOnlyDateSelector
-                  label="Start Date"
-                  value={edu.startDate}
-                  onChange={(val) =>
-                    updateEducation(
-                      edu.id,
-                      "startDate",
-                      new Date(val)?.toISOString()
-                    )
-                  }
-                />
-                <CustomOnlyDateSelector
-                  label="End Date"
-                  value={edu.startDate}
-                  onChange={(val) =>
-                    updateEducation(
-                      edu.id,
-                      "endDate",
-                      new Date(val)?.toISOString()
-                    )
-                  }
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Description (Optional)</Label>
-                <Textarea
-                  value={edu.description}
+              <div className="space-y-1.5">
+                <Label className="text-xs md:text-sm">Field of Study</Label>
+                <Input
+                  value={edu.field}
                   onChange={(e) =>
-                    updateEducation(edu.id, "description", e.target.value)
+                    updateEducation(edu.id, "field", e.target.value)
                   }
-                  className="resize-none"
-                  placeholder="Graduated with honors. Focus on software engineering..."
-                  rows={3}
+                  placeholder="Computer Science"
                 />
               </div>
+            </div>
+
+            {/* Start + End Date */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+              <CustomOnlyDateSelector
+                label="Start Date"
+                value={edu.startDate}
+                onChange={(val) =>
+                  updateEducation(
+                    edu.id,
+                    "startDate",
+                    new Date(val)?.toISOString()
+                  )
+                }
+              />
+
+              <CustomOnlyDateSelector
+                label="End Date"
+                value={edu.endDate}
+                onChange={(val) =>
+                  updateEducation(
+                    edu.id,
+                    "endDate",
+                    new Date(val)?.toISOString()
+                  )
+                }
+              />
+            </div>
+
+            {/* Description */}
+            <div className="space-y-1.5">
+              <Label className="text-xs md:text-sm">
+                Description (Optional)
+              </Label>
+              <Textarea
+                value={edu.description}
+                onChange={(e) =>
+                  updateEducation(edu.id, "description", e.target.value)
+                }
+                rows={3}
+                className="resize-none text-xs md:text-sm"
+                placeholder="Graduated with honors. Focus on software engineering..."
+              />
             </div>
           </div>
         ))}
 
         {resumeData.education.length === 0 && (
-          <div className="text-center py-8 text-muted-foreground">
-            <p>No education added yet. Click "Add" to get started.</p>
+          <div className="text-center py-6 text-sm text-muted-foreground">
+            No education added yet. Tap “Add” to get started.
           </div>
         )}
       </div>

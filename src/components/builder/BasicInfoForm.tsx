@@ -42,23 +42,30 @@ const BasicInfoForm = ({ profileIamge = true }: any) => {
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-4xl font-bold mb-2">Basic Information</p>
+        <p className="text-2xl md:text-4xl font-bold mb-2">Basic Information</p>
         <p className="text-md font-semibold text-muted-foreground">
           Enter your personal details and contact information
         </p>
       </div>
 
-      <div className="flex items-start gap-7 p-6 pt-10 pb-16 rounded-md bg-[#F4F5FB]">
+      <div
+        className="
+      bg-[#F4F5FB] rounded-md
+      p-4 md:p-6
+      flex flex-col md:flex-row
+      gap-6
+    "
+      >
         {/* Profile Image */}
         {profileIamge && (
-          <div className="space-y-2">
+          <div className="flex justify-center md:block">
             <div className="flex flex-col items-center gap-4">
               {imagePreview ? (
                 <div className="relative">
                   <img
                     src={imagePreview}
                     alt="Profile"
-                    className="min-w-36 h-36 rounded-md object-cover border-2 border-border"
+                    className="w-32 h-32 md:w-36 md:h-36 rounded-md object-cover border-2 border-border"
                   />
                   <Button
                     size="icon"
@@ -70,39 +77,37 @@ const BasicInfoForm = ({ profileIamge = true }: any) => {
                   </Button>
                 </div>
               ) : (
-                <div className="w-36 h-36 rounded-md bg-muted border-2 border-dashed border-border flex items-center justify-center">
+                <div className="w-32 h-32 md:w-36 md:h-36 rounded-md bg-muted border-2 border-dashed border-border flex items-center justify-center">
                   <Upload className="h-8 w-8 text-muted-foreground" />
                 </div>
               )}
-              <div>
-                <input
-                  type="file"
-                  id="profile-image"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleImageUpload}
-                />
-                <Label
-                  htmlFor="profile-image"
-                  className="cursor-pointer inline-block"
-                >
-                  <Button variant="outline" size="sm" asChild>
-                    <span>Upload Photo</span>
-                  </Button>
-                </Label>
-              </div>
+
+              <Label htmlFor="profile-image" className="cursor-pointer">
+                <Button variant="outline" size="sm" asChild>
+                  <span>Upload Photo</span>
+                </Button>
+              </Label>
+
+              <input
+                type="file"
+                id="profile-image"
+                accept="image/*"
+                className="hidden"
+                onChange={handleImageUpload}
+              />
             </div>
           </div>
         )}
 
-        <div className="grid grid-cols-2 md:grid-cols-2 gap-4 w-full">
+        {/* FORM RIGHT SIDE */}
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="fullName">Full Name *</Label>
             <Input
               id="fullName"
+              placeholder="John Doe"
               value={resumeData.personalInfo.fullName}
               onChange={(e) => handleChange("fullName", e.target.value)}
-              placeholder="John Doe"
             />
           </div>
 
@@ -110,29 +115,31 @@ const BasicInfoForm = ({ profileIamge = true }: any) => {
             <Label htmlFor="headline">Professional Headline *</Label>
             <Input
               id="headline"
+              placeholder="Senior Software Engineer"
               value={resumeData.personalInfo.headline}
               onChange={(e) => handleChange("headline", e.target.value)}
-              placeholder="Senior Software Engineer"
             />
           </div>
+
           <div className="space-y-2">
             <Label htmlFor="email">Email Address *</Label>
             <Input
               id="email"
               type="email"
+              placeholder="john@email.com"
               value={resumeData.personalInfo.email}
               onChange={(e) => handleChange("email", e.target.value)}
-              placeholder="john.doe@email.com"
             />
           </div>
+
           <div className="space-y-2">
             <Label htmlFor="phone">Phone Number</Label>
             <Input
               id="phone"
               type="tel"
+              placeholder="+1 (555) 123-4567"
               value={resumeData.personalInfo.phone}
               onChange={(e) => handleChange("phone", e.target.value)}
-              placeholder="+1 (555) 123-4567"
             />
           </div>
 
@@ -140,9 +147,9 @@ const BasicInfoForm = ({ profileIamge = true }: any) => {
             <Label htmlFor="location">Location</Label>
             <Input
               id="location"
+              placeholder="San Francisco, CA"
               value={resumeData.personalInfo.location}
               onChange={(e) => handleChange("location", e.target.value)}
-              placeholder="San Francisco, CA"
             />
           </div>
         </div>

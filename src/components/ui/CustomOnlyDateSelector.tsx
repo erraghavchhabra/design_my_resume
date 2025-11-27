@@ -6,11 +6,7 @@ import { Calendar as CalendarIcon } from "lucide-react";
 
 import { Button } from "./button";
 import { Calendar } from "./calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "./popover";
+import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { Label } from "./label";
 import { cn } from "../../lib/utils";
 
@@ -61,7 +57,9 @@ export function CustomOnlyDateSelector({
             mode="single"
             selected={value}
             onSelect={(date) => date && onChange(date)}
-            className="p-3"
+            className="p-3 rounded-lg border"
+            captionLayout="dropdown"
+            
           />
         </PopoverContent>
       </Popover>

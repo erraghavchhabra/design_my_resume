@@ -64,7 +64,6 @@ const SetupResume = () => {
   const [selectedTemplate, setSelectedTemplate] = useState<string>(
     resumeData.template || "modern"
   );
-  console.log(651651, resumeData.themeColor);
 
   const [selectedColor, setSelectedColor] = useState(resumeData.themeColor);
 
@@ -87,25 +86,32 @@ const SetupResume = () => {
                   bg-gradient-to-t from-sky-300/40 to-transparent 
                   pointer-events-none"
       />
-      <div className="max-w-7xl mx-auto px-4 py-12 sticky top-0 z-20">
-        <img src="/assets/svg/logo.svg" className="w-32" alt="logo" />
+      <div className="max-w-7xl mx-auto px-4 py-5 md:py-12 sticky top-0 z-20">
+        <img
+          src="/assets/svg/logo.svg"
+          className="max-md:hidden w-32"
+          alt="logo"
+        />
         <div className="flex flex-col items-center">
           <div className="text-center ">
-            <p className="text-4xl text-black font-bold mb-2 ">
+            <p className="text-xl md:text-4xl text-black font-bold md:mb-2 ">
               Templates we recommend for you
             </p>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="md:block hidden text-lg text-muted-foreground max-w-2xl mx-auto">
               You can always change your template later.
             </p>
           </div>
-          <div className="w-full max-w-5xl bg-[#eaebf1] rounded-sm shadow-xl p-5 flex items-center gap-4 mt-5">
+          <div className="w-full max-w-5xl bg-[#eaebf1] rounded-sm shadow-xl p-1 md:p-5 flex items-center gap-4 mt-5">
             <Input
               id="name"
               value={fullName}
               onChange={(e: any) => {
                 if (e.target.value.length > 20) return;
                 updateResumeData({
-                  personalInfo: { ...resumeData.personalInfo, fullName: e.target.value },
+                  personalInfo: {
+                    ...resumeData.personalInfo,
+                    fullName: e.target.value,
+                  },
                 });
                 setFullName(e.target.value);
               }}
@@ -114,7 +120,7 @@ const SetupResume = () => {
               className="text-lg h-10 rounded-md"
               autoFocus
             />
-            <div className="flex items-center gap-2">
+            <div className="hidden md:flex items-center gap-2">
               <p>Colors</p>
               {themeColors?.slice(0, 8).map((color) => (
                 <motion.button
@@ -143,8 +149,8 @@ const SetupResume = () => {
         </div>
       </div>
       {/* Template Selection */}
-      <div className="flex justify-center">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-8  max-w-5xl w-full px-5">
+      <div className="flex justify-center md:pb-5">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8  max-w-5xl w-full px-5">
           {templates.map((template) => (
             <motion.div
               key={template.id}
@@ -154,8 +160,8 @@ const SetupResume = () => {
               <Card
                 className={` group transition-all relative duration-400 outline outline-transparent hover:outline-4 hover:outline-[#2f5cf8]`}
               >
-                <div className="aspect-[3/4]  bg-muted rounded-md flex items-center justify-center overflow-hidden relative">
-                  <div className="absolute inset-0 transform scale-[0.38] origin-top-left pointer-events-none w-full">
+                <div className="aspect-[3/4]  bg-muted rounded-sm md:rounded-md flex items-center justify-center overflow-hidden relative">
+                  <div className="absolute inset-0 transform scale-[0.20] md:scale-[0.38] origin-top-left pointer-events-none w-full">
                     <div className="w-[800px] h-[1100px] bg-white shadow-sm rounded-lg overflow-hidden">
                       <template.preview data={resumeData} />
                     </div>
@@ -167,9 +173,9 @@ const SetupResume = () => {
                     setTemplate(template.id as any);
                     handleStart();
                   }}
-                  className="absolute bottom-10 left-2/4 -translate-x-2/4 rounded-full max-w-48 w-full"
+                  className="max-md:text-xs absolute bottom-5 md:bottom-10 left-2/4 -translate-x-2/4 rounded-full max-w-48 max-md:h-8 md:w-full"
                 >
-                  Choose template
+                  Choose <span className="max-md:hidden">template</span>
                 </Button>
                 {/* <p className="text-center font-medium mt-2">
                     {template.name}
@@ -178,6 +184,32 @@ const SetupResume = () => {
             </motion.div>
           ))}
         </div>
+      </div>
+      {/* Color Selection -> android */}
+      <div className="flex w-full absolute bottom-0 left-0 bg-white p-4 md:hidden items-center gap-2">
+        <p>Colors</p>
+        {themeColors?.slice(0, 9).map((color) => (
+          <motion.button
+            key={color.value}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => {
+              setSelectedColor(color.value);
+              setThemeColor(color.value);
+            }}
+            onMouseOver={() => {
+              setSelectedColor(color.value);
+              setThemeColor(color.value);
+            }}
+            className={`w-6 h-6 rounded-full transition-all ${
+              selectedColor === color.value
+                ? "ring-1 ring-primary ring-offset-2"
+                : "hover:ring-1 hover:ring-muted-foreground"
+            }`}
+            style={{ backgroundColor: color.value }}
+            title={color.name}
+          />
+        ))}
       </div>
 
       {/* <div className="flex items-center gap-2"></div> */}

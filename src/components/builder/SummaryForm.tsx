@@ -77,7 +77,9 @@ const SummaryForm = () => {
       return;
     }
 
-    const updated = `${current}${!isEditorEmpty(resumeData.summary.content) ? "<br/>" : ""}${text}`;
+    const updated = `${current}${
+      !isEditorEmpty(resumeData?.summary?.content) ? "<br/>" : ""
+    }${text}`;
     handleChange(updated);
   };
 
@@ -95,8 +97,10 @@ const SummaryForm = () => {
     <div className="space-y-4">
       {/* Heading */}
       <div>
-        <p className="text-4xl font-bold mb-1">Craft your summary</p>
-        <p className="text-md text-muted-foreground">
+        <p className="text-2xl md:text-4xl font-bold mb-2">
+          Craft your summary
+        </p>
+        <p className="text-sm md:text-md text-muted-foreground">
           Start with a prewritten option or write your own. Edit as needed, then
           use <span className="font-semibold">Enhance with AI</span> to polish
           it.
@@ -104,20 +108,20 @@ const SummaryForm = () => {
       </div>
 
       {/* Main container */}
-      <div className="mt-2 rounded-2xl bg-[#F7F7FB] p-6">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+      <div className="mt-2 rounded-2xl bg-[#F7F7FB] p-4 md:p-6">
+        <div className="flex flex-col gap-6 md:grid md:grid-cols-2">
           {/* LEFT SIDE — Suggestions */}
-          <div className="flex flex-col h-full">
+          <div className="flex flex-col">
             <p className="text-sm font-semibold mb-3">Prewritten options</p>
 
-            <div className="flex-1 max-h-[360px] overflow-y-auto custom_scrollbar pr-2 space-y-4">
+            <div className="max-h-[300px] md:max-h-[360px] overflow-y-auto custom_scrollbar pr-1 md:pr-2 space-y-3">
               {suggestions.map((item, idx) => {
                 const added = isAdded(item);
 
                 return (
                   <div
                     key={idx}
-                    className="bg-white rounded-xl border shadow-sm px-4 py-3 text-sm leading-5 flex flex-col justify-between"
+                    className="bg-white rounded-xl border shadow-sm px-3 py-3 text-xs md:text-sm leading-5 flex flex-col justify-between"
                   >
                     <p className="mb-3">{item}</p>
 
@@ -126,7 +130,7 @@ const SummaryForm = () => {
                         <Button
                           type="button"
                           size="sm"
-                          className="rounded-full bg-gray-200 text-gray-700 h-7 hover:bg-gray-300 px-4 py-1 text-xs font-semibold"
+                          className="rounded-full bg-gray-200 text-gray-700 h-7 hover:bg-gray-300 px-3 md:px-4 py-1 text-[10px] md:text-xs font-semibold"
                           onClick={() => handleRemoveSuggestion(item)}
                         >
                           — Remove
@@ -136,20 +140,20 @@ const SummaryForm = () => {
                           <Button
                             type="button"
                             size="sm"
-                            className="rounded-full h-7"
                             variant="outline"
+                            className="rounded-full h-7 px-3 md:px-4 text-[10px] md:text-xs font-semibold"
                             onClick={() => handleReplaceSuggestion(item)}
                           >
-                            <Repeat size={15} /> Replace
+                            <Repeat size={12} className="mr-1" /> Replace
                           </Button>
 
                           <Button
                             type="button"
                             size="sm"
-                            className="rounded-full bg-amber-400 text-black hover:bg-amber-500 px-4 py-1 h-7 text-xs font-semibold"
+                            className="rounded-full bg-amber-400 text-black hover:bg-amber-500 px-3 md:px-4 py-1 h-7 text-[10px] md:text-xs font-semibold"
                             onClick={() => handleAddSuggestion(item)}
                           >
-                            <Plus size={15} /> Add
+                            <Plus size={12} className="mr-1" /> Add
                           </Button>
                         </>
                       )}
@@ -161,15 +165,17 @@ const SummaryForm = () => {
           </div>
 
           {/* RIGHT SIDE — TipTap Editor */}
-          <div className="flex flex-col h-full">
-            <Label className="text-sm font-semibold mb-2">Summary</Label>
+          <div className="flex flex-col">
+            <Label className="text-xs md:text-sm font-semibold mb-2">
+              Summary
+            </Label>
 
             <div
-              className="flex flex-col bg-white rounded-xl border shadow-sm h-full overflow-hidden"
+              className="flex flex-col bg-white rounded-xl border shadow-sm min-h-[250px] md:h-full"
               onClick={() => editor?.chain().focus().run()}
             >
               {/* Toolbar */}
-              <div className="flex items-center gap-2 border-b px-3 py-2 text-sm">
+              <div className="flex items-center gap-1 md:gap-2 border-b px-2 md:px-3 py-2 text-xs md:text-sm">
                 <button
                   type="button"
                   className="px-2 py-1 rounded hover:bg-gray-100 font-semibold"
@@ -195,14 +201,13 @@ const SummaryForm = () => {
                 </button>
               </div>
 
-              {/* Editor area */}
               <EditorContent
                 editor={editor}
-                className="min-h-[230px] px-3 py-3 text-sm tiptap-editor h-full"
+                className="min-h-[180px] md:min-h-[230px] px-3 py-3 text-xs md:text-sm tiptap-editor"
               />
             </div>
 
-            <p className="mt-1 text-xs text-muted-foreground text-right">
+            <p className="mt-1 text-[10px] md:text-xs text-muted-foreground text-right">
               {resumeData.summary.content.replace(/<[^>]+>/g, "").length}{" "}
               characters
             </p>

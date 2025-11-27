@@ -58,7 +58,6 @@ export default function Stepper({
   const totalSteps = stepsArray.length;
   const isCompleted = currentStep > totalSteps;
   const isLastStep = currentStep === totalSteps;
-  console.log(651651, currentStep);
   const updateStep = (newStep: number) => {
     setCurrentStep(newStep);
     if (newStep > totalSteps) {
@@ -106,7 +105,7 @@ export default function Stepper({
               })
             ) : (
               <div className="flex items-start flex-col gap-0">
-                <div className="flex items-center  gap-1 text-white capitalize  text-sm ">
+                <div className="flex items-center  gap-1 text-black md:text-white capitalize  text-sm ">
                   {showMenu ? (
                     <StepIndicator
                       step={stepNumber}
@@ -135,7 +134,7 @@ export default function Stepper({
                       <TooltipContent side="right">{step?.id}</TooltipContent>
                     </Tooltip>
                   )}
-                  {showMenu && step?.id}
+                  <p className="">{showMenu && step?.id}</p>
                 </div>
                 {isNotLastStep && (
                   <StepConnector

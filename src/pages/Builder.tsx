@@ -375,7 +375,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
-import { Info } from "lucide-react";
+import { ArrowDown, ArrowLeft, ChevronDown, Info, ZoomIn } from "lucide-react";
 import { useResume } from "../context/ResumeContext";
 import { toast } from "sonner";
 
@@ -407,6 +407,8 @@ import AcademicTemplate from "../components/resume/AcademicTemplate";
 import InfographicTemplate from "../components/resume/InfographicTemplate";
 import TimelineTemplate from "../components/resume/TimelineTemplate";
 import ThemeCustomizer from "../components/builder/ThemeCustomizer";
+import { useMediaQuery } from "../lib/useMediaQuery";
+import { Sheet, SheetContent, SheetHeader } from "../components/ui/sheet";
 
 const Builder = () => {
   const navigate = useNavigate();
@@ -417,7 +419,9 @@ const Builder = () => {
 
   const [showStepIntro, setShowStepIntro] = useState(true);
   const [showMenu, setShowMenu] = useState(true);
+  const [stepmenu, setStepMenu] = useState(false);
   const [openCustomizer, setOpenCustomizer] = useState(false);
+  const [viewSheetOpen, setViewSheetOpen] = useState(false);
   const resumeRef = useRef<HTMLDivElement>(null);
 
   // Resume width (fixed A4 size)
@@ -639,12 +643,13 @@ const Builder = () => {
       setCurrentStep(currentStep - 1);
     }
   };
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   return (
-    <div className="min-h-screen bg-white flex">
+    <div className="min-h-screen  bg-white md:flex">
       {/* LEFT SIDEBAR (Steps) */}
       <div
-        className={`bg-[#212D59] flex flex-col min-h-screen transition-all relative duration-300 
+        className={`bg-[#212D59] hidden md:flex flex-col min-h-screen transition-all relative duration-300 
         ${showMenu ? "w-[300px] px-10" : "w-[100px] px-5 items-center"} py-10`}
       >
         <img src="/assets/svg/ftlogo.svg" alt="logo" className="w-28" />
@@ -681,9 +686,93 @@ const Builder = () => {
           </div>
         )}
       </div>
+      {/* =============>mobile<============= */}
+      {!showStepIntro && (
+        <div className="relative bg-whit h-20 flex  md:hidden">
+          <div
+            className={`absolute  top-0 mt-2  left-2/4 -translate-x-2/4 w-[95%] ${
+              stepmenu ? "rounded-md shadow-2xl z-40" : "rounded-full z-0"
+            }  px-3 py-2 bg-[#f5f7f8] w-full`}
+          >
+            <div className="w-full flex items-center gap-2 justify-between">
+              <button onClick={handlePrevious} disabled={currentStep === 0}>
+                <ArrowLeft size={20} />
+              </button>
+              <div className="flex items-center flex-col">
+                <p className="text-sm">
+                  Step {currentStep + 1} of {steps.length}
+                </p>
+                <button
+                  onClick={() => setStepMenu(!stepmenu)}
+                  className="flex items-center gap-1 font-semibold"
+                >
+                  <p>{currentStepData.title}</p>
+                  <ChevronDown
+                    size={20}
+                    className={`transition-all duration-200 ${
+                      stepmenu && "rotate-180"
+                    }`}
+                  />
+                </button>
+              </div>
+              <button
+                onClick={() => {
+                  setViewSheetOpen(true);
+                }}
+              >
+                <ZoomIn size={20} />
+              </button>
+            </div>
+            <div
+              className={`border-t   ${
+                stepmenu
+                  ? "  h-[50vh] overflow-auto p-4 opacity-100"
+                  : "h-0 opacity-0"
+              }`}
+            >
+              <div className="mt-2">
+                <Stepper
+                  stepsArray={steps}
+                  initialStep={currentStep + 1}
+                  showMenu={stepmenu}
+                  onStepChange={(step) => {
+                    setCurrentStep(step - 1);
+                    setStepMenu(false);
+                    setShowStepIntro(true);
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="md:hidden z-30 fixed bottom-0 bg-white left-0 w-full p-4 flex items-center justify-center">
+        {showStepIntro ? (
+          <Button
+            className="rounded-full w-full"
+            onClick={() => {
+              setShowStepIntro(false);
+              setShowMenu(false);
+            }}
+          >
+            Continue
+          </Button>
+        ) : isEditMode ? (
+          <Button className="rounded-full w-full" onClick={handleUpdate}>
+            Update Section
+          </Button>
+        ) : (
+          <Button className="rounded-full w-full" onClick={handleNext}>
+            {currentStep < steps.length - 1
+              ? "Save & Continue"
+              : "Complete Resume"}
+          </Button>
+        )}
+      </div>
+      {/* =============>mobile<============= */}
 
       {/* MAIN CONTENT */}
-      <div className="flex w-full max-h-screen overflow-hidden relative">
+      <div className="flex w-full md:max-h-screen md:overflow-hidden relative">
         {showStepIntro && (
           <>
             <div className="pointer-events-none z-0 absolute top-40 -left-32 h-96 w-96 rounded-full bg-[#FDE4C8] blur-3xl opacity-60" />
@@ -692,85 +781,134 @@ const Builder = () => {
           </>
         )}
         {/* CENTER FORM SECTION */}
-        <div className="flex-1 p-4 max-h-screen overflow-auto ">
+        <div className="flex-1 p-4 md:max-h-screen overflow-auto max-md:mb-16">
           {/* Intro Card */}
           {showStepIntro ? (
-            <motion.div
-              key={"form-" + currentStep}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.35 }}
-              className="relative z-20   mt-10 p-8"
-            >
-              {/* Progress text */}
-              <p className="text-lg font-medium text-gray-700">
-                Great progress! Next up →
-                <span className="font-semibold"> {currentStepData.title}</span>
-              </p>
+            !isMobile ? (
+              <motion.div
+                key={"form-" + currentStep}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.35 }}
+                className="relative z-20   mt-10 p-8"
+              >
+                {/* Progress text */}
+                <p className="text-lg font-medium text-gray-700">
+                  Great progress! Next up →
+                  <span className="font-semibold">
+                    {" "}
+                    {currentStepData.title}
+                  </span>
+                </p>
 
-              {/* Main Heading */}
-              <p className="text-6xl font-extrabold leading-tight tracking-tight mt-5">
-                {currentStepData.introtitle}{" "}
-                <span className="relative">
-                  {currentStepData.title}
-                  {/* <span className="absolute left-0 bottom-1 w-full h-2 bg-green-300 rounded-full -z-10"></span> */}
-                  <img
-                    className="absolute left-0 -bottom-1 w-full"
-                    src="/assets/svg/underline.svg"
-                    alt="underline"
-                  />
-                </span>
-                <br />
-                {/* {currentStepData.introLine2} */}
-              </p>
+                {/* Main Heading */}
+                <p className="text-6xl font-extrabold leading-tight tracking-tight mt-5">
+                  {currentStepData.introtitle}{" "}
+                  <span className="relative">
+                    {currentStepData.title}
+                    <img
+                      className="absolute left-0 -bottom-1 w-full"
+                      src="/assets/svg/underline.svg"
+                      alt="underline"
+                    />
+                  </span>
+                  <br />
+                  {/* {currentStepData.introLine2} */}
+                </p>
 
-              {/* Description */}
-              <p className="text-xl max-w-2xl text-gray-700 leading-relaxed mt-5">
-                {currentStepData.description}
-              </p>
+                {/* Description */}
+                <p className="text-xl max-w-2xl text-gray-700 leading-relaxed mt-5">
+                  {currentStepData.description}
+                </p>
 
-              {/* Arrow image (optional asset) */}
-              {/* <img
+                {/* Arrow image (optional asset) */}
+                {/* <img
                 src="/arrow-curve.png"
                 alt="arrow"
                 className="w-32 ml-20 rotate-3 opacity-80"
               /> */}
 
-              {/* Buttons */}
-              <div className="flex items-center gap-6 mt-32 justify-between w-full">
-                <Button
-                  variant="outline"
-                  className="rounded-full px-10 py-5 text-lg bg-white border-black text-black"
-                  onClick={handlePrevious}
-                  disabled={currentStep === 0}
-                >
-                  Back
-                </Button>
-                <div className="relative">
-                  <img
-                    className="absolute right-[120%] bottom-[120%] w-full"
-                    src="/assets/svg/drawnRightArrow.svg"
-                    alt="drawnRightArrow"
-                  />
+                {/* Buttons */}
+                <div className="flex items-center gap-6 mt-32 justify-between w-full">
                   <Button
-                    className="rounded-full px-12 py-5 relative "
-                    onClick={() => {
-                      setShowStepIntro(false);
-                      setShowMenu(false);
-                    }}
+                    variant="outline"
+                    className="rounded-full px-10 py-5 text-lg bg-white border-black text-black"
+                    onClick={handlePrevious}
+                    disabled={currentStep === 0}
                   >
-                    Continue
+                    Back
                   </Button>
+                  <div className="relative">
+                    <img
+                      className="absolute right-[120%] bottom-[120%] w-full"
+                      src="/assets/svg/drawnRightArrow.svg"
+                      alt="drawnRightArrow"
+                    />
+                    <Button
+                      className="rounded-full px-12 py-5 relative "
+                      onClick={() => {
+                        setShowStepIntro(false);
+                        setShowMenu(false);
+                      }}
+                    >
+                      Continue
+                    </Button>
+                  </div>
                 </div>
-              </div>
 
-              {/* ATS Note (optional like screenshot) */}
-              <p className="text-xs text-gray-500 max-w-xl mt-10">
-                *Most companies use ATS (applicant tracking system) to scan your
-                resume based on keywords. Beat this ATS scan and get your resume
-                in the hands of a recruiter.
-              </p>
-            </motion.div>
+                {/* ATS Note (optional like screenshot) */}
+                <p className="text-xs text-gray-500 max-w-xl mt-10">
+                  *Most companies use ATS (applicant tracking system) to scan
+                  your resume based on keywords. Beat this ATS scan and get your
+                  resume in the hands of a recruiter.
+                </p>
+              </motion.div>
+            ) : (
+              <motion.div
+                key={"form-" + currentStep}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.35 }}
+                className="relative flex flex-col gap-4 min-h-screen "
+              >
+                <p className="text-3xl text-black font-bold text-center">
+                  Up Next:{" "}
+                  <span className="relative">
+                    {currentStepData.title}
+                    <img
+                      className="absolute left-0 -bottom-1 w-full"
+                      src="/assets/svg/underline.svg"
+                      alt="underline"
+                    />
+                  </span>
+                </p>
+                <button
+                  onClick={() => setOpenCustomizer(true)}
+                  className="text-primary text-xl hover:underline border-primary "
+                >
+                  Change template
+                </button>
+                <div
+                  style={{
+                    transformOrigin: "left top",
+                    width: "900px",
+                    maxHeight: "70vh",
+                  }}
+                  className="overflow-hidden"
+                >
+                  <div
+                    style={{
+                      transform: `scale(0.39)`,
+                      transformOrigin: "left top",
+                      width: "900px",
+                    }}
+                    className="bg-white shadow-xl border rounded-md overflow-hidden"
+                  >
+                    {renderTemplate()}
+                  </div>
+                </div>
+              </motion.div>
+            )
           ) : (
             <motion.div
               key={"form-" + currentStep}
@@ -779,7 +917,7 @@ const Builder = () => {
               transition={{ duration: 0.3 }}
               className="z-20 relative"
             >
-              <div className="p-8">{renderStepForm()}</div>
+              <div className="md:p-8">{renderStepForm()}</div>
             </motion.div>
           )}
 
@@ -787,13 +925,13 @@ const Builder = () => {
         </div>
 
         {/* RIGHT PREVIEW PANEL */}
-        <div className="p-8 relative">
+        <div className="md:block hidden p-8 relative">
           {!showStepIntro && (
             <div className="flex justify-between gap-24 items-center bottom-5 right-10 absolute z-30">
               <Button
                 variant="outline"
-                onClick={handlePrevious}
                 className="rounded-full"
+                onClick={handlePrevious}
                 disabled={currentStep === 0}
               >
                 Previous
@@ -847,6 +985,57 @@ const Builder = () => {
           </motion.div>
         </div>
       </div>
+      {isMobile && (
+        <Sheet open={viewSheetOpen} onOpenChange={setViewSheetOpen}>
+          <SheetContent
+            side="bottom"
+            className="min-h-[92vh] p-4 bg-white rounded-t-3xl shadow-xl"
+          >
+            {/* <SheetHeader className="pb-2">
+              <SheetTitle className="text-xl font-semibold text-center">
+                Edit Resume
+              </SheetTitle>
+            </SheetHeader> */}
+
+            <div className="py-5 space-y-4">
+              <h3 className="text-base font-medium text-gray-700">
+                Resume Sections
+              </h3>
+            </div>
+            <div
+              style={{
+                transformOrigin: "left top",
+                width: "900px",
+                maxHeight: "70vh",
+              }}
+              className="overflow-hidden"
+            >
+              <div
+                style={{
+                  transform: `scale(0.39)`,
+                  transformOrigin: "left top",
+                  width: "900px",
+                }}
+                className="bg-white shadow-xl border rounded-md overflow-hidden"
+              >
+                {renderTemplate()}
+              </div>
+            </div>
+
+            {/* Sticky Footer */}
+            <div className="absolute bottom-0 left-0 w-full p-4 bg-white border-t">
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full rounded-full text-base py-6 font-semibold"
+                onClick={() => setOpenCustomizer(true)}
+              >
+                Change Template
+              </Button>
+            </div>
+          </SheetContent>
+        </Sheet>
+      )}
     </div>
   );
 };

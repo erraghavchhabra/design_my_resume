@@ -11,6 +11,8 @@ import { Toaster } from "./components/ui/toaster";
 import { ResumeProvider } from "./context/ResumeContext";
 import LoginPage from "./pages/auth/LoginPage";
 import "react-day-picker/dist/style.css";
+import SignupPage from "./pages/auth/SignupPage";
+import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -28,6 +30,8 @@ const App = () => (
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/forget" element={<ForgotPasswordPage />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
