@@ -690,7 +690,7 @@ const Builder = () => {
       {!showStepIntro && (
         <div className="relative bg-whit h-20 flex  md:hidden">
           <div
-            className={`absolute  top-0 mt-2  left-2/4 -translate-x-2/4 w-[95%] ${
+            className={`absolute  top-0 mt-2  left-2/4 -translate-x-2/4 w-[92%] ${
               stepmenu ? "rounded-md shadow-2xl z-40" : "rounded-full z-0"
             }  px-3 py-2 bg-[#f5f7f8] w-full`}
           >
@@ -869,7 +869,7 @@ const Builder = () => {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.35 }}
-                className="relative flex flex-col gap-4 min-h-screen "
+                className="relative flex flex-col items-center gap-4   w-full "
               >
                 <p className="text-3xl text-black font-bold text-center">
                   Up Next:{" "}
@@ -891,14 +891,15 @@ const Builder = () => {
                 <div
                   style={{
                     transformOrigin: "left top",
-                    width: "900px",
-                    maxHeight: "70vh",
+                    maxWidth: "330px",
+                    width: "100%",
+                    maxHeight: "65vh",
                   }}
                   className="overflow-hidden"
                 >
                   <div
                     style={{
-                      transform: `scale(0.39)`,
+                      transform: `scale(0.37)`,
                       transformOrigin: "left top",
                       width: "900px",
                     }}

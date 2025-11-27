@@ -186,9 +186,9 @@ const SetupResume = () => {
         </div>
       </div>
       {/* Color Selection -> android */}
-      <div className="flex w-full absolute bottom-0 left-0 bg-white p-4 md:hidden items-center gap-2">
+      <div className="flex w-full fixed bottom-0 left-0 bg-white p-4 md:hidden items-center gap-2">
         <p>Colors</p>
-        {themeColors?.slice(0, 9).map((color) => (
+        {themeColors?.slice(0, 8).map((color) => (
           <motion.button
             key={color.value}
             whileHover={{ scale: 1.1 }}
