@@ -110,7 +110,7 @@ export default function GenerateBullet() {
 
         <div className="w-full text-center mt-14">
           <a
-             href="/setup"
+             href="/resume-loading"
             className="px-8 py-3 text-lg font-semibold rounded bg-indigo-600 text-white hover:bg-indigo-700 transition"
           >
             Create My Resume

@@ -37,7 +37,7 @@ export default function Hero() {
               Import Your Resume
             </a>
             <a
-              href="/setup"
+              href="/resume-loading"
               className="px-8 py-3 text-lg font-semibold border border-gray-300 rounded hover:bg-gray-100 transition"
             >
               Create Your Resume

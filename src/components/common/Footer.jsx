@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import { IoAdd, IoRemove } from "react-icons/io5";
 
-const Footer = () => {
+const Footer = ({ topSpace = false }) => {
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggleAccordion = (index) => {
@@ -62,7 +62,11 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative bg-[#122e50] text-white pt-16 pb-8 px-6 sm:px-10 lg:px-20 overflow-hidden">
+    <footer
+      className={`relative bg-[#122e50] text-white ${
+        topSpace ? "pt-60" : "pt-20"
+      } pb-8 px-6 sm:px-10 lg:px-20 overflow-hidden`}
+    >
       {/* Background Glows */}
       <div className="absolute top-0 left-0 w-80 h-80 bg-indigo-500 opacity-20 blur-3xl rounded-full -translate-x-1/3 -translate-y-1/3"></div>
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-700 opacity-30 blur-3xl rounded-full translate-x-1/3 translate-y-1/3"></div>
@@ -71,7 +75,11 @@ const Footer = () => {
       <div className="relative flex flex-col md:flex-row justify-between items-center gap-6 pb-10 border-b border-indigo-500/30">
         {/* Logo */}
         <div className="flex items-center gap-3">
-          <img src="/assets/svg/ftlogo.svg" className="w-[150px]" alt="Resume Now Logo" />
+          <img
+            src="/assets/svg/ftlogo.svg"
+            className="w-[150px]"
+            alt="Resume Now Logo"
+          />
         </div>
 
         {/* Social Icons */}
@@ -97,13 +105,18 @@ const Footer = () => {
       {/* Footer Links (Accordion on Mobile) */}
       <div className="relative grid grid-cols-1 lg:grid-cols-4 gap-10 pt-12 pb-8 text-left">
         {sections.map((section, index) => (
-          <div key={index} className="border-b border-indigo-500/20 lg:border-none pb-4 lg:pb-0">
+          <div
+            key={index}
+            className="border-b border-indigo-500/20 lg:border-none pb-4 lg:pb-0"
+          >
             {/* Accordion Header */}
             <button
               onClick={() => toggleAccordion(index)}
               className="w-full flex justify-between items-center lg:cursor-default"
             >
-              <h3 className="font-semibold text-lg text-white">{section.title}</h3>
+              <h3 className="font-semibold text-lg text-white">
+                {section.title}
+              </h3>
               <span className="lg:hidden text-2xl">
                 {openIndex === index ? <IoRemove /> : <IoAdd />}
               </span>
@@ -112,7 +125,9 @@ const Footer = () => {
             {/* Accordion Content */}
             <div
               className={`overflow-hidden transition-all duration-300 lg:max-h-none ${
-                openIndex === index ? "max-h-[600px] mt-4" : "max-h-0 lg:max-h-none"
+                openIndex === index
+                  ? "max-h-[600px] mt-4"
+                  : "max-h-0 lg:max-h-none"
               }`}
             >
               {!section.custom ? (
@@ -134,7 +149,8 @@ const Footer = () => {
                     <FaPhoneAlt className="text-indigo-300" /> 844-351-7484
                   </li>
                   <li className="flex items-center gap-2">
-                    <FaEnvelope className="text-indigo-300" /> customerservice@resume-now.com
+                    <FaEnvelope className="text-indigo-300" />{" "}
+                    customerservice@resume-now.com
                   </li>
                   <li>
                     <strong className="mt-6 block">CS Support Schedule:</strong>

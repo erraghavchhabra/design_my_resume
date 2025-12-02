@@ -1,6 +1,6 @@
 export const ProcessStep = () => {
   return (
-    <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+    <div className="px-4 py-8 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
       <div className="max-w-xl mb-10 md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">
         <div></div>
         <h2 className="mb-6  text-3xl font-bold leading-none text-center text-indigo-600 sm:text-4xl md:mx-auto">
@@ -164,7 +164,7 @@ export const ProcessStep = () => {
 
       <div className="w-full text-center mt-8 lg:mt-14">
         <a
-          href="/setup"
+          href="/resume-loading"
           className="px-8 py-3 text-lg font-semibold rounded bg-indigo-600 text-white hover:bg-indigo-700 transition"
         >
           Create My Resume

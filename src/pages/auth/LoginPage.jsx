@@ -1,135 +1,170 @@
-import React from "react";
-import { FaFacebookF } from "react-icons/fa6";
-import { FaGoogle } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import axios from "axios";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import Cookies from "js-cookie";
+import { FaFacebookF, FaGoogle } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import { LoginApi } from "../../api/AuthApi";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserData } from "../../redux/slices/authSlice";
 
 const LoginPage = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [apiError, setApiError] = useState("");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      remember: false,
+    },
+
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .email("Invalid email format")
+        .required("Email is required"),
+      password: Yup.string().required("Password is required"),
+    }),
+
+    onSubmit: async (values) => {
+      setApiError("");
+
+      try {
+        const res = await axios.post(LoginApi, {
+          email: values.email,
+          password: values.password,
+        });
+
+        const { token, user } = res.data;
+
+        // Save token in cookies
+        Cookies.set("user_token", token, {
+          expires: values.remember ? 7 : 1, // 7 days if remember me checked
+          secure: true,
+        });
+
+        dispatch(setUserData(user));
+
+        navigate("/"); // redirect
+      } catch (err) {
+        setApiError(err?.response?.data?.message || "Login failed!");
+      }
+    },
+  });
+
   return (
     <div className="relative min-h-screen py-16 flex flex-col overflow-hidden bg-gradient-to-br from-indigo-600 via-indigo-500 to-indigo-800">
-      {/* Decorative Background Waves */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <svg
-          className="absolute top-0 left-0 w-full h-full opacity-20"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1440 320"
-        >
-          <path
-            fill="#ffffff"
-            fillOpacity="0.25"
-            d="M0,192L60,170.7C120,149,240,107,360,117.3C480,128,600,192,720,192C840,192,960,128,1080,133.3C1200,139,1320,213,1380,250.7L1440,288L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
-          ></path>
-        </svg>
-        <svg
-          className="absolute bottom-0 right-0 w-full h-full opacity-20 rotate-180"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1440 320"
-        >
-          <path
-            fill="#ffffff"
-            fillOpacity="0.2"
-            d="M0,224L60,208C120,192,240,160,360,165.3C480,171,600,213,720,229.3C840,245,960,235,1080,213.3C1200,192,1320,160,1380,144L1440,128L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
-          ></path>
-        </svg>
+      {/* Logo */}
+      <div className="flex justify-center mb-6">
+        <img src="/assets/svg/ftlogo.svg" alt="Logo" className="w-[150px]" />
       </div>
 
-      {/* Top Logo */}
-      <div className="flex justify-center items-center space-x-2 mb-6">
-        <img src="/assets/svg/ftlogo.svg" alt="Logo" className="lg:w-[150px]" />
-      </div>
-
-      {/* Center Form */}
+      {/* Login Form */}
       <div className="flex flex-1 justify-center items-center px-4">
-        <div className="bg-white/95 backdrop-blur-sm shadow-2xl rounded-2xl p-8 w-full max-w-md border border-gray-100">
-          <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">
-            Sign in to your Account
-          </h2>
+        <div className="bg-white/95 shadow-xl rounded-xl p-8 w-full max-w-md border">
+          <h2 className="text-2xl font-bold text-center mb-6">Sign in</h2>
 
-          <form className="space-y-5">
+          {apiError && (
+            <div className="text-red-600 text-sm mb-3">{apiError}</div>
+          )}
+
+          <form className="space-y-5" onSubmit={formik.handleSubmit}>
+            {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email Address
-              </label>
+              <label className="text-sm font-medium">Email</label>
               <input
                 type="email"
+                name="email"
+                className={`w-full px-4 py-2 border rounded ${
+                  formik.errors.email && formik.touched.email
+                    ? "border-red-600"
+                    : ""
+                }`}
                 placeholder="you@example.com"
-                className="w-full px-4 py-2 border rounded focus:ring-0 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+                {...formik.getFieldProps("email")}
               />
+              {formik.touched.email && formik.errors.email && (
+                <p className="text-red-600 text-xs mt-1">
+                  {formik.errors.email}
+                </p>
+              )}
             </div>
 
+            {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Password
-              </label>
-              <input
-                type="password"
-                placeholder="••••••••"
-                className="w-full px-4 py-2 border rounded focus:ring-0 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-              />
+              <label className="text-sm font-medium">Password</label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  className={`w-full px-4 py-2 border rounded ${
+                    formik.errors.password && formik.touched.password
+                      ? "border-red-600"
+                      : ""
+                  }`}
+                  placeholder="********"
+                  {...formik.getFieldProps("password")}
+                />
+                <span
+                  className="absolute right-3 top-2 cursor-pointer text-sm text-gray-500"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </span>
+              </div>
+              {formik.touched.password && formik.errors.password && (
+                <p className="text-red-600 text-xs mt-1">
+                  {formik.errors.password}
+                </p>
+              )}
             </div>
 
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center space-x-2">
+            {/* Remember & Forgot */}
+            <div className="flex justify-between text-sm">
+              <label className="flex items-center gap-2">
                 <input
                   type="checkbox"
-                  className="rounded text-indigo-600 focus:ring-indigo-500"
+                  name="remember"
+                  onChange={formik.handleChange}
                 />
-                <span>Stay signed in</span>
+                Stay signed in
               </label>
-              <Link
-                to="/forget"
-                className="text-indigo-600 hover:text-indigo-800 font-medium"
-              >
-                Forgot your password?
+              <Link to="/forget" className="text-indigo-600 font-medium">
+                Forgot?
               </Link>
             </div>
 
+            {/* Submit */}
             <button
               type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded font-semibold transition duration-200 shadow-md"
+              disabled={formik.isSubmitting}
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded font-semibold"
             >
-              Log in
+              {formik.isSubmitting ? "Logging in..." : "Log in"}
             </button>
-
-            <p className="text-xs text-gray-500 text-center mt-3">
-              By clicking "Log in" you also agree to our{" "}
-              <a href="#" className="text-indigo-600 hover:underline">
-                Terms of Use
-              </a>{" "}
-              and{" "}
-              <a href="#" className="text-indigo-600 hover:underline">
-                Privacy Policy
-              </a>
-              .
-            </p>
           </form>
 
-          <div className="text-center mt-6">
-            <p className="text-sm text-gray-600">
-              Don't have an account?{" "}
-              <Link
-                to="/signup"
-                className="text-indigo-600 font-semibold hover:underline"
-              >
-                Sign up
-              </Link>
-            </p>
-          </div>
+          <p className="text-sm text-center mt-6 text-gray-700">
+            Don't have an account?{" "}
+            <Link to="/signup" className="text-indigo-600 font-semibold">
+              Sign up
+            </Link>
+          </p>
 
-          <div className="mt-6 border-t border-gray-200 pt-6">
+          <div className="mt-6 border-t pt-6">
             <p className="text-center text-sm text-gray-500 mb-3">
               Or continue with
             </p>
+
             <div className="flex gap-4">
-              <button className="flex-1 flex items-center justify-center space-x-2 border rounded py-2 hover:bg-gray-50 transition">
-                <FaFacebookF
-                  className="text-blue-600 h-4 w-4"
-                  aria-hidden="true"
-                />
-                <span className="font-medium text-gray-700">Facebook</span>
+              <button className="flex-1 flex items-center justify-center gap-2 border rounded py-2">
+                <FaFacebookF className="text-blue-600" /> Facebook
               </button>
-              <button className="flex-1 flex items-center justify-center space-x-2 border rounded py-2 hover:bg-gray-50 transition">
-                <FaGoogle className="text-red-500 h-4 w-4" aria-hidden="true" />
-                <span className="font-medium text-gray-700">Google</span>
+              <button className="flex-1 flex items-center justify-center gap-2 border rounded py-2">
+                <FaGoogle className="text-red-500" /> Google
               </button>
             </div>
           </div>

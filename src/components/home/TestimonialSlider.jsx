@@ -45,7 +45,7 @@ const Star = () => (
 
 const TestimonialSlider = () => {
   return (
-    <section className="bg-gradient-to-b from-purple-50 to-white py-16">
+    <section className="bg-gradient-to-b from-purple-50 to-white py-8 md:py-16">
       <div className="max-w-7xl mx-auto px-6">
         {/* CENTER HEADING */}
         <h2 className="mb-5 lg:mb-16 text-3xl font-bold leading-none sm:line-clamp-2 text-center text-indigo-600 sm:text-4xl md:mx-auto">

@@ -331,9 +331,10 @@ h6 {
   position: relative;
   z-index: 5;
 }
-footer {
+/* footer {
   padding-top: 230px !important;
-}
+} */
+
 /* Hide scrollbar for Chrome, Safari, Edge */
 .scrollbar-hidden::-webkit-scrollbar {
   display: none;

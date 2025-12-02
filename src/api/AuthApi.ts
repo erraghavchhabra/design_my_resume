@@ -3,8 +3,10 @@ const BaseUrl = process.env.REACT_APP_BASE_URL;
 
 export const LoginApi = `${BaseUrl}/api/auth/login`;
 
-export const SignupApi = `${BaseUrl}/api/auth/signup`;
+export const SignupApi = `${BaseUrl}/api/auth/register`;
 
-// export const LogoutApi = `${BaseUrl}/api/auth/logout`;
+export const UserApi = `${BaseUrl}/api/auth/me`;
 
-// export const ForgotPasswordApi = `${BaseUrl}/api/auth/forgot-password`;
+
+export const ForgotPasswordApi = `${BaseUrl}/api/auth/forgot-password`;
+export const ResetPasswordApi = `${BaseUrl}/api/auth/reset-password`;

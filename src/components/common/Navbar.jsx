@@ -18,11 +18,16 @@ import {
   IconCoin,
 } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
-
-export default function Navbar() {
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../redux/slices/authSlice";
+import Cookies from "js-cookie";
+export default function Navbar({ className }) {
+  const dispatch = useDispatch();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [scrolled, setScrolled] = useState(false);
+  const { user } = useSelector((state) => state.auth);
+  const token = Cookies.get("user_token");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,20 +43,22 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed ms-nav top-0 left-0 w-full z-50 transition-all duration-300 backdrop-blur-sm ${
+      className={` ${
+        className?.includes("fixed") ? "fixed" : "sticky"
+      } ms-nav top-0 left-0 w-full z-50 transition-all duration-300 backdrop-blur-sm ${
         scrolled ? "bg-white/90 shadow-md" : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl w-full mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center space-x-2">
-          <a href="/" onClick={(e) => e.preventDefault()}>
+          <Link to="/">
             <img
               className="w-[100px] sm:w-[100px] lg:w-[200px]"
               src="/assets/svg/logo.svg"
               alt="Logo"
             />
-          </a>
+          </Link>
         </div>
 
         {/* Desktop Menu */}
@@ -87,8 +94,8 @@ export default function Navbar() {
                   </p>
                 </a>
 
-                <a
-                  href="#"
+                <Link
+                  to="/cv-maker"
                   className="relative pl-12 block hover:bg-slate-50 p-3 mb-5 rounded-lg transition"
                 >
                   <IconWritingSign
@@ -103,7 +110,7 @@ export default function Navbar() {
                     Build a professional CV quickly with our easy-to-use CV
                     maker.
                   </p>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -295,8 +302,8 @@ export default function Navbar() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {/* Column 1 (was 2nd in Resume) */}
                 <div>
-                  <a
-                    href="#"
+                  <Link
+                    to="/cv-maker"
                     className="relative pl-12 block hover:bg-slate-50 p-3 mb-5 rounded-lg transition"
                   >
                     <IconWritingSign
@@ -311,7 +318,7 @@ export default function Navbar() {
                       Build a professional CV quickly with our easy-to-use CV
                       maker.
                     </p>
-                  </a>
+                  </Link>
 
                   <a
                     href="#"
@@ -334,8 +341,8 @@ export default function Navbar() {
 
                 {/* Column 2  */}
                 <div>
-                  <a
-                    href="#"
+                  <Link
+                    to="/cv-templates"
                     className="relative pl-12 block hover:bg-slate-50 p-3 mb-5 rounded-lg transition"
                   >
                     <IconChecklist
@@ -349,7 +356,7 @@ export default function Navbar() {
                     <p className="text-xs text-gray-600 leading-snug">
                       Choose a customizable template to create an effective CV.
                     </p>
-                  </a>
+                  </Link>
 
                   <a
                     href="#"
@@ -558,8 +565,8 @@ export default function Navbar() {
                     </p>
                   </a>
 
-                  <a
-                    href="#"
+                  <Link
+                    to="/press-coverage"
                     className="relative pl-12 block hover:bg-slate-50 p-3 mb-5 rounded-lg transition"
                   >
                     <IconSpeakerphone
@@ -571,7 +578,7 @@ export default function Navbar() {
                     <p className="text-xs text-gray-600 leading-snug">
                       Read our press releases and mentions in other media.
                     </p>
-                  </a>
+                  </Link>
                 </div>
 
                 {/* Column 2 */}
@@ -632,18 +639,39 @@ export default function Navbar() {
 
         {/* Desktop Buttons */}
         <div className="hidden lg:flex items-center space-x-4">
-          <Link
-            to="/login"
-            className="border border-indigo-600 text-indigo-600 px-5 py-2 rounded-lg hover:bg-indigo-50 transition font-medium"
-          >
-            Login
-          </Link>
-          <Link
-            to="/login"
-            className="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700 transition font-medium"
-          >
-            Free Account
-          </Link>
+          {!token ? (
+            <>
+              <Link
+                to="/login"
+                className="border border-indigo-600 text-indigo-600 px-5 py-2 rounded-lg hover:bg-indigo-50 transition font-medium"
+              >
+                Login
+              </Link>
+
+              <Link
+                to="/signup"
+                className="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700 transition font-medium"
+              >
+                Free Account
+              </Link>
+            </>
+          ) : (
+            <>
+              <span className="text-black font-medium">
+                Hello, {user?.name?.split(" ")[0] || "User"}
+              </span>
+
+              <button
+                onClick={() => {
+                  dispatch(logout());
+                  Cookies.remove("user_token");
+                }}
+                className="bg-red-600 text-white px-5 py-2 rounded-lg hover:bg-red-700 transition font-medium"
+              >
+                Logout
+              </button>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -783,13 +811,13 @@ export default function Navbar() {
               </button>
               {openDropdown === "cv" && (
                 <div className="pl-4 space-y-3 text-sm text-gray-700">
-                  <a
-                    href="#"
+                  <Link
+                    to="/cv-maker"
                     className="flex items-center gap-2 hover:text-indigo-600"
                   >
                     <IconWritingSign size={18} className="text-green-500" /> CV
                     Maker
-                  </a>
+                  </Link>
                   <a
                     href="#"
                     className="flex items-center gap-2 hover:text-indigo-600"
@@ -797,13 +825,13 @@ export default function Navbar() {
                     <IconMedal2 size={18} className="text-cyan-600" /> CV
                     Examples
                   </a>
-                  <a
-                    href="#"
+                  <Link
+                    to="/cv-templates"
                     className="flex items-center gap-2 hover:text-indigo-600"
                   >
                     <IconChecklist size={18} className="text-purple-600" /> CV
                     Templates
-                  </a>
+                  </Link>
                   <a
                     href="#"
                     className="flex items-center gap-2 hover:text-indigo-600"
@@ -892,13 +920,13 @@ export default function Navbar() {
                     <IconNews size={18} className="text-purple-600" /> Editorial
                     Guidelines
                   </a>
-                  <a
-                    href="#"
+                  <Link
+                    to="/press-coverage"
                     className="flex items-center gap-2 hover:text-indigo-600"
                   >
                     <IconSpeakerphone size={18} className="text-yellow-600" />{" "}
                     Press
-                  </a>
+                  </Link>
                   <a
                     href="#"
                     className="flex items-center gap-2 hover:text-indigo-600"
@@ -925,13 +953,13 @@ export default function Navbar() {
 
             {/* Buttons */}
             <Link
-            to="/login"
+              to="/login"
               className="border border-indigo-600 text-indigo-600 px-4 py-2 rounded-lg text-center hover:bg-indigo-50 transition"
             >
               Login
             </Link>
             <Link
-            to="/signup"
+              to="/signup"
               className="bg-indigo-600 text-white px-4 py-2 mt-2 rounded-lg hover:bg-indigo-700 text-center"
             >
               Free Account

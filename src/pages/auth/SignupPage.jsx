@@ -1,40 +1,70 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { HiEye, HiEyeOff } from "react-icons/hi";
+import { Link, useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import axios from "axios";
+import { SignupApi } from "../../api/AuthApi";
+
 
 const SignupPage = () => {
+  const navigate = useNavigate();
+  const [showPass, setShowPass] = useState(false);
+  const [showCPass, setShowCPass] = useState(false);
+  const [serverError, setServerError] = useState("");
+
+  const formik = useFormik({
+    initialValues: {
+      full_name: "",
+      email: "",
+      password: "",
+      confirm_password: "",
+    },
+
+    validationSchema: Yup.object({
+      full_name: Yup.string()
+        .required("Full name is required")
+        .min(3, "Name must be at least 3 characters"),
+      email: Yup.string()
+        .email("Invalid email format")
+        .required("Email is required"),
+      password: Yup.string()
+        .required("Password is required")
+        .min(6, "Password must be 6 characters long"),
+      confirm_password: Yup.string()
+        .oneOf([Yup.ref("password"), null], "Passwords must match")
+        .required("Confirm password is required"),
+    }),
+
+    onSubmit: async (values, { setSubmitting }) => {
+      setServerError("");
+      try {
+        const payload = {
+          name: values.full_name,
+          email: values.email,
+          password: values.password,
+        };
+
+        const response = await axios.post(SignupApi, payload);
+
+        console.log("Signup Success", response.data);
+        navigate("/login");
+      } catch (err) {
+        setServerError(
+          err.response?.data?.message || "Signup failed. Try again!"
+        );
+      } finally {
+        setSubmitting(false);
+      }
+    },
+  });
+
   return (
     <div className="relative min-h-screen py-16 flex flex-col overflow-hidden bg-gradient-to-br from-indigo-600 via-indigo-500 to-indigo-800">
-      
-      {/* Decorative Waves */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <svg
-          className="absolute top-0 left-0 w-full h-full opacity-20"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1440 320"
-        >
-          <path
-            fill="#ffffff"
-            fillOpacity="0.25"
-            d="M0,192L60,170.7C120,149,240,107,360,117.3C480,128,600,192,720,192C840,192,960,128,1080,133.3C1200,139,1320,213,1380,250.7L1440,288L1440,320H0Z"
-          />
-        </svg>
-        <svg
-          className="absolute bottom-0 right-0 w-full h-full opacity-20 rotate-180"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1440 320"
-        >
-          <path
-            fill="#ffffff"
-            fillOpacity="0.2"
-            d="M0,224L60,208C120,192,240,160,360,165.3C480,171,600,213,720,229.3C840,245,960,235,1080,213.3C1200,192,1320,160,1380,144L1440,128L1440,320H0Z"
-          />
-        </svg>
-      </div>
-
       {/* Logo */}
       <div className="flex justify-center items-center space-x-2 mb-6">
-        <img src="/assets/svg/ftlogo.svg" alt="Logo" className="lg:w-[150px]" />
+        <img src="/assets/svg/ftlogo.svg" alt="Logo" className="w-[150px]" />
       </div>
 
       {/* Form Container */}
@@ -44,71 +74,130 @@ const SignupPage = () => {
             Create your Account
           </h2>
 
-          <form className="space-y-5">
+          {serverError && (
+            <p className="text-red-600 text-center mb-4 text-sm">
+              {serverError}
+            </p>
+          )}
 
+          <form className="space-y-5" onSubmit={formik.handleSubmit}>
+            {/* Full Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Full Name
               </label>
               <input
                 type="text"
+                name="full_name"
                 placeholder="John Doe"
-                className="w-full px-4 py-2 border rounded focus:ring-0 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+                className={`w-full px-4 py-2 border rounded outline-none transition ${
+                  formik.touched.full_name && formik.errors.full_name
+                    ? "border-red-500"
+                    : "focus:border-indigo-500"
+                }`}
+                {...formik.getFieldProps("full_name")}
               />
+              {formik.touched.full_name && formik.errors.full_name && (
+                <p className="text-red-500 text-xs mt-1">
+                  {formik.errors.full_name}
+                </p>
+              )}
             </div>
 
+            {/* Email */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Email Address
               </label>
               <input
                 type="email"
+                name="email"
                 placeholder="you@example.com"
-                className="w-full px-4 py-2 border rounded focus:ring-0 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+                className={`w-full px-4 py-2 border rounded outline-none transition ${
+                  formik.touched.email && formik.errors.email
+                    ? "border-red-500"
+                    : "focus:border-indigo-500"
+                }`}
+                {...formik.getFieldProps("email")}
               />
+              {formik.touched.email && formik.errors.email && (
+                <p className="text-red-500 text-xs mt-1">
+                  {formik.errors.email}
+                </p>
+              )}
             </div>
 
-            <div>
+            {/* Password */}
+            <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Password
               </label>
               <input
-                type="password"
+                type={showPass ? "text" : "password"}
+                name="password"
                 placeholder="••••••••"
-                className="w-full px-4 py-2 border rounded focus:ring-0 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+                className={`w-full px-4 py-2 border rounded outline-none transition ${
+                  formik.touched.password && formik.errors.password
+                    ? "border-red-500"
+                    : "focus:border-indigo-500"
+                }`}
+                {...formik.getFieldProps("password")}
               />
+              <span
+                className="absolute right-3 top-10 cursor-pointer"
+                onClick={() => setShowPass(!showPass)}
+              >
+                {showPass ? <HiEyeOff /> : <HiEye />}
+              </span>
+              {formik.touched.password && formik.errors.password && (
+                <p className="text-red-500 text-xs mt-1">
+                  {formik.errors.password}
+                </p>
+              )}
             </div>
 
-            <div>
+            {/* Confirm Password */}
+            <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Confirm Password
               </label>
               <input
-                type="password"
+                type={showCPass ? "text" : "password"}
+                name="confirm_password"
                 placeholder="••••••••"
-                className="w-full px-4 py-2 border rounded focus:ring-0 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+                className={`w-full px-4 py-2 border rounded outline-none transition ${
+                  formik.touched.confirm_password &&
+                  formik.errors.confirm_password
+                    ? "border-red-500"
+                    : "focus:border-indigo-500"
+                }`}
+                {...formik.getFieldProps("confirm_password")}
               />
+              <span
+                className="absolute right-3 top-10 cursor-pointer"
+                onClick={() => setShowCPass(!showCPass)}
+              >
+                {showCPass ? <HiEyeOff /> : <HiEye />}
+              </span>
+              {formik.touched.confirm_password &&
+                formik.errors.confirm_password && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {formik.errors.confirm_password}
+                  </p>
+                )}
             </div>
 
+            {/* Submit Button */}
             <button
               type="submit"
+              disabled={formik.isSubmitting}
               className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded font-semibold transition duration-200 shadow-md"
             >
-              Sign Up
+              {formik.isSubmitting ? "Creating..." : "Sign Up"}
             </button>
-
-            <p className="text-xs text-gray-500 text-center mt-3">
-              By creating an account you agree to our{" "}
-              <a href="#" className="text-indigo-600 hover:underline">
-                Terms of Use
-              </a>{" "}
-              and{" "}
-              <a href="#" className="text-indigo-600 hover:underline">
-                Privacy Policy
-              </a>.
-            </p>
           </form>
 
+          {/* Login Link */}
           <div className="text-center mt-6">
             <p className="text-sm text-gray-600">
               Already have an account?{" "}
@@ -121,6 +210,7 @@ const SignupPage = () => {
             </p>
           </div>
 
+          {/* Social Buttons */}
           <div className="mt-6 border-t border-gray-200 pt-6">
             <p className="text-center text-sm text-gray-500 mb-3">
               Or sign up with

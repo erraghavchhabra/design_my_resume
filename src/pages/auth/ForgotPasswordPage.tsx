@@ -1,69 +1,78 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import Cookies from "js-cookie";
+import { toast } from "sonner";
+import { ForgotPasswordApi, ResetPasswordApi } from "../../api/AuthApi";
 
-const ForgotPasswordPage = () => {
+
+
+
+const ForgotSchema = Yup.object({
+  email: Yup.string().email("Invalid Email").required("Email is required"),
+});
+
+const ResetSchema = Yup.object({
+  password: Yup.string().min(6).required("Required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password")], "Passwords must match")
+    .required("Required"),
+});
+
+export default function ForgotPasswordPage() {
   const [step, setStep] = useState<1 | 2>(1);
-
+  const [resetToken, setResetToken] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const handleEmailSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // yaha future me API call kar sakte ho (send reset OTP / link)
-    if (!email.trim()) return;
-    setStep(2);
+
+  const navigate = useNavigate();
+
+  // Step 1: Send Email
+  const handleForgot = async (values: any) => {
+    try {
+      const res = await axios.post(ForgotPasswordApi, { email: values.email });
+      toast.success("Reset link created successfully!");
+
+      setEmail(values.email);
+      setResetToken(res.data.reset_token); // token save
+      setStep(2);
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || "Something went wrong!");
+    }
   };
 
-  const handlePasswordSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // yaha actual reset password API call karna hoga
-    if (!password || password !== confirmPassword) return;
-    console.log("Reset with:", { email, password });
+  // Step 2: Reset Password
+  const handleReset = async (values: any) => {
+    try {
+      await axios.post(`${ResetPasswordApi}/${resetToken}`, {
+        password: values.password,
+      });
+
+      toast.success("Password reset successfully!");
+      setResetToken(""); // clear token after use
+      navigate("/login");
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || "Reset failed!");
+    }
   };
 
   return (
     <div className="relative min-h-screen py-16 flex flex-col overflow-hidden bg-gradient-to-br from-indigo-600 via-indigo-500 to-indigo-800">
-      {/* Decorative Background Waves */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <svg
-          className="absolute top-0 left-0 w-full h-full opacity-20"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1440 320"
-        >
-          <path
-            fill="#ffffff"
-            fillOpacity="0.25"
-            d="M0,192L60,170.7C120,149,240,107,360,117.3C480,128,600,192,720,192C840,192,960,128,1080,133.3C1200,139,1320,213,1380,250.7L1440,288L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
-          ></path>
-        </svg>
-        <svg
-          className="absolute bottom-0 right-0 w-full h-full opacity-20 rotate-180"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1440 320"
-        >
-          <path
-            fill="#ffffff"
-            fillOpacity="0.2"
-            d="M0,224L60,208C120,192,240,160,360,165.3C480,171,600,213,720,229.3C840,245,960,235,1080,213.3C1200,192,1320,160,1380,144L1440,128L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
-          ></path>
-        </svg>
-      </div>
-
-      {/* Top Logo */}
+      {/* LOGO */}
       <div className="flex justify-center items-center space-x-2 mb-6">
-        <img src="/assets/svg/ftlogo.svg" alt="Logo" className="lg:w-[150px]" />
+        <img src="/assets/svg/ftlogo.svg" alt="Logo" className="w-[150px]" />
       </div>
 
-      {/* Center Card */}
       <div className="flex flex-1 justify-center items-center px-4">
-        <div className="bg-white/95 backdrop-blur-sm shadow-2xl rounded-2xl p-8 w-full max-w-md border border-gray-100">
-          {/* Step Indicator */}
-          <div className="flex justify-center gap-2 mb-4 text-xs font-medium text-gray-500">
+        <div className="bg-white/95 shadow-xl rounded-2xl p-8 w-full max-w-md border border-gray-100">
+          {/* Step UI */}
+          <div className="flex justify-center gap-2 mb-6 text-xs font-medium">
             <span
               className={`px-3 py-1 rounded-full ${
                 step === 1
                   ? "bg-indigo-100 text-indigo-700"
-                  : "bg-gray-100 text-gray-500"
+                  : "bg-gray-100 text-gray-400"
               }`}
             >
               1. Verify Email
@@ -79,114 +88,105 @@ const ForgotPasswordPage = () => {
             </span>
           </div>
 
-          {step === 1 ? (
-            <>
-              <h2 className="text-2xl font-bold text-gray-800 text-center mb-3">
-                Forgot your password?
-              </h2>
-              <p className="text-sm text-gray-600 text-center mb-6">
-                Enter your registered email address and we’ll help you reset it.
-              </p>
-
-              <form className="space-y-5" onSubmit={handleEmailSubmit}>
+          {/* STEP 1 FORM */}
+          {step === 1 && (
+            <Formik
+              initialValues={{ email: "" }}
+              validationSchema={ForgotSchema}
+              onSubmit={handleForgot}
+            >
+              <Form className="space-y-5">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Email Address
-                  </label>
-                  <input
+                  <label className="block text-sm mb-1">Email Address</label>
+                  <Field
+                    name="email"
                     type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-2 border rounded"
                     placeholder="you@example.com"
-                    className="w-full px-4 py-2 border rounded focus:ring-0 focus:border-indigo-500 outline-none transition"
+                  />
+                  <ErrorMessage
+                    name="email"
+                    component="div"
+                    className="text-red-500 text-sm"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded font-semibold transition duration-200 shadow-md"
+                  className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition"
                 >
                   Continue
                 </button>
-              </form>
 
-              <div className="text-center mt-6">
-                <p className="text-sm text-gray-600">
+                <p className="text-center text-sm mt-4">
                   Remember your password?{" "}
-                  <Link
-                    to="/login"
-                    className="text-indigo-600 font-semibold hover:underline"
-                  >
+                  <Link to="/login" className="text-indigo-600 font-semibold">
                     Back to login
                   </Link>
                 </p>
-              </div>
-            </>
-          ) : (
-            <>
-              <h2 className="text-2xl font-bold text-gray-800 text-center mb-3">
-                Set a new password
-              </h2>
-              <p className="text-sm text-gray-600 text-center mb-6">
-                Create a strong password for your account:
-                <span className="block">
-                  <span className="font-semibold">{email}</span>
-                </span>
-              </p>
+              </Form>
+            </Formik>
+          )}
 
-              <form className="space-y-5" onSubmit={handlePasswordSubmit}>
+          {/* STEP 2 FORM */}
+          {step === 2 && (
+            <Formik
+              initialValues={{ password: "", confirmPassword: "" }}
+              validationSchema={ResetSchema}
+              onSubmit={handleReset}
+            >
+              <Form className="space-y-5">
+                <label className="block text-sm text-gray-700">
+                  Updating password for: <b>{email}</b>
+                </label>
+
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    New Password
-                  </label>
-                  <input
+                  <Field
+                    name="password"
                     type="password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full px-4 py-2 border rounded focus:ring-0 focus:border-indigo-500 outline-none transition"
+                    className="w-full px-4 py-2 border rounded"
+                    placeholder="New password"
+                  />
+                  <ErrorMessage
+                    name="password"
+                    component="div"
+                    className="text-red-500 text-sm"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Confirm New Password
-                  </label>
-                  <input
+                  <Field
+                    name="confirmPassword"
                     type="password"
-                    required
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full px-4 py-2 border rounded focus:ring-0 focus:border-indigo-500 outline-none transition"
+                    className="w-full px-4 py-2 border rounded"
+                    placeholder="Confirm password"
+                  />
+                  <ErrorMessage
+                    name="confirmPassword"
+                    component="div"
+                    className="text-red-500 text-sm"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded font-semibold transition duration-200 shadow-md"
+                  className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition"
                 >
                   Reset Password
                 </button>
-              </form>
 
-              <div className="text-center mt-6">
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="text-sm text-gray-600 hover:text-indigo-600"
+                  className="text-sm text-gray-600 hover:text-indigo-600 mx-auto block"
                 >
-                  ← Go back to email step
+                  ← Go Back
                 </button>
-              </div>
-            </>
+              </Form>
+            </Formik>
           )}
         </div>
       </div>
     </div>
   );
-};
-
-export default ForgotPasswordPage;
+}
