@@ -20,35 +20,35 @@ interface TemplateProps {
 
 const ExecutiveProTemplate = ({ data, editMod }: TemplateProps) => {
   return (
-    <div className="bg-white" style={{ fontFamily: data.fontFamily }}>
+    <div className="bg-white" style={{ fontFamily: data.font_family }}>
       {/* Header Section with Gradient */}
       <div
         className="px-12 py-10 text-white relative overflow-hidden"
         style={{
-          background: `linear-gradient(135deg, ${data.themeColor} 0%, ${data.themeColor}dd 100%)`,
+          background: `linear-gradient(135deg, ${data.theme_color} 0%, ${data.theme_color}dd 100%)`,
         }}
       >
         <div className="relative group z-10 ">
           {editMod && <EditBox href={`/builder?step=0&mode=edit`} />}
 
           <h1 className="text-5xl font-bold mb-3 tracking-tight">
-            {data.personalInfo.fullName}
+            {data.personal_info.full_name}
           </h1>
           <p className="text-2xl mb-6 opacity-90">
-            {data.personalInfo.headline}
+            {data.personal_info.headline}
           </p>
           <div className="flex flex-wrap gap-6 text-sm">
             <div className="flex items-center gap-2">
               <Mail className="h-4 w-4" />
-              <span>{data.personalInfo.email}</span>
+              <span>{data.personal_info.email}</span>
             </div>
             <div className="flex items-center gap-2">
               <Phone className="h-4 w-4" />
-              <span>{data.personalInfo.phone}</span>
+              <span>{data.personal_info.phone}</span>
             </div>
             <div className="flex items-center gap-2">
               <MapPin className="h-4 w-4" />
-              <span>{data.personalInfo.location}</span>
+              <span>{data.personal_info.location}</span>
             </div>
           </div>
         </div>
@@ -63,11 +63,11 @@ const ExecutiveProTemplate = ({ data, editMod }: TemplateProps) => {
             <div className="flex items-center gap-3 mb-4">
               <div
                 className="w-12 h-1 rounded"
-                style={{ backgroundColor: data.themeColor }}
+                style={{ backgroundColor: data.theme_color }}
               />
               <h2
                 className="text-2xl font-bold"
-                style={{ color: data.themeColor }}
+                style={{ color: data.theme_color }}
               >
                 Professional Summary
               </h2>
@@ -79,33 +79,33 @@ const ExecutiveProTemplate = ({ data, editMod }: TemplateProps) => {
         )}
 
         {/* Professional Experience */}
-        {data.experience.length > 0 && (
+        {data.experiences.length > 0 && (
           <section className="mb-8 relative group">
             {editMod && <EditBox href={`/builder?step=2&mode=edit`} />}
 
             <div className="flex items-center gap-3 mb-4">
               <div
                 className="w-12 h-1 rounded"
-                style={{ backgroundColor: data.themeColor }}
+                style={{ backgroundColor: data.theme_color }}
               />
               <h2
                 className="text-2xl font-bold"
-                style={{ color: data.themeColor }}
+                style={{ color: data.theme_color }}
               >
                 <Briefcase className="inline-block h-6 w-6 mr-2 mb-1" />
                 Professional Experience
               </h2>
             </div>
             <div className="space-y-6 pl-15">
-              {data.experience.map((exp) => (
+              {data.experiences.map((exp) => (
                 <div
                   key={exp.id}
                   className="relative border-l-3 pl-6"
-                  style={{ borderColor: data.themeColor }}
+                  style={{ borderColor: data.theme_color }}
                 >
                   <div
                     className="absolute -left-2 top-0 w-4 h-4 rounded-full"
-                    style={{ backgroundColor: data.themeColor }}
+                    style={{ backgroundColor: data.theme_color }}
                   />
                   <div className="flex justify-between items-start mb-2">
                     <div className="flex-1">
@@ -114,15 +114,15 @@ const ExecutiveProTemplate = ({ data, editMod }: TemplateProps) => {
                       </h3>
                       <p
                         className="text-lg font-semibold"
-                        style={{ color: data.themeColor }}
+                        style={{ color: data.theme_color }}
                       >
                         {exp.company}
                       </p>
                     </div>
                     <div className="text-right text-sm text-gray-600 ml-4">
                       <p className="font-semibold">
-                        {exp.startDate} -{" "}
-                        {exp.current ? "Present" : exp.endDate}
+                        {exp.start_date} -{" "}
+                        {exp.current ? "Present" : exp.end_date}
                       </p>
                       <p>{exp.location}</p>
                     </div>
@@ -144,11 +144,11 @@ const ExecutiveProTemplate = ({ data, editMod }: TemplateProps) => {
             <div className="flex items-center gap-3 mb-4">
               <div
                 className="w-12 h-1 rounded"
-                style={{ backgroundColor: data.themeColor }}
+                style={{ backgroundColor: data.theme_color }}
               />
               <h2
                 className="text-2xl font-bold"
-                style={{ color: data.themeColor }}
+                style={{ color: data.theme_color }}
               >
                 <FolderOpen className="inline-block h-6 w-6 mr-2 mb-1" />
                 Key Projects
@@ -159,7 +159,7 @@ const ExecutiveProTemplate = ({ data, editMod }: TemplateProps) => {
                 <div
                   key={project.id}
                   className="border-l-3 pl-5 py-2"
-                  style={{ borderColor: data.themeColor + "40" }}
+                  style={{ borderColor: data.theme_color + "40" }}
                 >
                   <h3 className="text-lg font-bold text-gray-900 mb-1">
                     {project.title}
@@ -171,7 +171,7 @@ const ExecutiveProTemplate = ({ data, editMod }: TemplateProps) => {
                         <span
                           key={idx}
                           className="px-3 py-1 text-xs font-semibold rounded-full text-white"
-                          style={{ backgroundColor: data.themeColor }}
+                          style={{ backgroundColor: data.theme_color }}
                         >
                           {tech}
                         </span>
@@ -194,11 +194,11 @@ const ExecutiveProTemplate = ({ data, editMod }: TemplateProps) => {
               <div className="flex items-center gap-3 mb-4">
                 <div
                   className="w-8 h-1 rounded"
-                  style={{ backgroundColor: data.themeColor }}
+                  style={{ backgroundColor: data.theme_color }}
                 />
                 <h2
                   className="text-xl font-bold"
-                  style={{ color: data.themeColor }}
+                  style={{ color: data.theme_color }}
                 >
                   <GraduationCap className="inline-block h-5 w-5 mr-2 mb-1" />
                   Education
@@ -214,7 +214,7 @@ const ExecutiveProTemplate = ({ data, editMod }: TemplateProps) => {
                       {edu.institution}
                     </p>
                     <p className="text-sm text-gray-600">
-                      {edu.startDate} - {edu.endDate}
+                      {edu.start_date} - {edu.end_date}
                     </p>
                     {edu.description && (
                       <p className="text-sm text-gray-600 mt-1">
@@ -235,11 +235,11 @@ const ExecutiveProTemplate = ({ data, editMod }: TemplateProps) => {
               <div className="flex items-center gap-3 mb-4">
                 <div
                   className="w-8 h-1 rounded"
-                  style={{ backgroundColor: data.themeColor }}
+                  style={{ backgroundColor: data.theme_color }}
                 />
                 <h2
                   className="text-xl font-bold"
-                  style={{ color: data.themeColor }}
+                  style={{ color: data.theme_color }}
                 >
                   <Code className="inline-block h-5 w-5 mr-2 mb-1" />
                   Core Skills
@@ -251,8 +251,8 @@ const ExecutiveProTemplate = ({ data, editMod }: TemplateProps) => {
                     key={skill.id}
                     className="px-4 py-2 text-sm font-semibold rounded-lg"
                     style={{
-                      backgroundColor: data.themeColor + "15",
-                      color: data.themeColor,
+                      backgroundColor: data.theme_color + "15",
+                      color: data.theme_color,
                     }}
                   >
                     {skill.name}
@@ -271,11 +271,11 @@ const ExecutiveProTemplate = ({ data, editMod }: TemplateProps) => {
             <div className="flex items-center gap-3 mb-4">
               <div
                 className="w-12 h-1 rounded"
-                style={{ backgroundColor: data.themeColor }}
+                style={{ backgroundColor: data.theme_color }}
               />
               <h2
                 className="text-2xl font-bold"
-                style={{ color: data.themeColor }}
+                style={{ color: data.theme_color }}
               >
                 <Award className="inline-block h-6 w-6 mr-2 mb-1" />
                 Achievements & Awards
@@ -286,7 +286,7 @@ const ExecutiveProTemplate = ({ data, editMod }: TemplateProps) => {
                 <div key={achievement.id} className="flex items-start gap-3">
                   <div
                     className="w-2 h-2 rounded-full mt-2 flex-shrink-0"
-                    style={{ backgroundColor: data.themeColor }}
+                    style={{ backgroundColor: data.theme_color }}
                   />
                   <div>
                     <h3 className="font-bold text-gray-900">
@@ -317,11 +317,11 @@ const ExecutiveProTemplate = ({ data, editMod }: TemplateProps) => {
               <div className="flex items-center gap-3 mb-4">
                 <div
                   className="w-8 h-1 rounded"
-                  style={{ backgroundColor: data.themeColor }}
+                  style={{ backgroundColor: data.theme_color }}
                 />
                 <h2
                   className="text-xl font-bold"
-                  style={{ color: data.themeColor }}
+                  style={{ color: data.theme_color }}
                 >
                   <Globe className="inline-block h-5 w-5 mr-2 mb-1" />
                   Languages
@@ -353,11 +353,11 @@ const ExecutiveProTemplate = ({ data, editMod }: TemplateProps) => {
               <div className="flex items-center gap-3 mb-4">
                 <div
                   className="w-8 h-1 rounded"
-                  style={{ backgroundColor: data.themeColor }}
+                  style={{ backgroundColor: data.theme_color }}
                 />
                 <h2
                   className="text-xl font-bold"
-                  style={{ color: data.themeColor }}
+                  style={{ color: data.theme_color }}
                 >
                   <Heart className="inline-block h-5 w-5 mr-2 mb-1" />
                   Interests
@@ -369,8 +369,8 @@ const ExecutiveProTemplate = ({ data, editMod }: TemplateProps) => {
                     key={interest.id}
                     className="px-3 py-1 text-sm rounded-full"
                     style={{
-                      backgroundColor: data.themeColor + "10",
-                      color: data.themeColor,
+                      backgroundColor: data.theme_color + "10",
+                      color: data.theme_color,
                     }}
                   >
                     {interest.name}

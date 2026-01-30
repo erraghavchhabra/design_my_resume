@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Cookies from "js-cookie";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { LoginApi } from "../../api/AuthApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserData } from "../../redux/slices/authSlice";
@@ -13,6 +13,7 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [apiError, setApiError] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -47,8 +48,14 @@ const LoginPage = () => {
         });
 
         dispatch(setUserData(user));
-
-        navigate("/"); // redirect
+        // 🔥 Read redirect param
+        const params = new URLSearchParams(location.search);
+        const redirectTo = params.get("redirect");
+        if (redirectTo) {
+          navigate(redirectTo);
+        } else {
+          navigate("/"); // default fallback
+        }
       } catch (err) {
         setApiError(err?.response?.data?.message || "Login failed!");
       }

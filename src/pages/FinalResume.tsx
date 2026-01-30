@@ -1,6 +1,6 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
 import {
@@ -44,6 +44,10 @@ import {
   SheetHeader,
   SheetTitle,
 } from "../components/ui/sheet";
+import axios from "axios";
+import { createResume_api, getResume_api } from "../api/ResumeApis";
+import Cookies from "js-cookie";
+import CircleLoading from "../components/ui/circle-loading";
 // import ExecutiveProTemplate from "../components/resume/ExecutiveProTemplate";
 // import MinimalTemplate from "../components/resume/MinimalTemplate";
 // import ProfessionalTemplate from "../components/resume/ProfessionalTemplate";
@@ -65,7 +69,7 @@ const templates = [
     steps: [
       "basic",
       "summary",
-      "experience",
+      "experiences",
       "education",
       "skills",
       "projects",
@@ -81,7 +85,7 @@ const templates = [
     steps: [
       "basic",
       "summary",
-      "experience",
+      "experiences",
       "education",
       "skills",
       "projects",
@@ -95,7 +99,7 @@ const templates = [
     id: "creative",
     name: "Creative",
     preview: CreativeTemplate,
-    steps: ["basic", "summary", "experience", "education", "skills"],
+    steps: ["basic", "summary", "experiences", "education", "skills"],
     profileImage: false,
   },
   // { id: "executive", name: "Executive Pro", preview: ExecutiveProTemplate },
@@ -158,7 +162,7 @@ const tempSteps = [
   },
   {
     step: 2,
-    id: "experience",
+    id: "experiences",
     title: "Experience",
     introtitle: "Showcase your work",
     description:
@@ -211,8 +215,19 @@ const tempSteps = [
   },
 ];
 const FinalResume = () => {
+  const token = Cookies.get("user_token");
+  const { id } = useParams();
+
+  const update_resume_id = Cookies.get("update_resume_id");
+
   const navigate = useNavigate();
-  const { resumeData, setTemplate, setThemeColor, setFontFamily } = useResume();
+  const {
+    resumeData,
+    setTemplate,
+    setThemeColor,
+    setFontFamily,
+    updateResumeData,
+  } = useResume();
   const [isDownloading, setIsDownloading] = useState(false);
   const [customizeDialog, setCustomizeDialog] = useState(false);
   const [editSheet, setEditSheet] = useState(false);
@@ -220,6 +235,102 @@ const FinalResume = () => {
   const [donwloadDialog, setDonwloadDialog] = useState(false);
   const template = templates.find((t) => t.id === resumeData.template);
   const steps = tempSteps?.filter((s) => template?.steps?.includes(s.id));
+  const [loading, setLoading] = useState(false);
+  //🟡🟡🟡
+
+  useEffect(() => {
+    const fetchResumeData = async () => {
+      try {
+        setLoading(true);
+
+        // 🔐 If logged in and resume id exists → fetch from API
+        if (token && id) {
+          const res = await axios.get(getResume_api(id), {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (res?.data?.id) {
+            const formattedData = {
+              ...res.data,
+              projects: Array.isArray(res.data?.projects)
+                ? res.data.projects.map((project: any) => ({
+                    ...project,
+                    technologies: Array.isArray(project?.technologies)
+                      ? project.technologies
+                          .map((t: any) =>
+                            typeof t === "object" && t !== null
+                              ? t.technology
+                              : t,
+                          )
+                          .filter(Boolean)
+                      : [],
+                  }))
+                : [],
+            };
+            updateResumeData(formattedData);
+          } else {
+            navigate("/resume-intro");
+          }
+        }
+
+        // 👤 If NOT logged in → load guest resume
+        else if (!token) {
+          const guestData = localStorage.getItem("guest_resume_data");
+
+          if (guestData) {
+            updateResumeData(JSON.parse(guestData));
+          } else {
+            navigate("/resume-intro");
+          }
+        }
+
+        // Edge case: logged in but no id
+        else {
+          navigate("/resume-intro");
+        }
+      } catch (error) {
+        console.error("Failed to fetch resume:", error);
+        navigate("/resume-intro");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchResumeData();
+  }, []);
+  async function createResumeFunc() {
+    try {
+      setLoading(true);
+      if (!id) {
+        const guestData = localStorage.getItem("guest_resume_data");
+        const payload = guestData ? JSON.parse(guestData || "{}") : resumeData;
+        const res = await axios.post(createResume_api, payload, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (res?.data?.success) {
+          if (res?.data?.resume?.id) {
+            Cookies.set("first_resume_id", res?.data?.resume?.id, {
+              expires: 365, // 1year
+            });
+            setDonwloadDialog(true);
+          }
+        }
+      } else {
+        setDonwloadDialog(true);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  //🟡🟡🟡
+
   const handleDownload = async (format: "pdf" | "docx") => {
     setIsDownloading(true);
     try {
@@ -264,12 +375,12 @@ const FinalResume = () => {
             0,
             position,
             pdfWidth,
-            (imgHeight / 2) * (pdfWidth / (imgWidth / 2))
+            (imgHeight / 2) * (pdfWidth / (imgWidth / 2)),
           );
           heightLeft -= pdfHeight;
         }
 
-        pdf.save(`${resumeData.personalInfo.fullName || "resume"}.pdf`);
+        pdf.save(`${resumeData.personal_info.full_name || "resume"}.pdf`);
         toast.success("Resume downloaded as PDF!");
         setDonwloadDialog(false);
       } else {
@@ -296,7 +407,13 @@ const FinalResume = () => {
   return (
     <section className="bg-[#212D59]  ">
       <div className="min-h-screen  max-w-7xl mx-auto w-full pt-8 max-md:flex items-center flex-col ">
-        <img src="/assets/svg/ftlogo.svg" alt="logo" className="w-24 md:w-32" />
+        <Link to="/">
+          <img
+            src="/assets/svg/ftlogo.svg"
+            alt="logo"
+            className="w-24 md:w-32"
+          />
+        </Link>
         {/* =========>mobile<========= */}
         <div className="grid grid-cols-2 md:hidden items-center mt-5 gap-3">
           <Button
@@ -342,8 +459,15 @@ const FinalResume = () => {
             {
               title: "Download",
               icon: <Save />,
-              onClick: () => setDonwloadDialog(true),
-              disabled: isDownloading,
+              onClick: () => {
+                if (!token) {
+                  navigate(`/login?redirect=/final-resume`);
+                  return;
+                }
+                createResumeFunc();
+              },
+              disabled: isDownloading || loading,
+              loadings: loading,
             },
             {
               title: "Print",
@@ -368,7 +492,7 @@ const FinalResume = () => {
                     disabled:opacity-50 disabled:cursor-not-allowed
                   "
             >
-              {item.icon}
+              {item?.loadings ? <CircleLoading /> : item.icon}
               {/* <span className="mt-2 font-semibold">{item.title}</span> */}
             </button>
           ))}
@@ -437,7 +561,7 @@ const FinalResume = () => {
                             setThemeColor(color.value);
                           }}
                           className={`w-6 h-6 rounded-full border-[0.5px] border-white transition-all ${
-                            resumeData.themeColor === color.value
+                            resumeData.theme_color === color.value
                               ? "ring-1 ring-primary ring-offset-2"
                               : "hover:ring-1 hover:ring-muted-foreground"
                           }`}
@@ -453,7 +577,8 @@ const FinalResume = () => {
 
                     <div className="grid grid-cols-1 gap-2">
                       {fonts.map((font) => {
-                        const isSelected = resumeData.fontFamily === font.value;
+                        const isSelected =
+                          resumeData.font_family === font.value;
 
                         return (
                           <button
@@ -526,9 +651,21 @@ const FinalResume = () => {
                 {
                   title: "Download",
                   icon: <Save />,
-                  onClick: () => setDonwloadDialog(true),
-                  disabled: isDownloading,
+                  onClick: () => {
+                    if (!token) {
+                      navigate(`/login?redirect=/final-resume`);
+                      return;
+                    }
+                    createResumeFunc();
+                  },
+                  disabled: isDownloading || loading,
+                  loadings: loading,
                 },
+                // {
+                //   title: "Save",
+                //   icon: <Save />,
+                //   onClick: () => createResumeFunc(),
+                // },
                 {
                   title: "Print",
                   icon: <Printer />,
@@ -552,7 +689,7 @@ const FinalResume = () => {
                     disabled:opacity-50 disabled:cursor-not-allowed
                   "
                 >
-                  {item.icon}
+                  {item?.loadings ? <CircleLoading /> : item.icon}
                   <span className="mt-2 font-semibold">{item.title}</span>
                 </button>
               ))}

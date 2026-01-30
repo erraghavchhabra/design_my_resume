@@ -1,381 +1,21 @@
-// import { useState, useRef, useEffect } from "react";
-// import { motion, AnimatePresence } from "framer-motion";
-// import { useNavigate, useSearchParams } from "react-router-dom";
-// import { Button } from "../components/ui/button";
-// import { Card } from "../components/ui/card";
-// import { ArrowLeft, Info } from "lucide-react";
-// import { useResume } from "../context/ResumeContext";
-// import { toast } from "sonner";
-
-// import BasicInfoForm from "../components/builder/BasicInfoForm";
-// import SummaryForm from "../components/builder/SummaryForm";
-// import ExperienceForm from "../components/builder/ExperienceForm";
-// import EducationForm from "../components/builder/EducationForm";
-// import SkillsForm from "../components/builder/SkillsForm";
-// import ProjectsForm from "../components/builder/ProjectsForm";
-// import AchievementsForm from "../components/builder/AchievementsForm";
-// import LanguagesForm from "../components/builder/LanguagesForm";
-// import InterestsForm from "../components/builder/InterestsForm";
-
-// import ModernTemplate from "../components/resume/ModernTemplate";
-// import ClassicTemplate from "../components/resume/ClassicTemplate";
-// import ExecutiveProTemplate from "../components/resume/ExecutiveProTemplate";
-// import Stepper, { Step } from "../components/ui/Stepper";
-// // import MinimalTemplate from "../components/resume/MinimalTemplate";
-// // import ProfessionalTemplate from "../components/resume/ProfessionalTemplate";
-// // import CreativeTemplate from "../components/resume/CreativeTemplate";
-// // import ExecutiveTemplate from "../components/resume/ExecutiveTemplate";
-// // import CompactTemplate from "../components/resume/CompactTemplate";
-// // import ElegantTemplate from "../components/resume/ElegantTemplate";
-// // import BoldTemplate from "../components/resume/BoldTemplate";
-// // import TechnicalTemplate from "../components/resume/TechnicalTemplate";
-// // import AcademicTemplate from "../components/resume/AcademicTemplate";
-// // import InfographicTemplate from "../components/resume/InfographicTemplate";
-// // import TimelineTemplate from "../components/resume/TimelineTemplate";
-// // import ModernProfessionalTemplate from "../components/resume/ModernProfessionalTemplate";
-
-// const Builder = () => {
-//   const navigate = useNavigate();
-//   const { resumeData } = useResume();
-//   const [searchParams] = useSearchParams();
-//   const [currentStep, setCurrentStep] = useState(0);
-//   const [isEditMode, setIsEditMode] = useState(false);
-//   const [showStepIntro, setShowStepIntro] = useState(true);
-//   const [showMenu, setShowMenu] = useState(true);
-//   const resumeRef = useRef<HTMLDivElement>(null);
-//   const templates = [
-//     { id: "modern", name: "Modern", preview: ModernTemplate },
-//     { id: "classic", name: "Classic", preview: ClassicTemplate },
-//     { id: "executive", name: "Executive Pro", preview: ExecutiveProTemplate },
-//     // { id: 'modern', name: 'Modern Professional', preview: ModernProfessionalTemplate },
-//     // { id: "minimal", name: "Minimal", preview: MinimalTemplate },
-//     // { id: "professional", name: "Professional", preview: ProfessionalTemplate },
-//     // { id: "creative", name: "Creative", preview: CreativeTemplate },
-//     // { id: "executive", name: "Executive", preview: ExecutiveTemplate },
-//     // { id: "compact", name: "Compact", preview: CompactTemplate },
-//     // { id: "elegant", name: "Elegant", preview: ElegantTemplate },
-//     // { id: "bold", name: "Bold", preview: BoldTemplate },
-//     // { id: "technical", name: "Technical", preview: TechnicalTemplate },
-//     // { id: "academic", name: "Academic", preview: AcademicTemplate },
-//     // { id: "infographic", name: "Infographic", preview: InfographicTemplate },
-//     // { id: "timeline", name: "Timeline", preview: TimelineTemplate },
-//   ];
-//   useEffect(() => {
-//     const stepParam = searchParams.get("step");
-//     const modeParam = searchParams.get("mode");
-//     if (stepParam) {
-//       setCurrentStep(parseInt(stepParam));
-//     }
-//     if (modeParam === "edit") {
-//       setIsEditMode(true);
-//     }
-//   }, [searchParams]);
-
-//   const steps = [
-//     {
-//       id: "basic",
-//       label: "Basic Info",
-//       title: "Personal Information",
-//       description:
-//         "Let's start with your basic contact details. This information will appear at the top of your resume.",
-//       details:
-//         "Include your full name, professional headline, email, phone, and location. This is what recruiters see first.",
-//     },
-//     {
-//       id: "summary",
-//       label: "Summary",
-//       title: "Professional Summary",
-//       description:
-//         "Write a brief overview of your professional background, key skills, and career objectives.",
-//       details:
-//         "This is your elevator pitch. Highlight your years of experience, key achievements, and what makes you unique in 3-4 sentences.",
-//     },
-//     {
-//       id: "experience",
-//       label: "Experience",
-//       title: "Work Experience",
-//       description:
-//         "Add your work history, including job titles, companies, dates, and key responsibilities.",
-//       details:
-//         "List your roles in reverse chronological order. Focus on achievements and quantifiable results rather than just duties.",
-//     },
-//     {
-//       id: "education",
-//       label: "Education",
-//       title: "Education & Qualifications",
-//       description:
-//         "Include your educational background, degrees, certifications, and relevant coursework.",
-//       details:
-//         "Add your degrees, diplomas, and relevant certifications. Include honors, GPA (if strong), and relevant projects.",
-//     },
-//     {
-//       id: "skills",
-//       label: "Skills",
-//       title: "Skills & Expertise",
-//       description:
-//         "List your technical skills, soft skills, and areas of expertise relevant to your field.",
-//       details:
-//         "Focus on skills that match the jobs you want. Use auto-suggestions to find commonly searched keywords.",
-//     },
-//     {
-//       id: "projects",
-//       label: "Projects",
-//       title: "Projects & Portfolio",
-//       description:
-//         "Showcase your notable projects, personal work, or portfolio pieces that demonstrate your abilities.",
-//       details:
-//         "Highlight 3-5 of your best projects. Include links, technologies used, and the impact of each project.",
-//     },
-//     {
-//       id: "achievements",
-//       label: "Achievements",
-//       title: "Achievements & Awards",
-//       description:
-//         "Highlight your accomplishments, awards, recognitions, and notable achievements.",
-//       details:
-//         "List awards, certifications, publications, or special recognition. Include the date and issuing organization.",
-//     },
-//     {
-//       id: "languages",
-//       label: "Languages",
-//       title: "Languages",
-//       description:
-//         "List languages you speak and your proficiency level in each.",
-//       details:
-//         "Specify your fluency level honestly. Language skills can be a significant advantage in many roles.",
-//     },
-//     {
-//       id: "interests",
-//       label: "Interests",
-//       title: "Interests & Hobbies",
-//       description:
-//         "Add your personal interests and hobbies to give a well-rounded view of yourself.",
-//       details:
-//         "This humanizes your resume. Include hobbies that show personality, teamwork, or leadership.",
-//     },
-//   ];
-
-//   const currentStepData = steps[currentStep];
-
-//   const handleNext = () => {
-//     if (currentStep < steps.length - 1) {
-//       setShowStepIntro(true);
-//       setCurrentStep(currentStep + 1);
-//       toast.success("Progress saved!");
-//     } else {
-//       navigate("/final-resume");
-//     }
-//   };
-
-//   const handlePrevious = () => {
-//     if (currentStep > 0) {
-//       setShowStepIntro(true);
-//       setCurrentStep(currentStep - 1);
-//     }
-//   };
-
-//   const handleUpdate = () => {
-//     toast.success("Section updated!");
-//     navigate("/final-resume");
-//   };
-
-//   const renderStepForm = () => {
-//     switch (currentStepData.id) {
-//       case "basic":
-//         return <BasicInfoForm />;
-//       case "summary":
-//         return <SummaryForm />;
-//       case "experience":
-//         return <ExperienceForm />;
-//       case "education":
-//         return <EducationForm />;
-//       case "skills":
-//         return <SkillsForm />;
-//       case "projects":
-//         return <ProjectsForm />;
-//       case "achievements":
-//         return <AchievementsForm />;
-//       case "languages":
-//         return <LanguagesForm />;
-//       case "interests":
-//         return <InterestsForm />;
-//       default:
-//         return <BasicInfoForm />;
-//     }
-//   };
-
-//   const renderTemplate = () => {
-//     const template = templates.find((t) => t.id === resumeData.template);
-//     const TemplateComponent = template?.preview || ModernTemplate;
-//     return <TemplateComponent data={resumeData} />;
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-background flex ">
-//       <div
-//         className={` bg-[#212D59] flex  flex-col  min-h-screen transition-all duration-300 ${
-//           showMenu ? "w-[310px] px-14" : "w-[100px]  px-5 items-center"
-//         }   py-10`}
-//       >
-//         <button
-//           onClick={() => {
-//             setShowMenu(!showMenu);
-//           }}
-//         >
-//           {showMenu ? (
-//             <img src="/assets/svg/ftlogo.svg" className="w-36" alt="logo" />
-//           ) : (
-//             <img src="/assets/img/white_logo.png" className="w-10" alt="logo" />
-//           )}
-//         </button>
-//         <div className="mt-5">
-//           <Stepper
-//             showMenu={showMenu}
-//             stepsArray={steps}
-//             initialStep={currentStep + 1}
-//             onStepChange={(step) => {
-//               setCurrentStep(step - 1);
-//             }}
-//             onFinalStepCompleted={() => console.log("All steps completed!")}
-//             backButtonText="Previous"
-//             nextButtonText="Next"
-//           />
-//         </div>
-//       </div>
-//       {/* Header */}
-//       {/* <header className="border-b border-border bg-card sticky top-0 z-20 shadow-sm">
-//         <div className="max-w-full mx-auto px-6 py-4 flex items-center justify-between">
-//           <div className="flex items-center gap-3">
-//             <Button
-//               variant="ghost"
-//               size="icon"
-//               onClick={() => navigate("/setup")}
-//             >
-//               <ArrowLeft className="h-5 w-5" />
-//             </Button>
-//             <div>
-//               <h1 className="text-lg font-semibold">Building Your Resume</h1>
-//               <p className="text-xs text-muted-foreground">
-//                 {resumeData.personalInfo.fullName || "Getting Started"}
-//               </p>
-//             </div>
-//           </div>
-//         </div>
-//       </header> */}
-
-//       <div className=" w-full flex items-start  ">
-//         {/* Left Side - Step Form */}
-//         <div className="w-full overflow-y-auto p-8 bg-background grid grid-cols-[2fr_1fr]">
-//           <div className="max-w-3xl w-full  absolute top-0">
-
-//             <AnimatePresence mode="wait">
-//               {showStepIntro && (
-//                 <motion.div
-//                   key={`intro-${currentStep}`}
-//                   initial={{ opacity: 0, y: 20 }}
-//                   animate={{ opacity: 1, y: 0 }}
-//                   exit={{ opacity: 0, y: -20 }}
-//                   transition={{ duration: 0.3 }}
-//                 >
-//                   <Card className="p-6 mb-6 bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20">
-//                     <div className="flex items-start gap-3">
-//                       <div className="p-2 bg-primary/10 rounded-lg">
-//                         <Info className="h-5 w-5 text-primary" />
-//                       </div>
-//                       <div className="flex-1">
-//                         <h3 className="font-semibold mb-1">
-//                           {currentStepData.title}
-//                         </h3>
-//                         <p className="text-sm text-muted-foreground mb-2">
-//                           {currentStepData.description}
-//                         </p>
-//                         <p className="text-xs text-muted-foreground">
-//                           💡 {currentStepData.details}
-//                         </p>
-//                       </div>
-//                       <Button
-//                         variant="ghost"
-//                         size="sm"
-//                         onClick={() => setShowStepIntro(false)}
-//                       >
-//                         Got it
-//                       </Button>
-//                     </div>
-//                   </Card>
-//                 </motion.div>
-//               )}
-//             </AnimatePresence>
-
-//             {/* Step Form */}
-//             <motion.div
-//               key={`form-${currentStep}`}
-//               initial={{ opacity: 0, x: 20 }}
-//               animate={{ opacity: 1, x: 0 }}
-//               transition={{ duration: 0.3 }}
-//               className="mb-8"
-//             >
-//               <Card className="p-8 shadow-lg">{renderStepForm()}</Card>
-//             </motion.div>
-
-//             {/* Navigation Buttons */}
-//             <div className="flex items-center justify-between pt-4">
-//               <Button
-//                 variant="outline"
-//                 size="lg"
-//                 onClick={handlePrevious}
-//                 disabled={currentStep === 0}
-//               >
-//                 Previous
-//               </Button>
-
-//               {isEditMode ? (
-//                 <Button size="lg" onClick={handleUpdate}>
-//                   Update Section
-//                 </Button>
-//               ) : currentStep < steps.length - 1 ? (
-//                 <Button size="lg" onClick={handleNext}>
-//                   Save & Continue
-//                 </Button>
-//               ) : (
-//                 <Button size="lg" onClick={handleNext}>
-//                   Complete Resume
-//                 </Button>
-//               )}
-//             </div>
-//           </div>
-//         </div>
-//         {/* Right Side - Live Preview */}
-//         <div className="flex items-start">
-//           <motion.div
-//             initial={{ opacity: 0, scale: 0.95 }}
-//             animate={{ opacity: 1, scale: 1 }}
-//             transition={{ duration: 0.3 }}
-//             className="transform origin-top"
-//           >
-//             {/* SCALE APPLY HERE (Important) */}
-//             <div className="scale-[0.70] origin-top-right">
-//               <div
-//                 ref={resumeRef}
-//                 className="bg-white shadow-2xl w-[600px] "
-//               >
-//                 {renderTemplate()}
-//               </div>
-//             </div>
-//           </motion.div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Builder;
-
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
-import { ArrowDown, ArrowLeft, ChevronDown, Info, ZoomIn } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowLeft,
+  ChevronDown,
+  Info,
+  Rss,
+  ZoomIn,
+} from "lucide-react";
 import { useResume } from "../context/ResumeContext";
 import { toast } from "sonner";
 
@@ -409,10 +49,18 @@ import TimelineTemplate from "../components/resume/TimelineTemplate";
 import ThemeCustomizer from "../components/builder/ThemeCustomizer";
 import { useMediaQuery } from "../lib/useMediaQuery";
 import { Sheet, SheetContent, SheetHeader } from "../components/ui/sheet";
+import axios from "axios";
+import { getResume_api, updateResume_api } from "../api/ResumeApis";
+import Cookies from "js-cookie";
+import CircleLoading from "../components/ui/circle-loading";
+import { ResumeData } from "../types/resume";
 
 const Builder = () => {
   const navigate = useNavigate();
-  const { resumeData } = useResume();
+  const { id } = useParams();
+  const update_resume_id = Cookies.get("update_resume_id");
+  const token = Cookies.get("user_token");
+  const { resumeData, updateResumeData }: any = useResume();
   const [searchParams] = useSearchParams();
   const [currentStep, setCurrentStep] = useState(0);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -423,7 +71,7 @@ const Builder = () => {
   const [openCustomizer, setOpenCustomizer] = useState(false);
   const [viewSheetOpen, setViewSheetOpen] = useState(false);
   const resumeRef = useRef<HTMLDivElement>(null);
-
+  const [loading, setLoading] = useState(false);
   // Resume width (fixed A4 size)
   const resumeWidth = 800;
   const previewWidth = 360;
@@ -437,7 +85,7 @@ const Builder = () => {
       steps: [
         "basic",
         "summary",
-        "experience",
+        "experiences",
         "education",
         "skills",
         "projects",
@@ -453,7 +101,7 @@ const Builder = () => {
       steps: [
         "basic",
         "summary",
-        "experience",
+        "experiences",
         "education",
         "skills",
         "projects",
@@ -467,7 +115,7 @@ const Builder = () => {
       id: "creative",
       name: "Creative",
       preview: CreativeTemplate,
-      steps: ["basic", "summary", "experience", "education", "skills"],
+      steps: ["basic", "summary", "experiences", "education", "skills"],
       profileImage: false,
     },
     // { id: "executive", name: "Executive Pro", preview: ExecutiveProTemplate },
@@ -487,6 +135,142 @@ const Builder = () => {
     // { id: "infographic", name: "Infographic", preview: InfographicTemplate },
     // { id: "timeline", name: "Timeline", preview: TimelineTemplate },
   ];
+  // useEffect(() => {
+  //   async function fetchResumeData() {
+  //     try {
+  //       setLoading(true);
+  //       if (update_resume_id) {
+  //         const res = await axios.get(getResume_api(update_resume_id));
+  //         if (res?.data?.id) {
+  //           // updateResumeData({ ...resumeData, ...res?.data });
+  //           updateResumeData(res?.data);
+  //           // updateResumeData((prev: ResumeData) => ({
+  //           //   // ...prev,
+
+  //           //   ...res.data,
+
+  //           //   // personal_info: {
+  //           //   //   // ...prev.personal_info,
+  //           //   //   ...res.data.personal_info,
+  //           //   // },
+
+  //           //   // summary: {
+  //           //   //   ...prev.summary,
+  //           //   //   ...res.data.summary,
+  //           //   // },
+
+  //           //   // experiences:
+  //           //   //   res.data.experiences?.length > 0
+  //           //   //     ? res.data.experiences
+  //           //   //     : prev.experiences,
+
+  //           //   // education:
+  //           //   //   res.data.education?.length > 0
+  //           //   //     ? res.data.education
+  //           //   //     : prev.education,
+
+  //           //   // skills:
+  //           //   //   res.data.skills?.length > 0 ? res.data.skills : prev.skills,
+
+  //           //   // projects:
+  //           //   //   res.data.projects?.length > 0
+  //           //   //     ? res.data.projects
+  //           //   //     : prev.projects,
+
+  //           //   // achievements:
+  //           //   //   res.data.achievements?.length > 0
+  //           //   //     ? res.data.achievements
+  //           //   //     : prev.achievements,
+
+  //           //   // languages:
+  //           //   //   res.data.languages?.length > 0
+  //           //   //     ? res.data.languages
+  //           //   //     : prev.languages,
+
+  //           //   // interests:
+  //           //   //   res.data.interests?.length > 0
+  //           //   //     ? res.data.interests
+  //           //   //     : prev.interests,
+  //           // }));
+  //         } else {
+  //           navigate("/resume-intro");
+  //         }
+  //       } else {
+  //         navigate("/resume-intro");
+  //       }
+  //     } catch (err) {
+  //       console.log(err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //     // navigate("/setup")
+  //   }
+  //   if (token) {
+  //     fetchResumeData();
+  //   }
+  // }, []);
+  useEffect(() => {
+    const fetchResumeData = async () => {
+      try {
+        setLoading(true);
+
+        // 🔐 If logged in and resume id exists → fetch from API
+        if (token && id) {
+          const res = await axios.get(getResume_api(id), {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (res?.data?.id) {
+            const formattedData = {
+              ...res.data,
+              projects: Array.isArray(res.data?.projects)
+                ? res.data.projects.map((project: any) => ({
+                    ...project,
+                    technologies: Array.isArray(project?.technologies)
+                      ? project.technologies
+                          .map((t: any) =>
+                            typeof t === "object" && t !== null
+                              ? t.technology
+                              : t,
+                          )
+                          .filter(Boolean)
+                      : [],
+                  }))
+                : [],
+            };
+            updateResumeData(formattedData);
+          } else {
+            navigate("/resume-intro");
+          }
+        }
+
+        // 👤 If NOT logged in → load guest resume
+        else if (!token) {
+          const guestData = localStorage.getItem("guest_resume_data");
+
+          if (guestData) {
+            updateResumeData(JSON.parse(guestData));
+          } else {
+            navigate("/resume-intro");
+          }
+        }
+
+        // Edge case: logged in but no id
+        else {
+          navigate("/resume-intro");
+        }
+      } catch (error) {
+        console.error("Failed to fetch resume:", error);
+        navigate("/resume-intro");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchResumeData();
+  }, []);
 
   useEffect(() => {
     const stepParam = searchParams.get("step");
@@ -514,79 +298,88 @@ const Builder = () => {
     {
       id: "basic",
       title: "Basic Info",
+      api_section: "personal_info",
       introtitle: "Let’s start with your",
       description:
         "Share your contact information so employers can reach you easily.",
       complateStep:
-        resumeData.personalInfo?.fullName &&
-        resumeData.personalInfo?.headline &&
-        resumeData.personalInfo?.email &&
-        resumeData.personalInfo?.phone &&
-        resumeData.personalInfo?.location,
+        resumeData?.personal_info?.full_name &&
+        resumeData?.personal_info?.headline &&
+        resumeData?.personal_info?.email &&
+        resumeData?.personal_info?.phone &&
+        resumeData?.personal_info?.location,
     },
     {
       id: "summary",
       title: "Summary",
+      api_section: "summary",
       introtitle: "Craft a powerful professional",
       description:
         "Use expert suggestions or write your own compelling introduction.",
-      complateStep: !isEditorEmpty(resumeData.summary.content),
+      complateStep: !isEditorEmpty(resumeData?.summary?.content),
     },
     {
-      id: "experience",
+      id: "experiences",
       title: "Experience",
+      api_section: "experiences",
       introtitle: "Showcase your work",
       description:
         "Highlight achievements, responsibilities, and measurable results.",
-      complateStep: resumeData.experience.length > 0,
+      complateStep: resumeData?.experiences?.length > 0,
     },
     {
       id: "education",
       title: "Education",
+      api_section: "education",
       introtitle: "Now, let’s add your",
       description:
         "Include schools, programs, certifications, and graduation dates.",
-      complateStep: resumeData.education.length > 0,
+      complateStep: resumeData?.education?.length > 0,
     },
     {
       id: "skills",
       title: "Skills",
+      api_section: "skills",
       introtitle: "Time to highlight your",
       description:
         "Use expertly written suggestions to optimize your skills section.",
-      complateStep: resumeData.skills.length > 0,
+      complateStep: resumeData?.skills?.length > 0,
     },
     {
       id: "projects",
       title: "Projects",
+      api_section: "projects",
       introtitle: "Show the impact of your",
       description:
         "Share accomplishments that prove your abilities and expertise.",
-      complateStep: resumeData.projects.length > 0,
+      complateStep: resumeData?.projects?.length > 0,
     },
     {
       id: "achievements",
       title: "Achievements",
+      api_section: "achievements",
       introtitle: "Let’s celebrate your",
       description: "Awards, recognitions, and milestones go here.",
-      complateStep: resumeData.achievements.length > 0,
+      complateStep: resumeData?.achievements?.length > 0,
     },
     {
       id: "languages",
       title: "Languages",
+      api_section: "languages",
       introtitle: "Tell employers about your",
       description: "Show employers your communication strengths.",
-      complateStep: resumeData.languages.length > 0,
+      complateStep: resumeData?.languages?.length > 0,
     },
     {
       id: "interests",
       title: "Interests",
+      api_section: "interests",
       introtitle: "Share a bit about your",
       description: "Share hobbies and passions that make you unique.",
-      complateStep: resumeData.interests.length > 0,
+      complateStep: resumeData?.interests?.length > 0,
     },
   ];
-  const template = templates.find((t) => t.id === resumeData.template);
+  const template = templates.find((t) => t.id === resumeData?.template);
   const steps = tempSteps?.filter((s) => template?.steps?.includes(s.id));
 
   const currentStepData = steps[currentStep];
@@ -597,7 +390,7 @@ const Builder = () => {
         return <BasicInfoForm profileIamge={template?.profileImage} />;
       case "summary":
         return <SummaryForm />;
-      case "experience":
+      case "experiences":
         return <ExperienceForm />;
       case "education":
         return <EducationForm />;
@@ -617,22 +410,160 @@ const Builder = () => {
   };
 
   const renderTemplate = () => {
-    const template = templates.find((t) => t.id === resumeData.template);
+    const template = templates.find((t) => t.id === resumeData?.template);
     const TemplateComponent = template?.preview || ModernTemplate;
     return <TemplateComponent data={resumeData} high_lightStep={currentStep} />;
   };
-  const handleUpdate = () => {
-    toast.success("Section updated!");
-    navigate("/final-resume");
+  const api_section = currentStepData?.api_section;
+  const api_section_data = resumeData[api_section];
+
+  // const handleUpdate = async () => {
+  //   try {
+  //     setLoading(true);
+  //     if (update_resume_id) {
+  //       const payload = {
+  //         section: api_section,
+  //         data: api_section_data,
+  //       };
+  //       const res = await axios.post(
+  //         updateResume_api(update_resume_id),
+  //         payload,
+  //       );
+  //       if (res?.status === 200) {
+  //         toast.success("Section updated!");
+  //         navigate("/final-resume");
+  //       }
+  //     } else {
+  //       toast.success("Section updated!");
+  //       navigate("/final-resume");
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+  const handleUpdate = async () => {
+    setLoading(true);
+
+    try {
+      const token = Cookies.get("user_token");
+
+      const goToUpdateStep = () => {
+        toast.success("Section updated!");
+        if (id) {
+          navigate(`/final-resume/${id}`);
+        } else {
+          navigate(`/final-resume`);
+        }
+      };
+
+      // 🔐 Logged-in user → Update API
+      if (token && id) {
+        const payload = {
+          section: api_section,
+          data: api_section_data,
+        };
+
+        const res = await axios.post(updateResume_api(Number(id)), payload, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (res?.status === 200) {
+          goToUpdateStep();
+        }
+      }
+
+      // 👤 Guest user → Save to localStorage
+      else {
+        const existing = localStorage.getItem("guest_resume_data");
+
+        if (existing) {
+          const parsedData = JSON.parse(existing);
+
+          const updatedData = {
+            ...parsedData,
+            [api_section]: api_section_data,
+          };
+
+          localStorage.setItem(
+            "guest_resume_data",
+            JSON.stringify(updatedData),
+          );
+        }
+
+        goToUpdateStep();
+      }
+    } catch (err) {
+      console.log("Update failed:", err);
+    } finally {
+      setLoading(false);
+    }
   };
-  const handleNext = () => {
-    if (currentStep < steps.length - 1) {
-      setShowStepIntro(true);
-      setShowMenu(true);
-      setCurrentStep(currentStep + 1);
-      // toast.success("Progress saved!");
-    } else {
-      navigate("/final-resume");
+  const handleNext = async () => {
+    setLoading(true);
+
+    try {
+      const token = Cookies.get("user_token");
+
+      const goToNextStep = () => {
+        if (currentStep < steps.length - 1) {
+          setShowStepIntro(true);
+          setShowMenu(true);
+          setCurrentStep(currentStep + 1);
+        } else {
+          if (id) {
+            navigate(`/final-resume/${id}`);
+          } else {
+            navigate(`/final-resume`);
+          }
+        }
+      };
+
+      // 🔐 Logged-in user → Update API
+      if (token && id) {
+        const payload = {
+          section: api_section,
+          data: api_section_data,
+        };
+
+        const res = await axios.post(updateResume_api(Number(id)), payload, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (res?.status === 200) {
+          goToNextStep();
+        }
+      }
+
+      // 👤 Guest user → Save to localStorage
+      else {
+        const existing = localStorage.getItem("guest_resume_data");
+
+        if (existing) {
+          const parsedData = JSON.parse(existing);
+
+          const updatedData = {
+            ...parsedData,
+            [api_section]: api_section_data,
+          };
+
+          localStorage.setItem(
+            "guest_resume_data",
+            JSON.stringify(updatedData),
+          );
+        }
+
+        goToNextStep();
+      }
+    } catch (err) {
+      console.log("Update failed:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -652,7 +583,9 @@ const Builder = () => {
         className={`bg-[#212D59] hidden md:flex flex-col min-h-screen transition-all relative duration-300 
         ${showMenu ? "w-[300px] px-10" : "w-[100px] px-5 items-center"} py-10`}
       >
-        <img src="/assets/svg/ftlogo.svg" alt="logo" className="w-28" />
+        <Link to="/">
+          <img src="/assets/svg/ftlogo.svg" alt="logo" className="w-28" />
+        </Link>
 
         <div className="mt-6">
           <Stepper
@@ -682,7 +615,7 @@ const Builder = () => {
                 Contact Us
               </a>
             </div>
-            <p>© 2025, NOW Limited. All rights reserved.</p>
+            <p>© 2026, NOW Limited. All rights reserved.</p>
           </div>
         )}
       </div>
@@ -759,13 +692,17 @@ const Builder = () => {
           </Button>
         ) : isEditMode ? (
           <Button className="rounded-full w-full" onClick={handleUpdate}>
-            Update Section
+            {loading ? <CircleLoading /> : "Update Section"}
           </Button>
         ) : (
           <Button className="rounded-full w-full" onClick={handleNext}>
-            {currentStep < steps.length - 1
-              ? "Save & Continue"
-              : "Complete Resume"}
+            {loading ? (
+              <CircleLoading />
+            ) : currentStep < steps.length - 1 ? (
+              "Save & Continue"
+            ) : (
+              "Complete Resume"
+            )}
           </Button>
         )}
       </div>
@@ -938,14 +875,26 @@ const Builder = () => {
                 Previous
               </Button>
               {isEditMode ? (
-                <Button className="rounded-full" onClick={handleUpdate}>
-                  Update Section
+                <Button
+                  disabled={loading}
+                  className="rounded-full"
+                  onClick={handleUpdate}
+                >
+                  {loading ? <CircleLoading /> : "Update Section"}
                 </Button>
               ) : (
-                <Button className="rounded-full" onClick={handleNext}>
-                  {currentStep < steps.length - 1
-                    ? "Save & Continue"
-                    : "Complete Resume"}
+                <Button
+                  disabled={loading}
+                  className="rounded-full"
+                  onClick={handleNext}
+                >
+                  {loading ? (
+                    <CircleLoading />
+                  ) : currentStep < steps.length - 1 ? (
+                    "Save & Continue"
+                  ) : (
+                    "Complete Resume"
+                  )}
                 </Button>
               )}
             </div>

@@ -86,7 +86,7 @@ const ProjectsForm = () => {
 
       {/* Content */}
       <div className="space-y-4">
-        {resumeData.projects.map((project: any) => (
+        {resumeData?.projects?.map((project: any) => (
           <div
             key={project.id}
             className="rounded-2xl bg-[#F7F7FB] p-4 md:p-6 space-y-5"
@@ -110,9 +110,9 @@ const ProjectsForm = () => {
             <div className="space-y-1.5">
               <Label className="text-xs md:text-sm">Project Title</Label>
               <Input
-                value={project.title}
+                value={project?.title}
                 onChange={(e) =>
-                  updateProject(project.id, "title", e.target.value)
+                  updateProject(project?.id, "title", e.target.value)
                 }
                 placeholder="E-commerce Platform"
               />

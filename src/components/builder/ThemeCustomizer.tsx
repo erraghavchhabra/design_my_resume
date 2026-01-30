@@ -79,16 +79,16 @@ const fonts = [
 const ThemeCustomizer = ({ open, onClose }: ThemeCustomizerProps) => {
   const { resumeData, updateResumeData, setTemplate } = useResume();
   const renderTemplate = () => {
-    const template = templates.find((t) => t.id === resumeData.template);
+    const template = templates.find((t) => t.id === resumeData?.template);
     const TemplateComponent = template?.preview || ModernTemplate;
     return <TemplateComponent data={resumeData} />;
   };
   const handleColorChange = (color: string) => {
-    updateResumeData({ themeColor: color });
+    updateResumeData({ theme_color: color });
   };
 
   const handleFontChange = (font: string) => {
-    updateResumeData({ fontFamily: font });
+    updateResumeData({ font_family: font });
   };
   const isMobile = useMediaQuery("(max-width: 768px)");
   return !isMobile ? (
@@ -121,19 +121,19 @@ const ThemeCustomizer = ({ open, onClose }: ThemeCustomizerProps) => {
               </div>
               <div className="flex items-center justify-between gap-2">
                 <p className="font-semibold">Colors</p>
-                {themeColors?.slice(0, 10).map((color) => (
+                {themeColors?.slice(0, 10)?.map((color) => (
                   <button
                     key={color.value}
                     onClick={() => handleColorChange(color.value)}
                     className={`relative w-6 h-6 rounded-full transition-all hover:scale-105 ${
-                      resumeData.themeColor === color.value
+                      resumeData?.theme_color === color.value
                         ? "ring-2 ring-offset-2 ring-primary"
                         : ""
                     }`}
                     style={{ backgroundColor: color.value }}
                     title={color.name}
                   >
-                    {resumeData.themeColor === color.value && (
+                    {resumeData?.theme_color === color.value && (
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
                           <svg
@@ -157,12 +157,11 @@ const ThemeCustomizer = ({ open, onClose }: ThemeCustomizerProps) => {
               </div>
             </div>
 
-            {/* Font Picker */}
             <div className="flex items-center justify-between gap-2 mt-5">
               <p className="font-semibold">Font Family</p>
 
               <Select
-                value={resumeData.fontFamily}
+                value={resumeData?.font_family}
                 onValueChange={(value) => handleFontChange(value)}
               >
                 <SelectTrigger className="w-48">
@@ -170,7 +169,7 @@ const ThemeCustomizer = ({ open, onClose }: ThemeCustomizerProps) => {
                 </SelectTrigger>
 
                 <SelectContent>
-                  {fonts.map((font) => (
+                  {fonts?.map((font) => (
                     <SelectItem
                       key={font.value}
                       value={font.value}
@@ -190,7 +189,7 @@ const ThemeCustomizer = ({ open, onClose }: ThemeCustomizerProps) => {
                   <Card
                     key={template.id}
                     className={`cursor-pointer transition-all overflow-hidden rounded-sm  hover:shadow-md ${
-                      resumeData.template === template.id
+                      resumeData?.template === template.id
                         ? "ring-2 ring-primary"
                         : ""
                     }`}
@@ -220,7 +219,7 @@ const ThemeCustomizer = ({ open, onClose }: ThemeCustomizerProps) => {
         </SheetHeader>
         <div className="flex  flex-col  gap-2 mt-5 max-h-[62vh] overflow-auto scrollbar-hidden">
           <div className="grid grid-cols-2 gap-3 w-full  p-2 ">
-            {templates.map((template) => (
+            {templates?.map((template) => (
               <Card
                 key={template.id}
                 className={`cursor-pointer transition-all overflow-hidden rounded-sm  hover:shadow-md ${
@@ -245,7 +244,7 @@ const ThemeCustomizer = ({ open, onClose }: ThemeCustomizerProps) => {
             <p>Font Family</p>
 
             <Select
-              value={resumeData.fontFamily}
+              value={resumeData.font_family}
               onValueChange={(value) => handleFontChange(value)}
             >
               <SelectTrigger className="w-48">
@@ -253,7 +252,7 @@ const ThemeCustomizer = ({ open, onClose }: ThemeCustomizerProps) => {
               </SelectTrigger>
 
               <SelectContent>
-                {fonts.map((font) => (
+                {fonts?.map((font) => (
                   <SelectItem
                     key={font.value}
                     value={font.value}
@@ -274,7 +273,7 @@ const ThemeCustomizer = ({ open, onClose }: ThemeCustomizerProps) => {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleColorChange(color.value)}
                 className={`w-6 h-6 rounded-full transition-all ${
-                  resumeData.themeColor === color.value
+                  resumeData.theme_color === color.value
                     ? "ring-1 ring-primary ring-offset-2"
                     : "hover:ring-1 hover:ring-muted-foreground"
                 }`}

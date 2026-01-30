@@ -36,7 +36,7 @@ const SummaryForm = () => {
   // ✅ Initialize TipTap editor
   const editor = useEditor({
     extensions: [StarterKit, Underline],
-    content: resumeData.summary.content,
+    content: resumeData?.summary?.content,
     onUpdate: ({ editor }) => {
       handleChange(editor.getHTML());
     },
@@ -47,13 +47,13 @@ const SummaryForm = () => {
     if (!editor) return;
 
     const currentHtml = editor.getHTML();
-    if (resumeData.summary.content !== currentHtml) {
-      editor.commands.setContent(resumeData.summary.content);
+    if (resumeData?.summary?.content !== currentHtml) {
+      editor.commands.setContent(resumeData?.summary?.content);
     }
-  }, [resumeData.summary.content, editor]);
+  }, [resumeData?.summary?.content, editor]);
 
   const isAdded = (text: string) => {
-    return resumeData.summary.content.includes(text);
+    return resumeData?.summary?.content.includes(text);
   };
   const isEditorEmpty = (html: string) => {
     if (!html) return true;
@@ -68,7 +68,7 @@ const SummaryForm = () => {
     return cleaned.length === 0;
   };
   const handleAddSuggestion = (text: string) => {
-    const current = resumeData.summary.content.trim();
+    const current = resumeData?.summary?.content.trim();
 
     if (isAdded(text)) return;
 
@@ -88,7 +88,7 @@ const SummaryForm = () => {
   };
 
   const handleRemoveSuggestion = (text: string) => {
-    let updated = resumeData.summary.content.replace(text, "").trim();
+    let updated = resumeData?.summary?.content.replace(text, "").trim();
     updated = updated.replace(/(<br\s*\/?>\s*){3,}/g, "<br/><br/>");
     handleChange(updated);
   };
@@ -208,7 +208,7 @@ const SummaryForm = () => {
             </div>
 
             <p className="mt-1 text-[10px] md:text-xs text-muted-foreground text-right">
-              {resumeData.summary.content.replace(/<[^>]+>/g, "").length}{" "}
+              {resumeData?.summary?.content.replace(/<[^>]+>/g, "").length}{" "}
               characters
             </p>
           </div>

@@ -34,9 +34,9 @@ const ClassicTemplate = ({
     return `${months[parseInt(month) - 1]} ${year}`;
   };
 
-  const themeColor = data.themeColor || "#1e3a8a";
-  const fontFamily = data.fontFamily || "Inter";
-
+  const themeColor = data?.theme_color || "#1e3a8a";
+  const fontFamily = data?.font_family || "Inter";
+  console.log(651651, data?.projects);
   return (
     <div className="flex min-h-full" style={{ fontFamily }}>
       {/* Left Sidebar */}
@@ -45,13 +45,13 @@ const ClassicTemplate = ({
         style={{ backgroundColor: themeColor }}
       >
         {/* Profile Image */}
-        {data.personalInfo.profileImage && (
+        {data?.personal_info?.profile_image && (
           <div className="mb-6 flex justify-center relative group">
             {high_lightStep === 0 && <HighLightBox />}
 
             {editMod && <EditBox href={`/builder?step=0&mode=edit`} />}
             <img
-              src={data.personalInfo.profileImage}
+              src={data?.personal_info?.profile_image}
               alt="Profile"
               className="w-32 h-32 rounded-full object-cover shadow-lg"
               style={{ border: "4px solid white" }}
@@ -71,29 +71,29 @@ const ClassicTemplate = ({
             CONTACT
           </h2>
           <div className="space-y-2 text-sm">
-            {data.personalInfo.email && (
+            {data?.personal_info?.email && (
               <div className="flex items-start gap-2">
                 <Mail className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                <span className="break-all">{data.personalInfo.email}</span>
+                <span className="break-all">{data?.personal_info?.email}</span>
               </div>
             )}
-            {data.personalInfo.phone && (
+            {data?.personal_info?.phone && (
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 flex-shrink-0" />
-                <span>{data.personalInfo.phone}</span>
+                <span>{data?.personal_info?.phone}</span>
               </div>
             )}
-            {data.personalInfo.location && (
+            {data?.personal_info?.location && (
               <div className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                <span>{data.personalInfo.location}</span>
+                <span>{data?.personal_info?.location}</span>
               </div>
             )}
           </div>
         </section>
 
         {/* Skills */}
-        {data.skills.length > 0 && (
+        {data?.skills?.length > 0 && (
           <section className="mb-6 relative group">
             {high_lightStep === 4 && <HighLightBox />}
 
@@ -105,7 +105,7 @@ const ClassicTemplate = ({
               SKILLS
             </h2>
             <ul className="space-y-1 text-sm">
-              {data.skills.map((skill) => (
+              {data?.skills?.map((skill) => (
                 <li key={skill.id} className="flex items-center gap-2">
                   <span
                     className="w-1.5 h-1.5 rounded-full"
@@ -119,7 +119,7 @@ const ClassicTemplate = ({
         )}
 
         {/* Languages */}
-        {data.languages.length > 0 && (
+        {data?.languages?.length > 0 && (
           <section className="mb-6 relative group">
             {high_lightStep === 7 && <HighLightBox />}
 
@@ -131,9 +131,9 @@ const ClassicTemplate = ({
               LANGUAGES
             </h2>
             <div className="space-y-2 text-sm">
-              {data.languages.map((lang) => (
+              {data?.languages?.map((lang) => (
                 <div key={lang.id}>
-                  <div className="font-semibold">{lang.name}</div>
+                  <div className="font-semibold">{lang?.name}</div>
                   <div
                     className="text-xs"
                     style={{ color: "rgba(255,255,255,0.7)" }}
@@ -147,7 +147,7 @@ const ClassicTemplate = ({
         )}
 
         {/* Interests */}
-        {data.interests.length > 0 && (
+        {data?.interests?.length > 0 && (
           <section className="relative group">
             {high_lightStep === 8 && <HighLightBox />}
 
@@ -159,13 +159,13 @@ const ClassicTemplate = ({
               INTERESTS
             </h2>
             <div className="flex flex-wrap gap-2">
-              {data.interests.map((interest) => (
+              {data?.interests?.map((interest) => (
                 <span
-                  key={interest.id}
+                  key={interest?.id}
                   className="text-sm px-2 py-1 rounded"
                   style={{ backgroundColor: "rgba(255,255,255,0.2)" }}
                 >
-                  {interest.name}
+                  {interest?.name}
                 </span>
               ))}
             </div>
@@ -182,15 +182,15 @@ const ClassicTemplate = ({
           {editMod && <EditBox href={`/builder?step=0&mode=edit`} />}
 
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            {data.personalInfo.fullName || "Your Name"}
+            {data?.personal_info?.full_name || "Your Name"}
           </h1>
           <p className="text-xl font-semibold" style={{ color: themeColor }}>
-            {data.personalInfo.headline || "Professional Title"}
+            {data?.personal_info?.headline || "Professional Title"}
           </p>
         </header>
 
         {/* Summary */}
-        {data.summary.content && (
+        {data?.summary?.content && (
           <section className="mb-8 relative group">
             {high_lightStep === 1 && <HighLightBox />}
 
@@ -206,15 +206,15 @@ const ClassicTemplate = ({
             </h2>
             <p
               className="text-sm text-gray-700 leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: data.summary.content }}
+              dangerouslySetInnerHTML={{ __html: data?.summary?.content }}
             >
-              {/* {data.summary.content} */}
+              {/* {data?.summary.content} */}
             </p>
           </section>
         )}
 
         {/* Experience */}
-        {data.experience.length > 0 && (
+        {data?.experiences?.length > 0 && (
           <section className="mb-8 relative group">
             {high_lightStep === 2 && <HighLightBox />}
 
@@ -229,26 +229,26 @@ const ClassicTemplate = ({
               WORK EXPERIENCE
             </h2>
             <div className="space-y-5">
-              {data.experience.map((exp) => (
-                <div key={exp.id}>
+              {data?.experiences?.map((exp) => (
+                <div key={exp?.id}>
                   <div className="flex justify-between items-start mb-1">
                     <h3 className="font-bold text-gray-900 text-base">
-                      {exp.position}
+                      {exp?.position}
                     </h3>
                     <div className="flex items-center text-sm text-gray-600">
                       <Calendar className="h-3 w-3 mr-1" />
-                      {formatDate(exp.startDate)} -{" "}
-                      {exp.current ? "Present" : formatDate(exp.endDate)}
+                      {formatDate(exp?.start_date)} -{" "}
+                      {exp?.current ? "Present" : formatDate(exp?.end_date)}
                     </div>
                   </div>
                   <p
                     className="text-sm font-semibold mb-1"
                     style={{ color: themeColor }}
                   >
-                    {exp.company} {exp.location && `• ${exp.location}`}
+                    {exp?.company} {exp?.location && `• ${exp.location}`}
                   </p>
-                  {exp.description && (
-                    <p className="text-sm text-gray-700">{exp.description}</p>
+                  {exp?.description && (
+                    <p className="text-sm text-gray-700">{exp?.description}</p>
                   )}
                 </div>
               ))}
@@ -257,7 +257,7 @@ const ClassicTemplate = ({
         )}
 
         {/* Education */}
-        {data.education.length > 0 && (
+        {data?.education?.length > 0 && (
           <section className="mb-8 relative group">
             {high_lightStep === 3 && <HighLightBox />}
 
@@ -272,23 +272,23 @@ const ClassicTemplate = ({
               EDUCATION
             </h2>
             <div className="space-y-4">
-              {data.education.map((edu) => (
+              {data?.education?.map((edu) => (
                 <div key={edu.id}>
                   <h3 className="font-bold text-gray-900">
-                    {edu.degree} in {edu.field}
+                    {edu?.degree} in {edu.field}
                   </h3>
                   <p
                     className="text-sm font-semibold"
                     style={{ color: themeColor }}
                   >
-                    {edu.institution}
+                    {edu?.institution}
                   </p>
                   <p className="text-sm text-gray-600">
-                    {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
+                    {formatDate(edu?.start_date)} - {formatDate(edu?.end_date)}
                   </p>
                   {edu.description && (
                     <p className="text-sm text-gray-700 mt-1">
-                      {edu.description}
+                      {edu?.description}
                     </p>
                   )}
                 </div>
@@ -298,7 +298,7 @@ const ClassicTemplate = ({
         )}
 
         {/* Projects */}
-        {data.projects.length > 0 && (
+        {data?.projects?.length > 0 && (
           <section className="mb-8 relative group">
             {high_lightStep === 5 && <HighLightBox />}
 
@@ -313,26 +313,33 @@ const ClassicTemplate = ({
               PROJECTS
             </h2>
             <div className="space-y-4">
-              {data.projects.map((project) => (
-                <div key={project.id}>
-                  <h3 className="font-bold text-gray-900">{project.title}</h3>
+              {data?.projects?.map((project) => (
+                <div key={project?.id}>
+                  <h3 className="font-bold text-gray-900">{project?.title}</h3>
                   <p className="text-sm text-gray-700 mt-1">
-                    {project.description}
+                    {project?.description}
                   </p>
-                  {project.technologies.length > 0 && (
+                  {project?.technologies?.length > 0 && (
                     <div className="flex flex-wrap gap-1 mt-2">
-                      {project.technologies.map((tech, i) => (
-                        <span
-                          key={i}
-                          className="text-xs px-2 py-0.5 rounded"
-                          style={{
-                            backgroundColor: `${themeColor}15`,
-                            color: themeColor,
-                          }}
-                        >
-                          {tech}
-                        </span>
-                      ))}
+                      {project?.technologies?.map((tech: any, i) => {
+                        const techLabel =
+                          typeof tech === "object" && tech !== null
+                            ? tech?.technology
+                            : tech;
+
+                        return (
+                          <span
+                            key={i}
+                            className="text-xs px-2 py-0.5 rounded"
+                            style={{
+                              backgroundColor: `${themeColor}15`,
+                              color: themeColor,
+                            }}
+                          >
+                            {techLabel}
+                          </span>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
@@ -342,7 +349,7 @@ const ClassicTemplate = ({
         )}
 
         {/* Achievements */}
-        {data.achievements.length > 0 && (
+        {data?.achievements?.length > 0 && (
           <section className="relative group">
             {high_lightStep === 6 && <HighLightBox />}
 
@@ -357,25 +364,25 @@ const ClassicTemplate = ({
               ACHIEVEMENTS & AWARDS
             </h2>
             <div className="space-y-2">
-              {data.achievements.map((achievement) => (
-                <div key={achievement.id} className="flex items-start gap-2">
+              {data?.achievements?.map((achievement) => (
+                <div key={achievement?.id} className="flex items-start gap-2">
                   <Award
                     className="h-4 w-4 mt-0.5 flex-shrink-0"
                     style={{ color: themeColor }}
                   />
                   <div>
                     <span className="font-semibold text-gray-900">
-                      {achievement.title}
+                      {achievement?.title}
                     </span>
-                    {achievement.date && (
+                    {achievement?.date && (
                       <span className="text-gray-600 text-sm">
                         {" "}
-                        ({achievement.date})
+                        ({achievement?.date})
                       </span>
                     )}
-                    {achievement.description && (
+                    {achievement?.description && (
                       <p className="text-sm text-gray-700">
-                        {achievement.description}
+                        {achievement?.description}
                       </p>
                     )}
                   </div>

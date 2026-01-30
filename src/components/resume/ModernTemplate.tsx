@@ -2,6 +2,7 @@ import { ResumeData } from "../../types/resume";
 import { Mail, Phone, MapPin } from "lucide-react";
 import EditBox from "./EditBox";
 import HighLightBox from "./HighLightBox";
+import SkeletonLine from "../ui/SkeletonLine";
 
 interface ModernTemplateProps {
   data: ResumeData;
@@ -20,8 +21,8 @@ const ModernTemplate = ({
     return `${month}/${year}`;
   };
 
-  const themeColor = data.themeColor || "#dc2626";
-  const fontFamily = data.fontFamily || "Inter";
+  const themeColor = data?.theme_color || "#dc2626";
+  const fontFamily = data?.font_family || "Inter";
 
   return (
     <div className="p-12 text-gray-900" style={{ fontFamily }}>
@@ -34,39 +35,45 @@ const ModernTemplate = ({
           {high_lightStep === 0 && <HighLightBox />}
           {editMod && <EditBox href={`/builder?step=0&mode=edit`} />}
           <div className="flex-1">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">
-              {data.personalInfo.fullName || "Your Name"}
-            </h1>
-            <p
-              className="text-xl font-semibold mb-3"
-              style={{ color: themeColor }}
-            >
-              {data.personalInfo.headline || "Professional Title"}
-            </p>
+            {data?.personal_info?.full_name ? (
+              <h1 className="text-4xl font-bold text-gray-900 mb-2">
+                {data?.personal_info?.full_name || "Your Name"}
+              </h1>
+            ) : (
+              <SkeletonLine width="250px" height="32px" className="mb-2" />
+            )}
+            {data?.personal_info?.headline && (
+              <p
+                className="text-xl font-semibold mb-3"
+                style={{ color: themeColor }}
+              >
+                {data?.personal_info?.headline || "Professional Title"}
+              </p>
+            )}
             <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-600">
-              {data.personalInfo.email && (
+              {data?.personal_info?.email && (
                 <div className="flex items-center gap-1">
                   <Mail className="h-3 w-3" />
-                  <span>{data.personalInfo.email}</span>
+                  <span>{data?.personal_info?.email}</span>
                 </div>
               )}
-              {data.personalInfo.phone && (
+              {data?.personal_info?.phone && (
                 <div className="flex items-center gap-1">
                   <Phone className="h-3 w-3" />
-                  <span>{data.personalInfo.phone}</span>
+                  <span>{data?.personal_info?.phone}</span>
                 </div>
               )}
-              {data.personalInfo.location && (
+              {data?.personal_info?.location && (
                 <div className="flex items-center gap-1">
                   <MapPin className="h-3 w-3" />
-                  <span>{data.personalInfo.location}</span>
+                  <span>{data?.personal_info?.location}</span>
                 </div>
               )}
             </div>
           </div>
-          {data.personalInfo.profileImage && (
+          {data?.personal_info?.profile_image && (
             <img
-              src={data.personalInfo.profileImage}
+              src={data?.personal_info?.profile_image}
               alt="Profile"
               className="w-24 h-24 rounded-full object-cover border-4"
               style={{ borderColor: themeColor }}
@@ -76,7 +83,7 @@ const ModernTemplate = ({
       </header>
 
       {/* Summary */}
-      {data.summary.content && (
+      {data?.summary?.content && (
         <section className="mb-6 relative group">
           {high_lightStep === 1 && <HighLightBox />}
           {editMod && <EditBox href={`/builder?step=1&mode=edit`} />}
@@ -86,14 +93,17 @@ const ModernTemplate = ({
           >
             Professional Summary
           </h2>
-          <p className="text-sm text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: data.summary.content }}>
-            {/* {data.summary.content} */}
+          <p
+            className="text-sm text-gray-700 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: data?.summary?.content }}
+          >
+            {/* {data?.summary.content} */}
           </p>
         </section>
       )}
 
       {/* Experience */}
-      {data.experience.length > 0 && (
+      {data?.experiences?.length > 0 && (
         <section className="mb-6 relative group">
           {high_lightStep === 2 && <HighLightBox />}
           {editMod && <EditBox href={`/builder?step=2&mode=edit`} />}
@@ -104,7 +114,7 @@ const ModernTemplate = ({
             Work Experience
           </h2>
           <div className="space-y-4">
-            {data.experience.map((exp) => (
+            {data?.experiences?.map((exp) => (
               <div key={exp.id}>
                 <div className="flex justify-between items-start mb-1">
                   <div>
@@ -113,15 +123,15 @@ const ModernTemplate = ({
                   </div>
                   <div className="text-right text-sm text-gray-600">
                     <p>
-                      {formatDate(exp.startDate)} -{" "}
-                      {exp.current ? "Present" : formatDate(exp.endDate)}
+                      {formatDate(exp.start_date)} -{" "}
+                      {exp.current ? "Present" : formatDate(exp.end_date)}
                     </p>
                     {exp.location && <p className="text-xs">{exp.location}</p>}
                   </div>
                 </div>
-                {exp.description && (
+                {exp?.description && (
                   <p className="text-sm text-gray-700 mt-1">
-                    {exp.description}
+                    {exp?.description}
                   </p>
                 )}
               </div>
@@ -131,7 +141,7 @@ const ModernTemplate = ({
       )}
 
       {/* Education */}
-      {data.education.length > 0 && (
+      {data?.education?.length > 0 && (
         <section className="mb-6 relative group">
           {high_lightStep === 3 && <HighLightBox />}
           {editMod && <EditBox href={`/builder?step=3&mode=edit`} />}
@@ -142,22 +152,22 @@ const ModernTemplate = ({
             Education
           </h2>
           <div className="space-y-3">
-            {data.education.map((edu) => (
+            {data?.education?.map((edu) => (
               <div key={edu.id}>
                 <div className="flex justify-between items-start">
                   <div>
                     <h3 className="font-bold text-gray-900">
-                      {edu.degree} in {edu.field}
+                      {edu?.degree} in {edu.field}
                     </h3>
-                    <p className="text-sm text-gray-600">{edu.institution}</p>
+                    <p className="text-sm text-gray-600">{edu?.institution}</p>
                   </div>
                   <p className="text-sm text-gray-600">
-                    {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
+                    {formatDate(edu?.start_date)} - {formatDate(edu?.end_date)}
                   </p>
                 </div>
-                {edu.description && (
+                {edu?.description && (
                   <p className="text-sm text-gray-700 mt-1">
-                    {edu.description}
+                    {edu?.description}
                   </p>
                 )}
               </div>
@@ -167,7 +177,7 @@ const ModernTemplate = ({
       )}
 
       {/* Skills */}
-      {data.skills.length > 0 && (
+      {data?.skills?.length > 0 && (
         <section className="mb-6 relative group">
           {high_lightStep === 4 && <HighLightBox />}
           {editMod && <EditBox href={`/builder?step=4&mode=edit`} />}
@@ -178,7 +188,7 @@ const ModernTemplate = ({
             Skills
           </h2>
           <div className="flex flex-wrap gap-2">
-            {data.skills.map((skill) => (
+            {data?.skills?.map((skill) => (
               <span
                 key={skill.id}
                 className="px-3 py-1 text-sm rounded-full border"
@@ -196,7 +206,7 @@ const ModernTemplate = ({
       )}
 
       {/* Projects */}
-      {data.projects.length > 0 && (
+      {data?.projects?.length > 0 && (
         <section className="mb-6 relative group">
           {" "}
           {high_lightStep === 5 && <HighLightBox />}
@@ -208,16 +218,23 @@ const ModernTemplate = ({
             Projects
           </h2>
           <div className="space-y-3">
-            {data.projects.map((project) => (
+            {data?.projects?.map((project) => (
               <div key={project.id}>
-                <h3 className="font-bold text-gray-900">{project.title}</h3>
+                <h3 className="font-bold text-gray-900">{project?.title}</h3>
                 <p className="text-sm text-gray-700 mt-1">
-                  {project.description}
+                  {project?.description}
                 </p>
-                {project.technologies.length > 0 && (
+                {project?.technologies?.length > 0 && (
                   <p className="text-xs text-gray-600 mt-1">
                     <span className="font-semibold">Technologies:</span>{" "}
-                    {project.technologies.join(", ")}
+                    {project?.technologies
+                      .map((tech:any) =>
+                        typeof tech === "object" && tech !== null
+                          ? tech?.technology
+                          : tech,
+                      )
+                      .filter(Boolean) // remove undefined/null
+                      .join(", ")}
                   </p>
                 )}
               </div>
@@ -228,7 +245,7 @@ const ModernTemplate = ({
 
       <div className="grid grid-cols-2 gap-6">
         {/* Languages */}
-        {data.languages.length > 0 && (
+        {data?.languages?.length > 0 && (
           <section className="relative group">
             {high_lightStep === 6 && <HighLightBox />}
             {editMod && <EditBox href={`/builder?step=6&mode=edit`} />}
@@ -239,12 +256,12 @@ const ModernTemplate = ({
               Languages
             </h2>
             <div className="space-y-1">
-              {data.languages.map((lang) => (
-                <div key={lang.id} className="text-sm">
+              {data?.languages?.map((lang) => (
+                <div key={lang?.id} className="text-sm">
                   <span className="font-semibold text-gray-900">
-                    {lang.name}
+                    {lang?.name}
                   </span>
-                  <span className="text-gray-600"> - {lang.proficiency}</span>
+                  <span className="text-gray-600"> - {lang?.proficiency}</span>
                 </div>
               ))}
             </div>
@@ -252,7 +269,7 @@ const ModernTemplate = ({
         )}
 
         {/* Interests */}
-        {data.interests.length > 0 && (
+        {data?.interests?.length > 0 && (
           <section className="relative group">
             {high_lightStep === 7 && <HighLightBox />}
             {editMod && <EditBox href={`/builder?step=7&mode=edit`} />}
@@ -264,7 +281,7 @@ const ModernTemplate = ({
               Interests
             </h2>
             <p className="text-sm text-gray-700">
-              {data.interests.map((interest) => interest.name).join(", ")}
+              {data?.interests?.map((interest) => interest.name).join(", ")}
             </p>
           </section>
         )}

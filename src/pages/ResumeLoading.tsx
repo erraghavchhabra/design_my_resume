@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import Cookies from "js-cookie";
 
 const loadingItems = [
   "32+ Professional Resume Designs",
@@ -10,6 +11,8 @@ const loadingItems = [
 ];
 
 export default function ResumeLoading() {
+  const token = Cookies.get("user_token");
+
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(-1);
 
@@ -36,7 +39,11 @@ export default function ResumeLoading() {
   // Last me next page pe jao
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate("/resume-intro");
+      if (token) {
+        navigate("/resume-dashboard");
+      } else {
+        navigate("/resume-intro");
+      }
     }, 2800); // total animation ke baad
     return () => clearTimeout(timer);
   }, [navigate]);
@@ -44,11 +51,7 @@ export default function ResumeLoading() {
   return (
     <div className="min-h-screen container relative  ">
       <div className="flex justify-center items-center md:justify-start mt-10  z-20">
-        <img
-          src="/assets/svg/logo.svg"
-          className=" w-32"
-          alt="logo"
-        />
+        <img src="/assets/svg/logo.svg" className=" w-32" alt="logo" />
       </div>
       <div className="pointer-events-none z-0 absolute top-5 md:top-40 -left-32 h-40 w-40 md:h-96 md:w-96 rounded-full bg-[#FDE4C8] blur-3xl opacity-60" />
       <div className="pointer-events-none z-0 absolute -top-10 left-48 h-40 w-40  md:h-80 md:w-80 rounded-full bg-[#b29cdf] blur-[90px] opacity-50" />

@@ -6,11 +6,11 @@ interface TemplateProps {
 
 const TechnicalTemplate = ({ data }: TemplateProps) => {
   return (
-    <div className="p-10 bg-white" style={{ fontFamily: data.fontFamily }}>
+    <div className="p-10 bg-white" style={{ fontFamily: data.font_family }}>
       {/* Terminal-style Header */}
       <div 
         className="border-2 rounded-lg p-6 mb-8"
-        style={{ borderColor: data.themeColor }}
+        style={{ borderColor: data.theme_color }}
       >
         <div className="flex items-center gap-2 mb-4">
           <div className="flex gap-2">
@@ -20,21 +20,21 @@ const TechnicalTemplate = ({ data }: TemplateProps) => {
           </div>
           <span 
             className="font-mono text-sm ml-2"
-            style={{ color: data.themeColor }}
+            style={{ color: data.theme_color }}
           >
             ~/resume
           </span>
         </div>
         <div className="font-mono">
           <p className="text-sm text-gray-500 mb-1">$ cat profile.txt</p>
-          <h1 className="text-3xl font-bold mb-2" style={{ color: data.themeColor }}>
-            {data.personalInfo.fullName}
+          <h1 className="text-3xl font-bold mb-2" style={{ color: data.theme_color }}>
+            {data.personal_info.full_name}
           </h1>
-          <p className="text-lg text-gray-700 mb-3">{data.personalInfo.headline}</p>
+          <p className="text-lg text-gray-700 mb-3">{data.personal_info.headline}</p>
           <div className="flex gap-4 text-sm text-gray-600">
-            <span>📧 {data.personalInfo.email}</span>
-            <span>📱 {data.personalInfo.phone}</span>
-            <span>📍 {data.personalInfo.location}</span>
+            <span>📧 {data.personal_info.email}</span>
+            <span>📱 {data.personal_info.phone}</span>
+            <span>📍 {data.personal_info.location}</span>
           </div>
         </div>
       </div>
@@ -42,39 +42,39 @@ const TechnicalTemplate = ({ data }: TemplateProps) => {
       {/* Summary as Code Comment */}
       {data.summary.content && (
         <div className="mb-8 font-mono text-sm">
-          <p style={{ color: data.themeColor }}>/* =====================================</p>
-          <p style={{ color: data.themeColor }}>   ABOUT</p>
-          <p style={{ color: data.themeColor }}>   ===================================== */</p>
+          <p style={{ color: data.theme_color }}>/* =====================================</p>
+          <p style={{ color: data.theme_color }}>   ABOUT</p>
+          <p style={{ color: data.theme_color }}>   ===================================== */</p>
           <p className="text-gray-700 mt-2 leading-relaxed">{data.summary.content}</p>
         </div>
       )}
 
       {/* Experience as Function Blocks */}
-      {data.experience.length > 0 && (
+      {data.experiences.length > 0 && (
         <div className="mb-8">
           <div className="font-mono text-sm mb-4">
-            <p style={{ color: data.themeColor }}>// ===================================</p>
-            <p style={{ color: data.themeColor }}>// EXPERIENCE</p>
-            <p style={{ color: data.themeColor }}>// ===================================</p>
+            <p style={{ color: data.theme_color }}>// ===================================</p>
+            <p style={{ color: data.theme_color }}>// EXPERIENCE</p>
+            <p style={{ color: data.theme_color }}>// ===================================</p>
           </div>
           <div className="space-y-6">
-            {data.experience.map((exp) => (
+            {data.experiences.map((exp) => (
               <div key={exp.id} className="font-mono text-sm">
                 <p className="text-gray-500">
-                  <span style={{ color: data.themeColor }}>function</span>{' '}
+                  <span style={{ color: data.theme_color }}>function</span>{' '}
                   <span className="font-bold">{exp.position.replace(/\s+/g, '')}()</span> {'{'}
                 </p>
                 <div className="pl-6 py-2 space-y-1">
                   <p>
                     <span className="text-gray-500">company:</span>{' '}
-                    <span className="font-semibold" style={{ color: data.themeColor }}>"{exp.company}"</span>
+                    <span className="font-semibold" style={{ color: data.theme_color }}>"{exp.company}"</span>
                   </p>
                   <p>
                     <span className="text-gray-500">location:</span> "{exp.location}"
                   </p>
                   <p>
                     <span className="text-gray-500">period:</span>{' '}
-                    "{exp.startDate} - {exp.current ? 'Present' : exp.endDate}"
+                    "{exp.start_date} - {exp.current ? 'Present' : exp.end_date}"
                   </p>
                   <p>
                     <span className="text-gray-500">description:</span> "{exp.description}"
@@ -91,9 +91,9 @@ const TechnicalTemplate = ({ data }: TemplateProps) => {
       {data.skills.length > 0 && (
         <div className="mb-8">
           <div className="font-mono text-sm">
-            <p style={{ color: data.themeColor }}>// Technical Skills</p>
+            <p style={{ color: data.theme_color }}>// Technical Skills</p>
             <p className="text-gray-500">
-              <span style={{ color: data.themeColor }}>const</span> skills = [
+              <span style={{ color: data.theme_color }}>const</span> skills = [
             </p>
             <div className="pl-6 grid grid-cols-3 gap-2 py-2">
               {data.skills.map((skill, idx) => (
@@ -111,9 +111,9 @@ const TechnicalTemplate = ({ data }: TemplateProps) => {
       {data.education.length > 0 && (
         <div className="mb-8">
           <div className="font-mono text-sm">
-            <p style={{ color: data.themeColor }}>// Education</p>
+            <p style={{ color: data.theme_color }}>// Education</p>
             <p className="text-gray-500">
-              <span style={{ color: data.themeColor }}>const</span> education = [
+              <span style={{ color: data.theme_color }}>const</span> education = [
             </p>
             <div className="pl-6 space-y-3 py-2">
               {data.education.map((edu) => (
@@ -122,7 +122,7 @@ const TechnicalTemplate = ({ data }: TemplateProps) => {
                   <div className="pl-6">
                     <p>
                       <span className="text-gray-500">degree:</span>{' '}
-                      <span style={{ color: data.themeColor }}>"{edu.degree}"</span>
+                      <span style={{ color: data.theme_color }}>"{edu.degree}"</span>
                     </p>
                     <p>
                       <span className="text-gray-500">field:</span> "{edu.field}"
@@ -131,7 +131,7 @@ const TechnicalTemplate = ({ data }: TemplateProps) => {
                       <span className="text-gray-500">institution:</span> "{edu.institution}"
                     </p>
                     <p>
-                      <span className="text-gray-500">year:</span> "{edu.endDate}"
+                      <span className="text-gray-500">year:</span> "{edu.end_date}"
                     </p>
                   </div>
                   <p className="text-gray-500">{'},'}</p>
@@ -147,10 +147,10 @@ const TechnicalTemplate = ({ data }: TemplateProps) => {
       {data.projects.length > 0 && (
         <div>
           <div className="font-mono text-sm">
-            <p style={{ color: data.themeColor }}>// Featured Projects</p>
+            <p style={{ color: data.theme_color }}>// Featured Projects</p>
             <div className="space-y-4 mt-3">
               {data.projects.map((project) => (
-                <div key={project.id} className="border-l-2 pl-4" style={{ borderColor: data.themeColor }}>
+                <div key={project.id} className="border-l-2 pl-4" style={{ borderColor: data.theme_color }}>
                   <p className="font-bold text-base">{project.title}</p>
                   <p className="text-gray-700 text-xs mt-1">{project.description}</p>
                   {project.technologies.length > 0 && (
@@ -160,8 +160,8 @@ const TechnicalTemplate = ({ data }: TemplateProps) => {
                           key={idx}
                           className="px-2 py-1 text-xs rounded"
                           style={{ 
-                            backgroundColor: `${data.themeColor}20`,
-                            color: data.themeColor 
+                            backgroundColor: `${data.theme_color}20`,
+                            color: data.theme_color 
                           }}
                         >
                           {tech}

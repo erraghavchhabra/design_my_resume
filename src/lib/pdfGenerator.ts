@@ -9,7 +9,7 @@ export const generateResumePDF = (data: ResumeData) => {
     format: 'a4',
   });
 
-  const { personalInfo, summary, experience, education, skills, projects, achievements, languages, interests } = data;
+  const { personal_info, summary, experiences, education, skills, projects, achievements, languages, interests } = data;
 
   let yPos = 15;
   const leftMargin = 15;
@@ -44,15 +44,15 @@ export const generateResumePDF = (data: ResumeData) => {
   doc.setFontSize(22);
   doc.setTextColor(26, 32, 44);
   doc.setFont('helvetica', 'bold');
-  doc.text(personalInfo.fullName, leftMargin, yPos);
+  doc.text(personal_info.full_name, leftMargin, yPos);
   yPos += 8;
 
   // Headline
-  if (personalInfo.headline) {
+  if (personal_info.headline) {
     doc.setFontSize(12);
     doc.setTextColor(74, 85, 104);
     doc.setFont('helvetica', 'normal');
-    doc.text(personalInfo.headline, leftMargin, yPos);
+    doc.text(personal_info.headline, leftMargin, yPos);
     yPos += 6;
   }
 
@@ -61,9 +61,9 @@ export const generateResumePDF = (data: ResumeData) => {
   doc.setTextColor(74, 85, 104);
   doc.setFont('helvetica', 'normal');
   const contactInfo = [
-    personalInfo.email,
-    personalInfo.phone,
-    personalInfo.location,
+    personal_info.email,
+    personal_info.phone,
+    personal_info.location,
   ].filter(Boolean).join(' • ');
   
   if (contactInfo) {
@@ -84,11 +84,11 @@ export const generateResumePDF = (data: ResumeData) => {
   }
 
   // Experience
-  if (experience && experience.length > 0) {
+  if (experiences && experiences.length > 0) {
     checkPageBreak(20);
     addSectionTitle('EXPERIENCE');
     
-    experience.forEach((exp, index) => {
+    experiences.forEach((exp, index) => {
       checkPageBreak(25);
       
       doc.setFontSize(11);
@@ -105,7 +105,7 @@ export const generateResumePDF = (data: ResumeData) => {
       
       doc.setFontSize(9);
       doc.setTextColor(113, 128, 150);
-      const dateText = `${exp.startDate} - ${exp.current ? 'Present' : exp.endDate}`;
+      const dateText = `${exp.start_date} - ${exp.current ? 'Present' : exp.end_date}`;
       doc.text(dateText, leftMargin, yPos);
       yPos += 5;
       
@@ -117,7 +117,7 @@ export const generateResumePDF = (data: ResumeData) => {
         yPos += descLines.length * 4 + 4;
       }
       
-      if (index < experience.length - 1) yPos += 2;
+      if (index < experiences.length - 1) yPos += 2;
     });
     yPos += 4;
   }
@@ -144,7 +144,7 @@ export const generateResumePDF = (data: ResumeData) => {
       
       doc.setFontSize(9);
       doc.setTextColor(113, 128, 150);
-      const dateText = `${edu.startDate} - ${edu.endDate}`;
+      const dateText = `${edu.start_date} - ${edu.end_date}`;
       doc.text(dateText, leftMargin, yPos);
       yPos += 5;
       

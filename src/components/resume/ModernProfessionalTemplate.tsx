@@ -17,20 +17,20 @@ interface TemplateProps {
 
 const ModernProfessionalTemplate = ({ data }: TemplateProps) => {
   return (
-    <div className="bg-white" style={{ fontFamily: data.fontFamily }}>
+    <div className="bg-white" style={{ fontFamily: data.font_family }}>
       {/* Header Section */}
       <div
         className="relative px-12 py-10 text-white overflow-hidden"
-        style={{ backgroundColor: data.themeColor }}
+        style={{ backgroundColor: data.theme_color }}
       >
         <div className="absolute top-0 right-0 w-96 h-96 rounded-full opacity-10 bg-white transform translate-x-1/2 -translate-y-1/2" />
         <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full opacity-10 bg-white transform -translate-x-1/2 translate-y-1/2" />
 
         <div className="relative z-10 flex items-center gap-8">
-          {data.personalInfo.profileImage && (
+          {data.personal_info.profile_image && (
             <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-2xl flex-shrink-0">
               <img
-                src={data.personalInfo.profileImage}
+                src={data.personal_info.profile_image}
                 alt="Profile"
                 className="w-full h-full object-cover"
               />
@@ -39,23 +39,23 @@ const ModernProfessionalTemplate = ({ data }: TemplateProps) => {
 
           <div className="flex-1">
             <h1 className="text-5xl font-bold mb-2">
-              {data.personalInfo.fullName}
+              {data.personal_info.full_name}
             </h1>
             <p className="text-xl mb-4 opacity-90">
-              {data.personalInfo.headline}
+              {data.personal_info.headline}
             </p>
             <div className="flex flex-wrap gap-6 text-sm">
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4" />
-                <span>{data.personalInfo.email}</span>
+                <span>{data.personal_info.email}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4" />
-                <span>{data.personalInfo.phone}</span>
+                <span>{data.personal_info.phone}</span>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
-                <span>{data.personalInfo.location}</span>
+                <span>{data.personal_info.location}</span>
               </div>
             </div>
           </div>
@@ -68,7 +68,7 @@ const ModernProfessionalTemplate = ({ data }: TemplateProps) => {
           <section className="mb-8">
             <h2
               className="text-2xl font-bold mb-4 pb-2 border-b-2"
-              style={{ color: data.themeColor, borderColor: data.themeColor }}
+              style={{ color: data.theme_color, borderColor: data.theme_color }}
             >
               Professional Summary
             </h2>
@@ -83,7 +83,7 @@ const ModernProfessionalTemplate = ({ data }: TemplateProps) => {
           <section className="mb-8">
             <h2
               className="text-2xl font-bold mb-4 pb-2 border-b-2"
-              style={{ color: data.themeColor, borderColor: data.themeColor }}
+              style={{ color: data.theme_color, borderColor: data.theme_color }}
             >
               Core Skills
             </h2>
@@ -93,8 +93,8 @@ const ModernProfessionalTemplate = ({ data }: TemplateProps) => {
                   key={skill.id}
                   className="px-4 py-2 text-center text-sm font-semibold rounded-lg border-2 hover:shadow-md transition-all"
                   style={{
-                    borderColor: data.themeColor + "40",
-                    color: data.themeColor,
+                    borderColor: data.theme_color + "40",
+                    color: data.theme_color,
                   }}
                 >
                   {skill.name}
@@ -105,31 +105,31 @@ const ModernProfessionalTemplate = ({ data }: TemplateProps) => {
         )}
 
         {/* Work Experience */}
-        {data.experience.length > 0 && (
+        {data.experiences.length > 0 && (
           <section className="mb-8">
             <h2
               className="text-2xl font-bold mb-4 pb-2 border-b-2"
-              style={{ color: data.themeColor, borderColor: data.themeColor }}
+              style={{ color: data.theme_color, borderColor: data.theme_color }}
             >
               <Briefcase className="inline-block mr-2 h-6 w-6 mb-1" />
               Work Experience
             </h2>
             <div className="space-y-6">
-              {data.experience.map((exp) => (
+              {data.experiences.map((exp) => (
                 <div
                   key={exp.id}
                   className="relative pl-8 border-l-4"
-                  style={{ borderColor: data.themeColor + "30" }}
+                  style={{ borderColor: data.theme_color + "30" }}
                 >
                   <div
                     className="absolute -left-2 top-0 w-4 h-4 rounded-full"
-                    style={{ backgroundColor: data.themeColor }}
+                    style={{ backgroundColor: data.theme_color }}
                   />
                   <div className="flex justify-between items-start mb-2">
                     <div>
                       <h3
                         className="text-xl font-bold"
-                        style={{ color: data.themeColor }}
+                        style={{ color: data.theme_color }}
                       >
                         {exp.position}
                       </h3>
@@ -139,8 +139,8 @@ const ModernProfessionalTemplate = ({ data }: TemplateProps) => {
                     </div>
                     <div className="text-right text-sm">
                       <p className="font-semibold text-gray-700">
-                        {exp.startDate} -{" "}
-                        {exp.current ? "Present" : exp.endDate}
+                        {exp.start_date} -{" "}
+                        {exp.current ? "Present" : exp.end_date}
                       </p>
                       <p className="text-gray-600">{exp.location}</p>
                     </div>
@@ -159,7 +159,7 @@ const ModernProfessionalTemplate = ({ data }: TemplateProps) => {
           <section className="mb-8">
             <h2
               className="text-2xl font-bold mb-4 pb-2 border-b-2"
-              style={{ color: data.themeColor, borderColor: data.themeColor }}
+              style={{ color: data.theme_color, borderColor: data.theme_color }}
             >
               <FolderOpen className="inline-block mr-2 h-6 w-6 mb-1" />
               Key Projects
@@ -170,13 +170,13 @@ const ModernProfessionalTemplate = ({ data }: TemplateProps) => {
                   key={project.id}
                   className="p-5 rounded-lg border-l-4"
                   style={{
-                    borderColor: data.themeColor,
-                    backgroundColor: data.themeColor + "08",
+                    borderColor: data.theme_color,
+                    backgroundColor: data.theme_color + "08",
                   }}
                 >
                   <h3
                     className="text-lg font-bold mb-2"
-                    style={{ color: data.themeColor }}
+                    style={{ color: data.theme_color }}
                   >
                     {project.title}
                   </h3>
@@ -188,8 +188,8 @@ const ModernProfessionalTemplate = ({ data }: TemplateProps) => {
                           key={idx}
                           className="px-3 py-1 text-xs font-medium rounded-full"
                           style={{
-                            backgroundColor: data.themeColor + "20",
-                            color: data.themeColor,
+                            backgroundColor: data.theme_color + "20",
+                            color: data.theme_color,
                           }}
                         >
                           {tech}
@@ -208,7 +208,7 @@ const ModernProfessionalTemplate = ({ data }: TemplateProps) => {
           <section className="mb-8">
             <h2
               className="text-2xl font-bold mb-4 pb-2 border-b-2"
-              style={{ color: data.themeColor, borderColor: data.themeColor }}
+              style={{ color: data.theme_color, borderColor: data.theme_color }}
             >
               <GraduationCap className="inline-block mr-2 h-6 w-6 mb-1" />
               Education
@@ -219,7 +219,7 @@ const ModernProfessionalTemplate = ({ data }: TemplateProps) => {
                   <div>
                     <h3
                       className="text-lg font-bold"
-                      style={{ color: data.themeColor }}
+                      style={{ color: data.theme_color }}
                     >
                       {edu.degree}
                     </h3>
@@ -235,7 +235,7 @@ const ModernProfessionalTemplate = ({ data }: TemplateProps) => {
                   </div>
                   <div className="text-right text-sm">
                     <p className="font-semibold text-gray-700">
-                      {edu.startDate} - {edu.endDate}
+                      {edu.start_date} - {edu.end_date}
                     </p>
                   </div>
                 </div>
@@ -249,7 +249,7 @@ const ModernProfessionalTemplate = ({ data }: TemplateProps) => {
           <section className="mb-8">
             <h2
               className="text-2xl font-bold mb-4 pb-2 border-b-2"
-              style={{ color: data.themeColor, borderColor: data.themeColor }}
+              style={{ color: data.theme_color, borderColor: data.theme_color }}
             >
               <Award className="inline-block mr-2 h-6 w-6 mb-1" />
               Achievements & Awards
@@ -260,13 +260,13 @@ const ModernProfessionalTemplate = ({ data }: TemplateProps) => {
                   key={achievement.id}
                   className="p-4 rounded-lg border-l-4"
                   style={{
-                    borderColor: data.themeColor,
-                    backgroundColor: data.themeColor + "05",
+                    borderColor: data.theme_color,
+                    backgroundColor: data.theme_color + "05",
                   }}
                 >
                   <h3
                     className="font-bold mb-1"
-                    style={{ color: data.themeColor }}
+                    style={{ color: data.theme_color }}
                   >
                     {achievement.title}
                   </h3>
@@ -291,7 +291,7 @@ const ModernProfessionalTemplate = ({ data }: TemplateProps) => {
             <section>
               <h2
                 className="text-xl font-bold mb-4 pb-2 border-b-2"
-                style={{ color: data.themeColor, borderColor: data.themeColor }}
+                style={{ color: data.theme_color, borderColor: data.theme_color }}
               >
                 <Globe className="inline-block mr-2 h-5 w-5 mb-1" />
                 Languages
@@ -308,8 +308,8 @@ const ModernProfessionalTemplate = ({ data }: TemplateProps) => {
                     <span
                       className="px-3 py-1 text-xs font-semibold rounded-full"
                       style={{
-                        backgroundColor: data.themeColor + "20",
-                        color: data.themeColor,
+                        backgroundColor: data.theme_color + "20",
+                        color: data.theme_color,
                       }}
                     >
                       {lang.proficiency}
@@ -325,7 +325,7 @@ const ModernProfessionalTemplate = ({ data }: TemplateProps) => {
             <section>
               <h2
                 className="text-xl font-bold mb-4 pb-2 border-b-2"
-                style={{ color: data.themeColor, borderColor: data.themeColor }}
+                style={{ color: data.theme_color, borderColor: data.theme_color }}
               >
                 <Heart className="inline-block mr-2 h-5 w-5 mb-1" />
                 Interests
@@ -336,8 +336,8 @@ const ModernProfessionalTemplate = ({ data }: TemplateProps) => {
                     key={interest.id}
                     className="px-3 py-2 text-sm font-medium rounded-lg"
                     style={{
-                      backgroundColor: data.themeColor + "15",
-                      color: data.themeColor,
+                      backgroundColor: data.theme_color + "15",
+                      color: data.theme_color,
                     }}
                   >
                     {interest.name}

@@ -17,20 +17,20 @@ const ExperienceForm = () => {
       id: Date.now().toString(),
       company: "",
       position: "",
-      startDate: "",
-      endDate: "",
+      start_date: "",
+      end_date: "",
       current: false,
       location: "",
       description: "",
     };
     updateResumeData({
-      experience: [...resumeData.experience, newExperience],
+      experiences: [...resumeData.experiences, newExperience],
     });
   };
 
   const removeExperience = (id: string) => {
     updateResumeData({
-      experience: resumeData.experience.filter((exp: any) => exp.id !== id),
+      experiences: resumeData.experiences.filter((exp: any) => exp.id !== id),
     });
   };
 
@@ -40,7 +40,7 @@ const ExperienceForm = () => {
     value: any
   ) => {
     updateResumeData({
-      experience: resumeData.experience.map((exp: any) =>
+      experiences: resumeData.experiences.map((exp: any) =>
         exp.id === id ? { ...exp, [field]: value } : exp
       ),
     });
@@ -68,7 +68,7 @@ const ExperienceForm = () => {
       </div>
 
       <div className="space-y-4">
-        {resumeData.experience.map((exp: any) => (
+        {resumeData.experiences.map((exp: any) => (
           <div
             key={exp.id}
             className="rounded-2xl bg-[#F7F7FB] p-4 md:p-6 space-y-5"
@@ -117,23 +117,23 @@ const ExperienceForm = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
               <CustomOnlyDateSelector
                 label="Start Date"
-                value={exp.startDate}
+                value={exp.start_date}
                 onChange={(val) =>
                   updateExperience(
                     exp.id,
-                    "startDate",
+                    "start_date",
                     new Date(val)?.toISOString()
                   )
                 }
               />
               <CustomOnlyDateSelector
                 label="End Date"
-                value={exp.endDate}
+                value={exp.end_date}
                 disabled={exp.current}
                 onChange={(val) =>
                   updateExperience(
                     exp.id,
-                    "endDate",
+                    "end_date",
                     new Date(val)?.toISOString()
                   )
                 }
@@ -185,7 +185,7 @@ const ExperienceForm = () => {
           </div>
         ))}
 
-        {resumeData.experience.length === 0 && (
+        {resumeData.experiences.length === 0 && (
           <div className="text-center py-6 text-sm text-muted-foreground">
             No experience added yet. Tap “Add” to get started.
           </div>

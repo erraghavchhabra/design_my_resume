@@ -6,23 +6,23 @@ interface TemplateProps {
 
 const AcademicTemplate = ({ data }: TemplateProps) => {
   return (
-    <div className="p-12 bg-white" style={{ fontFamily: data.fontFamily }}>
+    <div className="p-12 bg-white" style={{ fontFamily: data.font_family }}>
       {/* Academic Header - Centered and formal */}
       <div className="text-center mb-8 pb-6 border-b">
-        <h1 className="text-4xl font-bold mb-2" style={{ color: data.themeColor }}>
-          {data.personalInfo.fullName}
+        <h1 className="text-4xl font-bold mb-2" style={{ color: data.theme_color }}>
+          {data.personal_info.full_name}
         </h1>
-        <p className="text-lg text-gray-600 mb-3">{data.personalInfo.headline}</p>
+        <p className="text-lg text-gray-600 mb-3">{data.personal_info.headline}</p>
         <div className="text-sm text-gray-600 space-y-1">
-          <p>{data.personalInfo.email} • {data.personalInfo.phone}</p>
-          <p>{data.personalInfo.location}</p>
+          <p>{data.personal_info.email} • {data.personal_info.phone}</p>
+          <p>{data.personal_info.location}</p>
         </div>
       </div>
 
       {/* Research Interests / Summary */}
       {data.summary.content && (
         <div className="mb-8">
-          <h2 className="text-xl font-bold mb-3 pb-2 border-b" style={{ color: data.themeColor }}>
+          <h2 className="text-xl font-bold mb-3 pb-2 border-b" style={{ color: data.theme_color }}>
             Research Interests
           </h2>
           <p className="text-gray-700 leading-relaxed">{data.summary.content}</p>
@@ -32,7 +32,7 @@ const AcademicTemplate = ({ data }: TemplateProps) => {
       {/* Education - Most important for academic CVs */}
       {data.education.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-bold mb-3 pb-2 border-b" style={{ color: data.themeColor }}>
+          <h2 className="text-xl font-bold mb-3 pb-2 border-b" style={{ color: data.theme_color }}>
             Education
           </h2>
           <div className="space-y-4">
@@ -41,14 +41,14 @@ const AcademicTemplate = ({ data }: TemplateProps) => {
                 <div className="flex justify-between items-start">
                   <div>
                     <h3 className="font-bold text-lg">{edu.degree} in {edu.field}</h3>
-                    <p className="font-semibold" style={{ color: data.themeColor }}>
+                    <p className="font-semibold" style={{ color: data.theme_color }}>
                       {edu.institution}
                     </p>
                     {edu.description && (
                       <p className="text-gray-700 mt-1">{edu.description}</p>
                     )}
                   </div>
-                  <p className="text-gray-600">{edu.startDate} – {edu.endDate}</p>
+                  <p className="text-gray-600">{edu.start_date} – {edu.end_date}</p>
                 </div>
               </div>
             ))}
@@ -59,7 +59,7 @@ const AcademicTemplate = ({ data }: TemplateProps) => {
       {/* Publications / Achievements */}
       {data.achievements.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-bold mb-3 pb-2 border-b" style={{ color: data.themeColor }}>
+          <h2 className="text-xl font-bold mb-3 pb-2 border-b" style={{ color: data.theme_color }}>
             Publications & Honors
           </h2>
           <div className="space-y-3">
@@ -75,23 +75,23 @@ const AcademicTemplate = ({ data }: TemplateProps) => {
       )}
 
       {/* Research Experience / Experience */}
-      {data.experience.length > 0 && (
+      {data.experiences.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-bold mb-3 pb-2 border-b" style={{ color: data.themeColor }}>
+          <h2 className="text-xl font-bold mb-3 pb-2 border-b" style={{ color: data.theme_color }}>
             Research & Professional Experience
           </h2>
           <div className="space-y-5">
-            {data.experience.map((exp) => (
+            {data.experiences.map((exp) => (
               <div key={exp.id}>
                 <div className="flex justify-between items-start mb-1">
                   <div>
                     <h3 className="font-bold text-lg">{exp.position}</h3>
-                    <p className="font-semibold" style={{ color: data.themeColor }}>
+                    <p className="font-semibold" style={{ color: data.theme_color }}>
                       {exp.company}, {exp.location}
                     </p>
                   </div>
                   <p className="text-gray-600">
-                    {exp.startDate} – {exp.current ? 'Present' : exp.endDate}
+                    {exp.start_date} – {exp.current ? 'Present' : exp.end_date}
                   </p>
                 </div>
                 <p className="text-gray-700 leading-relaxed">{exp.description}</p>
@@ -104,7 +104,7 @@ const AcademicTemplate = ({ data }: TemplateProps) => {
       {/* Projects / Research Projects */}
       {data.projects.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-bold mb-3 pb-2 border-b" style={{ color: data.themeColor }}>
+          <h2 className="text-xl font-bold mb-3 pb-2 border-b" style={{ color: data.theme_color }}>
             Research Projects
           </h2>
           <div className="space-y-4">
@@ -116,7 +116,7 @@ const AcademicTemplate = ({ data }: TemplateProps) => {
                   <a 
                     href={project.link}
                     className="text-sm hover:underline"
-                    style={{ color: data.themeColor }}
+                    style={{ color: data.theme_color }}
                   >
                     {project.link}
                   </a>
@@ -130,13 +130,13 @@ const AcademicTemplate = ({ data }: TemplateProps) => {
       {/* Skills / Technical Proficiencies */}
       {data.skills.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-bold mb-3 pb-2 border-b" style={{ color: data.themeColor }}>
+          <h2 className="text-xl font-bold mb-3 pb-2 border-b" style={{ color: data.theme_color }}>
             Technical Skills
           </h2>
           <div className="grid grid-cols-3 gap-x-6 gap-y-2">
             {data.skills.map((skill) => (
               <div key={skill.id} className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: data.themeColor }} />
+                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: data.theme_color }} />
                 <span>{skill.name}</span>
               </div>
             ))}
@@ -147,7 +147,7 @@ const AcademicTemplate = ({ data }: TemplateProps) => {
       {/* Languages */}
       {data.languages.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-bold mb-3 pb-2 border-b" style={{ color: data.themeColor }}>
+          <h2 className="text-xl font-bold mb-3 pb-2 border-b" style={{ color: data.theme_color }}>
             Languages
           </h2>
           <div className="grid grid-cols-2 gap-2">

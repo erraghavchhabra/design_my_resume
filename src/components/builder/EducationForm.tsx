@@ -17,8 +17,8 @@ const EducationForm = () => {
       institution: "",
       degree: "",
       field: "",
-      startDate: "",
-      endDate: "",
+      start_date: "",
+      end_date: "",
       description: "",
     };
     updateResumeData({
@@ -127,11 +127,11 @@ const EducationForm = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
               <CustomOnlyDateSelector
                 label="Start Date"
-                value={edu.startDate}
+                value={edu.start_date}
                 onChange={(val) =>
                   updateEducation(
                     edu.id,
-                    "startDate",
+                    "start_date",
                     new Date(val)?.toISOString()
                   )
                 }
@@ -139,11 +139,11 @@ const EducationForm = () => {
 
               <CustomOnlyDateSelector
                 label="End Date"
-                value={edu.endDate}
+                value={edu.end_date}
                 onChange={(val) =>
                   updateEducation(
                     edu.id,
-                    "endDate",
+                    "end_date",
                     new Date(val)?.toISOString()
                   )
                 }

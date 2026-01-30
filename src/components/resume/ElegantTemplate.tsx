@@ -6,31 +6,31 @@ interface TemplateProps {
 
 const ElegantTemplate = ({ data }: TemplateProps) => {
   return (
-    <div className="bg-white" style={{ fontFamily: data.fontFamily }}>
+    <div className="bg-white" style={{ fontFamily: data.font_family }}>
       {/* Elegant Header with subtle background */}
       <div className="relative">
         <div 
           className="absolute inset-0 opacity-5"
-          style={{ backgroundColor: data.themeColor }}
+          style={{ backgroundColor: data.theme_color }}
         />
         <div className="relative p-12 text-center">
           <h1 
             className="text-5xl font-serif font-bold mb-3 tracking-tight"
-            style={{ color: data.themeColor }}
+            style={{ color: data.theme_color }}
           >
-            {data.personalInfo.fullName}
+            {data.personal_info.full_name}
           </h1>
           <div 
             className="w-24 h-0.5 mx-auto mb-3"
-            style={{ backgroundColor: data.themeColor }}
+            style={{ backgroundColor: data.theme_color }}
           />
-          <p className="text-xl text-gray-600 italic mb-4">{data.personalInfo.headline}</p>
+          <p className="text-xl text-gray-600 italic mb-4">{data.personal_info.headline}</p>
           <div className="flex justify-center gap-6 text-sm text-gray-600">
-            <span>{data.personalInfo.email}</span>
+            <span>{data.personal_info.email}</span>
             <span className="opacity-50">•</span>
-            <span>{data.personalInfo.phone}</span>
+            <span>{data.personal_info.phone}</span>
             <span className="opacity-50">•</span>
-            <span>{data.personalInfo.location}</span>
+            <span>{data.personal_info.location}</span>
           </div>
         </div>
       </div>
@@ -46,17 +46,17 @@ const ElegantTemplate = ({ data }: TemplateProps) => {
         )}
 
         {/* Experience */}
-        {data.experience.length > 0 && (
+        {data.experiences.length > 0 && (
           <div>
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-0.5" style={{ backgroundColor: data.themeColor }} />
-              <h2 className="text-2xl font-serif font-bold" style={{ color: data.themeColor }}>
+              <div className="w-12 h-0.5" style={{ backgroundColor: data.theme_color }} />
+              <h2 className="text-2xl font-serif font-bold" style={{ color: data.theme_color }}>
                 Professional Experience
               </h2>
-              <div className="flex-1 h-0.5" style={{ backgroundColor: data.themeColor }} />
+              <div className="flex-1 h-0.5" style={{ backgroundColor: data.theme_color }} />
             </div>
             <div className="space-y-6">
-              {data.experience.map((exp, index) => (
+              {data.experiences.map((exp, index) => (
                 <div key={exp.id} className="relative">
                   {index > 0 && (
                     <div className="absolute -top-3 left-0 w-full h-px bg-gray-200" />
@@ -64,12 +64,12 @@ const ElegantTemplate = ({ data }: TemplateProps) => {
                   <div className="flex justify-between items-start mb-2">
                     <div>
                       <h3 className="text-xl font-semibold">{exp.position}</h3>
-                      <p className="text-lg italic" style={{ color: data.themeColor }}>
+                      <p className="text-lg italic" style={{ color: data.theme_color }}>
                         {exp.company}
                       </p>
                     </div>
                     <div className="text-right text-sm text-gray-500">
-                      <p>{exp.startDate} — {exp.current ? 'Present' : exp.endDate}</p>
+                      <p>{exp.start_date} — {exp.current ? 'Present' : exp.end_date}</p>
                       <p>{exp.location}</p>
                     </div>
                   </div>
@@ -84,22 +84,22 @@ const ElegantTemplate = ({ data }: TemplateProps) => {
         {data.education.length > 0 && (
           <div>
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-0.5" style={{ backgroundColor: data.themeColor }} />
-              <h2 className="text-2xl font-serif font-bold" style={{ color: data.themeColor }}>
+              <div className="w-12 h-0.5" style={{ backgroundColor: data.theme_color }} />
+              <h2 className="text-2xl font-serif font-bold" style={{ color: data.theme_color }}>
                 Education
               </h2>
-              <div className="flex-1 h-0.5" style={{ backgroundColor: data.themeColor }} />
+              <div className="flex-1 h-0.5" style={{ backgroundColor: data.theme_color }} />
             </div>
             <div className="space-y-4">
               {data.education.map((edu) => (
                 <div key={edu.id} className="flex justify-between items-start">
                   <div>
                     <h3 className="font-semibold text-lg">{edu.degree} in {edu.field}</h3>
-                    <p className="italic" style={{ color: data.themeColor }}>
+                    <p className="italic" style={{ color: data.theme_color }}>
                       {edu.institution}
                     </p>
                   </div>
-                  <p className="text-sm text-gray-500">{edu.startDate} — {edu.endDate}</p>
+                  <p className="text-sm text-gray-500">{edu.start_date} — {edu.end_date}</p>
                 </div>
               ))}
             </div>
@@ -110,18 +110,18 @@ const ElegantTemplate = ({ data }: TemplateProps) => {
         {data.skills.length > 0 && (
           <div>
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-0.5" style={{ backgroundColor: data.themeColor }} />
-              <h2 className="text-2xl font-serif font-bold" style={{ color: data.themeColor }}>
+              <div className="w-12 h-0.5" style={{ backgroundColor: data.theme_color }} />
+              <h2 className="text-2xl font-serif font-bold" style={{ color: data.theme_color }}>
                 Expertise
               </h2>
-              <div className="flex-1 h-0.5" style={{ backgroundColor: data.themeColor }} />
+              <div className="flex-1 h-0.5" style={{ backgroundColor: data.theme_color }} />
             </div>
             <div className="grid grid-cols-4 gap-4">
               {data.skills.map((skill) => (
                 <div key={skill.id} className="text-center">
                   <div 
                     className="w-3 h-3 rounded-full mx-auto mb-2"
-                    style={{ backgroundColor: data.themeColor }}
+                    style={{ backgroundColor: data.theme_color }}
                   />
                   <p className="font-medium text-sm">{skill.name}</p>
                   {skill.level && (

@@ -8,7 +8,7 @@ import { useResume } from "../../context/ResumeContext";
 const BasicInfoForm = ({ profileIamge = true }: any) => {
   const { resumeData, updateResumeData } = useResume();
   const [imagePreview, setImagePreview] = useState<string | undefined>(
-    resumeData.personalInfo.profileImage
+    resumeData.personal_info.profile_image
   );
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,7 +19,7 @@ const BasicInfoForm = ({ profileIamge = true }: any) => {
         const result = reader.result as string;
         setImagePreview(result);
         updateResumeData({
-          personalInfo: { ...resumeData.personalInfo, profileImage: result },
+          personal_info: { ...resumeData.personal_info, profile_image: result },
         });
       };
       reader.readAsDataURL(file);
@@ -29,13 +29,13 @@ const BasicInfoForm = ({ profileIamge = true }: any) => {
   const handleRemoveImage = () => {
     setImagePreview(undefined);
     updateResumeData({
-      personalInfo: { ...resumeData.personalInfo, profileImage: undefined },
+      personal_info: { ...resumeData.personal_info, profile_image: undefined },
     });
   };
 
   const handleChange = (field: string, value: string) => {
     updateResumeData({
-      personalInfo: { ...resumeData.personalInfo, [field]: value },
+      personal_info: { ...resumeData.personal_info, [field]: value },
     });
   };
 
@@ -102,12 +102,12 @@ const BasicInfoForm = ({ profileIamge = true }: any) => {
         {/* FORM RIGHT SIDE */}
         <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="fullName">Full Name *</Label>
+            <Label htmlFor="full_name">Full Name *</Label>
             <Input
-              id="fullName"
+              id="full_name"
               placeholder="John Doe"
-              value={resumeData.personalInfo.fullName}
-              onChange={(e) => handleChange("fullName", e.target.value)}
+              value={resumeData.personal_info.full_name}
+              onChange={(e) => handleChange("full_name", e.target.value)}
             />
           </div>
 
@@ -116,7 +116,7 @@ const BasicInfoForm = ({ profileIamge = true }: any) => {
             <Input
               id="headline"
               placeholder="Senior Software Engineer"
-              value={resumeData.personalInfo.headline}
+              value={resumeData.personal_info.headline}
               onChange={(e) => handleChange("headline", e.target.value)}
             />
           </div>
@@ -127,7 +127,7 @@ const BasicInfoForm = ({ profileIamge = true }: any) => {
               id="email"
               type="email"
               placeholder="john@email.com"
-              value={resumeData.personalInfo.email}
+              value={resumeData.personal_info.email}
               onChange={(e) => handleChange("email", e.target.value)}
             />
           </div>
@@ -138,7 +138,7 @@ const BasicInfoForm = ({ profileIamge = true }: any) => {
               id="phone"
               type="tel"
               placeholder="+1 (555) 123-4567"
-              value={resumeData.personalInfo.phone}
+              value={resumeData.personal_info.phone}
               onChange={(e) => handleChange("phone", e.target.value)}
             />
           </div>
@@ -148,7 +148,7 @@ const BasicInfoForm = ({ profileIamge = true }: any) => {
             <Input
               id="location"
               placeholder="San Francisco, CA"
-              value={resumeData.personalInfo.location}
+              value={resumeData.personal_info.location}
               onChange={(e) => handleChange("location", e.target.value)}
             />
           </div>

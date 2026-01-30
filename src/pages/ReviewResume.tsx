@@ -18,7 +18,7 @@ const ReviewResume = () => {
   const sections = [
     { id: 'basic', name: 'Personal Info', step: 0 },
     { id: 'summary', name: 'Summary', step: 1 },
-    { id: 'experience', name: 'Experience', step: 2 },
+    { id: 'experiences', name: 'Experience', step: 2 },
     { id: 'education', name: 'Education', step: 3 },
     { id: 'skills', name: 'Skills', step: 4 },
     { id: 'projects', name: 'Projects', step: 5 },

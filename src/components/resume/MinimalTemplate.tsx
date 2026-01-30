@@ -11,29 +11,29 @@ const MinimalTemplate = ({ data }: MinimalTemplateProps) => {
     return `${month}.${year}`;
   };
 
-  const fontFamily = data.fontFamily || 'Inter';
+  const fontFamily = data.font_family || 'Inter';
 
   return (
     <div className="p-12 text-black max-w-4xl mx-auto" style={{ fontFamily }}>
       {/* Header */}
       <header className="mb-10 text-center">
-        {data.personalInfo.profileImage && (
+        {data.personal_info.profile_image && (
           <img
-            src={data.personalInfo.profileImage}
+            src={data.personal_info.profile_image}
             alt="Profile"
             className="w-20 h-20 rounded-full object-cover mx-auto mb-4 grayscale"
           />
         )}
         <h1 className="text-5xl font-bold mb-2 tracking-tight">
-          {data.personalInfo.fullName || 'YOUR NAME'}
+          {data.personal_info.full_name || 'YOUR NAME'}
         </h1>
         <p className="text-lg mb-3 text-gray-700">
-          {data.personalInfo.headline || 'Professional Title'}
+          {data.personal_info.headline || 'Professional Title'}
         </p>
         <div className="flex justify-center flex-wrap gap-x-4 text-sm text-gray-600">
-          {data.personalInfo.email && <span>{data.personalInfo.email}</span>}
-          {data.personalInfo.phone && <span>{data.personalInfo.phone}</span>}
-          {data.personalInfo.location && <span>{data.personalInfo.location}</span>}
+          {data.personal_info.email && <span>{data.personal_info.email}</span>}
+          {data.personal_info.phone && <span>{data.personal_info.phone}</span>}
+          {data.personal_info.location && <span>{data.personal_info.location}</span>}
         </div>
       </header>
 
@@ -48,18 +48,18 @@ const MinimalTemplate = ({ data }: MinimalTemplateProps) => {
         )}
 
         {/* Experience */}
-        {data.experience.length > 0 && (
+        {data.experiences.length > 0 && (
           <section>
             <h2 className="text-xs font-bold uppercase tracking-wider mb-4 border-b border-black pb-2">
               Experience
             </h2>
             <div className="space-y-6">
-              {data.experience.map((exp) => (
+              {data.experiences.map((exp) => (
                 <div key={exp.id}>
                   <div className="flex justify-between items-baseline mb-1">
                     <h3 className="font-bold text-base">{exp.position}</h3>
                     <span className="text-xs text-gray-600">
-                      {formatDate(exp.startDate)} — {exp.current ? 'Present' : formatDate(exp.endDate)}
+                      {formatDate(exp.start_date)} — {exp.current ? 'Present' : formatDate(exp.end_date)}
                     </span>
                   </div>
                   <p className="text-sm text-gray-700 mb-2">
@@ -89,7 +89,7 @@ const MinimalTemplate = ({ data }: MinimalTemplateProps) => {
                       {edu.degree}, {edu.field}
                     </h3>
                     <span className="text-xs text-gray-600">
-                      {formatDate(edu.startDate)} — {formatDate(edu.endDate)}
+                      {formatDate(edu.start_date)} — {formatDate(edu.end_date)}
                     </span>
                   </div>
                   <p className="text-sm text-gray-700">{edu.institution}</p>

@@ -3,7 +3,12 @@ import { Button } from "../components/ui/button";
 import { MdCheck } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { DownloadCloud, FileText, PencilLine } from "lucide-react";
+import { Circle, DownloadCloud, FileText, PencilLine } from "lucide-react";
+import axios from "axios";
+import { getResume_api } from "../api/ResumeApis";
+import Cookies from "js-cookie";
+import CircleLoading from "../components/ui/circle-loading";
+import { useResume } from "../context/ResumeContext";
 const Star = () => (
   <span className="text-white text-sm bg-[#00B67A] rounded w-5 h-5 flex items-center justify-center">
     ★
@@ -11,7 +16,13 @@ const Star = () => (
 );
 function ResumeIntro() {
   const navigate = useNavigate();
+  const { resumeData, updateResumeData } = useResume();
+  const token = Cookies.get("user_token");
+
+  const first_resume_id = Cookies.get("first_resume_id");
+
   const [active, setActive] = useState(0);
+  const [loading, setLoading] = useState(false);
   const steps = [
     {
       title: "Pick a template",
@@ -38,6 +49,66 @@ function ResumeIntro() {
     }, 1100);
     return () => clearInterval(interval);
   }, []);
+  // async function continueFunc() {
+  //   try {
+  //     setLoading(true);
+  //     if (first_resume_id) {
+  //       const res = await axios.get(getResume_api(first_resume_id));
+  //       if (res?.data?.id) {
+  //         console.log(65151, res?.data);
+  //         // updateResumeData(res?.data);
+  //         Cookies.set("update_resume_id", res?.data?.id);
+  //         navigate("/builder");
+  //       } else {
+  //         navigate("/setup");
+  //       }
+  //     } else {
+  //       navigate("/setup");
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  //   // navigate("/setup")
+  // }
+  async function continueFunc() {
+    try {
+      setLoading(true);
+
+      // 🔐 Logged-in user
+      if (token && first_resume_id) {
+        const res = await axios.get(getResume_api(first_resume_id), {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (res?.data?.id) {
+          // Cookies.set("update_resume_id", res.data.id);
+          navigate(`/builder/${res.data.id}`);
+          return;
+        } else {
+          navigate("/setup");
+          return;
+        }
+      }
+
+      // 👤 Guest user
+      const guestResume = localStorage.getItem("guest_resume_data");
+
+      if (guestResume) {
+        navigate("/builder");
+      } else {
+        navigate("/setup");
+      }
+    } catch (err) {
+      console.log("Continue failed:", err);
+      navigate("/setup");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="min-h-screen relative  ">
@@ -158,9 +229,9 @@ function ResumeIntro() {
             <Button
               size="lg"
               className="px-12 mt-5 py-6 text-lg font-semibold rounded-full"
-              onClick={() => navigate("/setup")}
+              onClick={continueFunc}
             >
-              Continue
+              {loading ? <CircleLoading /> : "Continue"}
             </Button>
           </motion.div>
           {/* ⭐ Trustpilot Inline Section */}
@@ -197,7 +268,7 @@ function ResumeIntro() {
 
             {/* Copyright */}
             <p className="whitespace-nowrap">
-              © 2025, NOW Limited. All rights reserved.
+              © 2026, NOW Limited. All rights reserved.
             </p>
           </div>
         </div>

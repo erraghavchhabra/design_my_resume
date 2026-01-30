@@ -6,19 +6,19 @@ interface TemplateProps {
 
 const CompactTemplate = ({ data }: TemplateProps) => {
   return (
-    <div className="p-8 bg-white text-sm" style={{ fontFamily: data.fontFamily }}>
+    <div className="p-8 bg-white text-sm" style={{ fontFamily: data.font_family }}>
       {/* Compact Header */}
-      <div className="mb-6 pb-4 border-b-2" style={{ borderColor: data.themeColor }}>
-        <h1 className="text-3xl font-bold mb-1" style={{ color: data.themeColor }}>
-          {data.personalInfo.fullName}
+      <div className="mb-6 pb-4 border-b-2" style={{ borderColor: data.theme_color }}>
+        <h1 className="text-3xl font-bold mb-1" style={{ color: data.theme_color }}>
+          {data.personal_info.full_name}
         </h1>
-        <p className="text-base font-semibold text-gray-700 mb-2">{data.personalInfo.headline}</p>
+        <p className="text-base font-semibold text-gray-700 mb-2">{data.personal_info.headline}</p>
         <div className="flex gap-4 text-xs text-gray-600">
-          <span>{data.personalInfo.email}</span>
+          <span>{data.personal_info.email}</span>
           <span>|</span>
-          <span>{data.personalInfo.phone}</span>
+          <span>{data.personal_info.phone}</span>
           <span>|</span>
-          <span>{data.personalInfo.location}</span>
+          <span>{data.personal_info.location}</span>
         </div>
       </div>
 
@@ -28,7 +28,7 @@ const CompactTemplate = ({ data }: TemplateProps) => {
           {/* Summary */}
           {data.summary.content && (
             <div>
-              <h2 className="text-base font-bold mb-2 uppercase" style={{ color: data.themeColor }}>
+              <h2 className="text-base font-bold mb-2 uppercase" style={{ color: data.theme_color }}>
                 Summary
               </h2>
               <p className="text-gray-700 text-xs leading-relaxed">{data.summary.content}</p>
@@ -36,21 +36,21 @@ const CompactTemplate = ({ data }: TemplateProps) => {
           )}
 
           {/* Experience */}
-          {data.experience.length > 0 && (
+          {data.experiences.length > 0 && (
             <div>
-              <h2 className="text-base font-bold mb-2 uppercase" style={{ color: data.themeColor }}>
+              <h2 className="text-base font-bold mb-2 uppercase" style={{ color: data.theme_color }}>
                 Experience
               </h2>
               <div className="space-y-3">
-                {data.experience.map((exp) => (
+                {data.experiences.map((exp) => (
                   <div key={exp.id}>
                     <div className="flex justify-between items-baseline mb-1">
                       <h3 className="font-bold">{exp.position}</h3>
                       <span className="text-xs text-gray-500">
-                        {exp.startDate} - {exp.current ? 'Present' : exp.endDate}
+                        {exp.start_date} - {exp.current ? 'Present' : exp.end_date}
                       </span>
                     </div>
-                    <p className="font-semibold text-xs" style={{ color: data.themeColor }}>
+                    <p className="font-semibold text-xs" style={{ color: data.theme_color }}>
                       {exp.company} | {exp.location}
                     </p>
                     <p className="text-gray-700 text-xs mt-1">{exp.description}</p>
@@ -63,7 +63,7 @@ const CompactTemplate = ({ data }: TemplateProps) => {
           {/* Projects */}
           {data.projects.length > 0 && (
             <div>
-              <h2 className="text-base font-bold mb-2 uppercase" style={{ color: data.themeColor }}>
+              <h2 className="text-base font-bold mb-2 uppercase" style={{ color: data.theme_color }}>
                 Projects
               </h2>
               <div className="space-y-2">
@@ -83,7 +83,7 @@ const CompactTemplate = ({ data }: TemplateProps) => {
           {/* Education */}
           {data.education.length > 0 && (
             <div>
-              <h2 className="text-base font-bold mb-2 uppercase" style={{ color: data.themeColor }}>
+              <h2 className="text-base font-bold mb-2 uppercase" style={{ color: data.theme_color }}>
                 Education
               </h2>
               <div className="space-y-2">
@@ -91,10 +91,10 @@ const CompactTemplate = ({ data }: TemplateProps) => {
                   <div key={edu.id}>
                     <h3 className="font-bold text-xs">{edu.degree}</h3>
                     <p className="text-xs">{edu.field}</p>
-                    <p className="text-xs font-semibold" style={{ color: data.themeColor }}>
+                    <p className="text-xs font-semibold" style={{ color: data.theme_color }}>
                       {edu.institution}
                     </p>
-                    <p className="text-xs text-gray-500">{edu.endDate}</p>
+                    <p className="text-xs text-gray-500">{edu.end_date}</p>
                   </div>
                 ))}
               </div>
@@ -104,7 +104,7 @@ const CompactTemplate = ({ data }: TemplateProps) => {
           {/* Skills */}
           {data.skills.length > 0 && (
             <div>
-              <h2 className="text-base font-bold mb-2 uppercase" style={{ color: data.themeColor }}>
+              <h2 className="text-base font-bold mb-2 uppercase" style={{ color: data.theme_color }}>
                 Skills
               </h2>
               <div className="flex flex-wrap gap-1">
@@ -112,7 +112,7 @@ const CompactTemplate = ({ data }: TemplateProps) => {
                   <span
                     key={skill.id}
                     className="px-2 py-1 rounded text-xs text-white"
-                    style={{ backgroundColor: data.themeColor }}
+                    style={{ backgroundColor: data.theme_color }}
                   >
                     {skill.name}
                   </span>
@@ -124,7 +124,7 @@ const CompactTemplate = ({ data }: TemplateProps) => {
           {/* Languages */}
           {data.languages.length > 0 && (
             <div>
-              <h2 className="text-base font-bold mb-2 uppercase" style={{ color: data.themeColor }}>
+              <h2 className="text-base font-bold mb-2 uppercase" style={{ color: data.theme_color }}>
                 Languages
               </h2>
               <div className="space-y-1">
@@ -140,7 +140,7 @@ const CompactTemplate = ({ data }: TemplateProps) => {
           {/* Interests */}
           {data.interests.length > 0 && (
             <div>
-              <h2 className="text-base font-bold mb-2 uppercase" style={{ color: data.themeColor }}>
+              <h2 className="text-base font-bold mb-2 uppercase" style={{ color: data.theme_color }}>
                 Interests
               </h2>
               <div className="text-xs text-gray-700">

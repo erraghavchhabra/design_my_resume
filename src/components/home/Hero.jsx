@@ -1,4 +1,7 @@
+import axios from "axios";
 import { FaArrowRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { importResume_api } from "../../api/ResumeApis";
 
 // ⭐ Star component must be defined before Hero()
 const Star = () => (
@@ -8,6 +11,32 @@ const Star = () => (
 );
 
 export default function Hero() {
+  const navigate = useNavigate();
+
+  const handleResumeUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("resume", file);
+
+    try {
+      const res = await axios.post(importResume_api, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          // Authorization: Bearer ${localStorage.getItem("token")}
+        },
+      });
+
+      console.log("Parsed Resume:", res.data);
+
+      // 🔥 Send parsed data to resume builder
+      // navigate("/resume-builder", { state: res.data });
+    } catch (err) {
+      console.error(err);
+      alert("Failed to parse resume");
+    }
+  };
   return (
     <section
       className="relative pt-14 lg:pt-24 text-center bg-cover bg-center bg-no-repeat min-h-[100vh] flex flex-col justify-center"
@@ -30,12 +59,20 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-col space-y-4 sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
-            <a
-              href="#"
+            <button
+              // href="#"
+              onClick={() => document.getElementById("resumeUpload").click()}
               className="px-8 py-3 text-lg font-semibold rounded bg-indigo-600 text-white hover:bg-indigo-700 transition"
             >
               Import Your Resume
-            </a>
+            </button>
+            <input
+              type="file"
+              id="resumeUpload"
+              accept=".pdf,.doc,.docx"
+              className="hidden"
+              onChange={handleResumeUpload}
+            />
             <a
               href="/resume-loading"
               className="px-8 py-3 text-lg font-semibold border border-gray-300 rounded hover:bg-gray-100 transition"
@@ -55,7 +92,11 @@ export default function Hero() {
             <p className="text-sm text-gray-600">
               Based on <span className="font-semibold">14,874 reviews</span>
             </p>
-            <img src="/assets/svg/trustpilot.svg" alt="Trustpilot" className="w-24 md:w-28" />
+            <img
+              src="/assets/svg/trustpilot.svg"
+              alt="Trustpilot"
+              className="w-24 md:w-28"
+            />
           </div>
         </div>
 

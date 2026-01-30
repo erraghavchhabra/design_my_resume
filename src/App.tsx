@@ -22,6 +22,7 @@ import ResumeIntro from "./pages/ResumeIntro";
 import CvMaker from "./pages/cv/CvMaker";
 import CvTemplates from "./pages/cv/CvTemplates";
 import PressCoverage from "./pages/resources/PressCoverage";
+import ResumeDashboard from "./pages/ResumeDashboard";
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -38,10 +39,13 @@ const App = () => {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/resume-loading" element={<ResumeLoading />} />
+                <Route path="/resume-dashboard" element={<ResumeDashboard />} />
                 <Route path="/resume-intro" element={<ResumeIntro />} />
                 <Route path="/setup" element={<SetupResume />} />
                 <Route path="/builder" element={<Builder />} />
+                <Route path="/builder/:id" element={<Builder />} />
                 <Route path="/final-resume" element={<FinalResume />} />
+                <Route path="/final-resume/:id" element={<FinalResume />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
                 <Route path="/cv-maker" element={<CvMaker />} />

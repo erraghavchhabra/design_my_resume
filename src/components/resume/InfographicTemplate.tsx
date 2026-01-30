@@ -6,40 +6,40 @@ interface TemplateProps {
 
 const InfographicTemplate = ({ data }: TemplateProps) => {
   return (
-    <div className="bg-white" style={{ fontFamily: data.fontFamily }}>
+    <div className="bg-white" style={{ fontFamily: data.font_family }}>
       {/* Visual Header with split design */}
       <div className="grid grid-cols-2">
         <div className="p-12 bg-gray-50">
           <div 
             className="w-32 h-32 rounded-full mx-auto mb-6 flex items-center justify-center text-white text-4xl font-bold"
-            style={{ backgroundColor: data.themeColor }}
+            style={{ backgroundColor: data.theme_color }}
           >
-            {data.personalInfo.fullName.split(' ').map(n => n[0]).join('')}
+            {data.personal_info.full_name.split(' ').map(n => n[0]).join('')}
           </div>
-          <h1 className="text-3xl font-bold text-center mb-2" style={{ color: data.themeColor }}>
-            {data.personalInfo.fullName}
+          <h1 className="text-3xl font-bold text-center mb-2" style={{ color: data.theme_color }}>
+            {data.personal_info.full_name}
           </h1>
-          <p className="text-center text-gray-600">{data.personalInfo.headline}</p>
+          <p className="text-center text-gray-600">{data.personal_info.headline}</p>
         </div>
-        <div className="p-12 flex flex-col justify-center" style={{ backgroundColor: `${data.themeColor}10` }}>
+        <div className="p-12 flex flex-col justify-center" style={{ backgroundColor: `${data.theme_color}10` }}>
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: data.themeColor }}>
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: data.theme_color }}>
                 <span className="text-white text-xl">📧</span>
               </div>
-              <span className="text-sm">{data.personalInfo.email}</span>
+              <span className="text-sm">{data.personal_info.email}</span>
             </div>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: data.themeColor }}>
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: data.theme_color }}>
                 <span className="text-white text-xl">📱</span>
               </div>
-              <span className="text-sm">{data.personalInfo.phone}</span>
+              <span className="text-sm">{data.personal_info.phone}</span>
             </div>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: data.themeColor }}>
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: data.theme_color }}>
                 <span className="text-white text-xl">📍</span>
               </div>
-              <span className="text-sm">{data.personalInfo.location}</span>
+              <span className="text-sm">{data.personal_info.location}</span>
             </div>
           </div>
         </div>
@@ -51,10 +51,10 @@ const InfographicTemplate = ({ data }: TemplateProps) => {
           <div className="relative">
             <div 
               className="absolute left-0 top-0 w-1 h-full rounded-full"
-              style={{ backgroundColor: data.themeColor }}
+              style={{ backgroundColor: data.theme_color }}
             />
             <div className="pl-8">
-              <h2 className="text-2xl font-bold mb-4" style={{ color: data.themeColor }}>
+              <h2 className="text-2xl font-bold mb-4" style={{ color: data.theme_color }}>
                 About Me
               </h2>
               <p className="text-gray-700 leading-relaxed text-lg">{data.summary.content}</p>
@@ -63,32 +63,32 @@ const InfographicTemplate = ({ data }: TemplateProps) => {
         )}
 
         {/* Experience Timeline */}
-        {data.experience.length > 0 && (
+        {data.experiences.length > 0 && (
           <div>
-            <h2 className="text-2xl font-bold mb-6" style={{ color: data.themeColor }}>
+            <h2 className="text-2xl font-bold mb-6" style={{ color: data.theme_color }}>
               Career Journey
             </h2>
             <div className="relative">
               <div 
                 className="absolute left-6 top-0 bottom-0 w-0.5"
-                style={{ backgroundColor: `${data.themeColor}40` }}
+                style={{ backgroundColor: `${data.theme_color}40` }}
               />
               <div className="space-y-8">
-                {data.experience.map((exp) => (
+                {data.experiences.map((exp) => (
                   <div key={exp.id} className="relative pl-16">
                     <div 
                       className="absolute left-0 top-1 w-12 h-12 rounded-full flex items-center justify-center text-white font-bold"
-                      style={{ backgroundColor: data.themeColor }}
+                      style={{ backgroundColor: data.theme_color }}
                     >
-                      {exp.startDate.split('-')[0].slice(2)}
+                      {exp.start_date.split('-')[0].slice(2)}
                     </div>
                     <div className="bg-gray-50 p-6 rounded-lg">
                       <h3 className="font-bold text-xl mb-1">{exp.position}</h3>
-                      <p className="font-semibold mb-2" style={{ color: data.themeColor }}>
+                      <p className="font-semibold mb-2" style={{ color: data.theme_color }}>
                         {exp.company} • {exp.location}
                       </p>
                       <p className="text-sm text-gray-500 mb-3">
-                        {exp.startDate} - {exp.current ? 'Present' : exp.endDate}
+                        {exp.start_date} - {exp.current ? 'Present' : exp.end_date}
                       </p>
                       <p className="text-gray-700">{exp.description}</p>
                     </div>
@@ -102,7 +102,7 @@ const InfographicTemplate = ({ data }: TemplateProps) => {
         {/* Skills with Progress Circles */}
         {data.skills.length > 0 && (
           <div>
-            <h2 className="text-2xl font-bold mb-6" style={{ color: data.themeColor }}>
+            <h2 className="text-2xl font-bold mb-6" style={{ color: data.theme_color }}>
               Skills & Expertise
             </h2>
             <div className="grid grid-cols-4 gap-6">
@@ -123,7 +123,7 @@ const InfographicTemplate = ({ data }: TemplateProps) => {
                         cy="48"
                         r="44"
                         fill="none"
-                        stroke={data.themeColor}
+                        stroke={data.theme_color}
                         strokeWidth="8"
                         strokeDasharray={`${2 * Math.PI * 44}`}
                         strokeDashoffset={`${2 * Math.PI * 44 * (1 - (skill.level === 'Expert' ? 0.9 : skill.level === 'Advanced' ? 0.75 : 0.6))}`}
@@ -131,7 +131,7 @@ const InfographicTemplate = ({ data }: TemplateProps) => {
                       />
                     </svg>
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-lg font-bold" style={{ color: data.themeColor }}>
+                      <span className="text-lg font-bold" style={{ color: data.theme_color }}>
                         {skill.level === 'Expert' ? '90%' : skill.level === 'Advanced' ? '75%' : '60%'}
                       </span>
                     </div>
@@ -146,7 +146,7 @@ const InfographicTemplate = ({ data }: TemplateProps) => {
         {/* Education Cards */}
         {data.education.length > 0 && (
           <div>
-            <h2 className="text-2xl font-bold mb-6" style={{ color: data.themeColor }}>
+            <h2 className="text-2xl font-bold mb-6" style={{ color: data.theme_color }}>
               Education
             </h2>
             <div className="grid grid-cols-2 gap-6">
@@ -154,20 +154,20 @@ const InfographicTemplate = ({ data }: TemplateProps) => {
                 <div 
                   key={edu.id}
                   className="border-2 rounded-xl p-6 hover:shadow-lg transition-shadow"
-                  style={{ borderColor: `${data.themeColor}40` }}
+                  style={{ borderColor: `${data.theme_color}40` }}
                 >
                   <div 
                     className="w-12 h-12 rounded-lg flex items-center justify-center text-white text-2xl mb-4"
-                    style={{ backgroundColor: data.themeColor }}
+                    style={{ backgroundColor: data.theme_color }}
                   >
                     🎓
                   </div>
                   <h3 className="font-bold text-lg mb-1">{edu.degree}</h3>
-                  <p className="font-semibold mb-2" style={{ color: data.themeColor }}>
+                  <p className="font-semibold mb-2" style={{ color: data.theme_color }}>
                     {edu.field}
                   </p>
                   <p className="text-gray-700">{edu.institution}</p>
-                  <p className="text-sm text-gray-500 mt-2">{edu.endDate}</p>
+                  <p className="text-sm text-gray-500 mt-2">{edu.end_date}</p>
                 </div>
               ))}
             </div>

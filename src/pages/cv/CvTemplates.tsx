@@ -172,7 +172,7 @@ function CvTemplates() {
                 setThemeColor(color.value);
               }}
               className={`w-full h-10 rounded-xl transition-all ${
-                resumeData?.themeColor === color.value
+                resumeData?.theme_color === color.value
                   ? "ring-1 ring-primary ring-offset-2"
                   : "hover:ring-1 hover:ring-muted-foreground"
               }`}

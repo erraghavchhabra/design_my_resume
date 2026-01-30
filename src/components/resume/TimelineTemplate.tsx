@@ -7,9 +7,9 @@ interface TemplateProps {
 const TimelineTemplate = ({ data }: TemplateProps) => {
   // Combine experience and education for timeline
   const timelineItems = [
-    ...data.experience.map(exp => ({
-      type: 'experience',
-      year: exp.startDate.split('-')[0],
+    ...data.experiences.map(exp => ({
+      type: 'experiences',
+      year: exp.start_date.split('-')[0],
       title: exp.position,
       subtitle: exp.company,
       location: exp.location,
@@ -18,7 +18,7 @@ const TimelineTemplate = ({ data }: TemplateProps) => {
     })),
     ...data.education.map(edu => ({
       type: 'education',
-      year: edu.endDate.split('-')[0],
+      year: edu.end_date.split('-')[0],
       title: edu.degree,
       subtitle: edu.institution,
       location: edu.field,
@@ -28,19 +28,19 @@ const TimelineTemplate = ({ data }: TemplateProps) => {
   ].sort((a, b) => parseInt(b.year) - parseInt(a.year));
 
   return (
-    <div className="p-12 bg-white" style={{ fontFamily: data.fontFamily }}>
+    <div className="p-12 bg-white" style={{ fontFamily: data.font_family }}>
       {/* Minimalist Header */}
       <div className="mb-12 text-center">
-        <h1 className="text-5xl font-light mb-3" style={{ color: data.themeColor }}>
-          {data.personalInfo.fullName}
+        <h1 className="text-5xl font-light mb-3" style={{ color: data.theme_color }}>
+          {data.personal_info.full_name}
         </h1>
-        <p className="text-xl text-gray-600 mb-4">{data.personalInfo.headline}</p>
+        <p className="text-xl text-gray-600 mb-4">{data.personal_info.headline}</p>
         <div className="flex justify-center gap-4 text-sm text-gray-500">
-          <span>{data.personalInfo.email}</span>
+          <span>{data.personal_info.email}</span>
           <span>•</span>
-          <span>{data.personalInfo.phone}</span>
+          <span>{data.personal_info.phone}</span>
           <span>•</span>
-          <span>{data.personalInfo.location}</span>
+          <span>{data.personal_info.location}</span>
         </div>
       </div>
 
@@ -58,7 +58,7 @@ const TimelineTemplate = ({ data }: TemplateProps) => {
         {/* Central vertical line */}
         <div 
           className="absolute left-1/2 top-0 bottom-0 w-1 -ml-0.5"
-          style={{ backgroundColor: `${data.themeColor}30` }}
+          style={{ backgroundColor: `${data.theme_color}30` }}
         />
 
         <div className="space-y-12">
@@ -67,7 +67,7 @@ const TimelineTemplate = ({ data }: TemplateProps) => {
               {/* Timeline dot */}
               <div 
                 className="absolute left-1/2 w-6 h-6 rounded-full -ml-3 border-4 border-white z-10"
-                style={{ backgroundColor: data.themeColor }}
+                style={{ backgroundColor: data.theme_color }}
               />
 
               {/* Content alternates left and right */}
@@ -79,16 +79,16 @@ const TimelineTemplate = ({ data }: TemplateProps) => {
                         <div className="flex items-center gap-2 mb-2">
                           <span 
                             className="text-2xl font-bold"
-                            style={{ color: data.themeColor }}
+                            style={{ color: data.theme_color }}
                           >
                             {item.year}
                           </span>
                           <span className="px-3 py-1 text-xs rounded-full bg-white">
-                            {item.type === 'experience' ? '💼 Work' : '🎓 Education'}
+                            {item.type === 'experiences' ? '💼 Work' : '🎓 Education'}
                           </span>
                         </div>
                         <h3 className="font-bold text-xl mb-1">{item.title}</h3>
-                        <p className="font-semibold mb-1" style={{ color: data.themeColor }}>
+                        <p className="font-semibold mb-1" style={{ color: data.theme_color }}>
                           {item.subtitle}
                         </p>
                         <p className="text-sm text-gray-600 mb-3">{item.location}</p>
@@ -104,17 +104,17 @@ const TimelineTemplate = ({ data }: TemplateProps) => {
                       <div className="bg-gray-50 p-6 rounded-lg">
                         <div className="flex items-center justify-end gap-2 mb-2">
                           <span className="px-3 py-1 text-xs rounded-full bg-white">
-                            {item.type === 'experience' ? '💼 Work' : '🎓 Education'}
+                            {item.type === 'experiences' ? '💼 Work' : '🎓 Education'}
                           </span>
                           <span 
                             className="text-2xl font-bold"
-                            style={{ color: data.themeColor }}
+                            style={{ color: data.theme_color }}
                           >
                             {item.year}
                           </span>
                         </div>
                         <h3 className="font-bold text-xl mb-1">{item.title}</h3>
-                        <p className="font-semibold mb-1" style={{ color: data.themeColor }}>
+                        <p className="font-semibold mb-1" style={{ color: data.theme_color }}>
                           {item.subtitle}
                         </p>
                         <p className="text-sm text-gray-600 mb-3">{item.location}</p>
@@ -132,7 +132,7 @@ const TimelineTemplate = ({ data }: TemplateProps) => {
       {/* Skills Grid at Bottom */}
       {data.skills.length > 0 && (
         <div className="max-w-4xl mx-auto pt-12 border-t">
-          <h2 className="text-2xl font-light mb-6 text-center" style={{ color: data.themeColor }}>
+          <h2 className="text-2xl font-light mb-6 text-center" style={{ color: data.theme_color }}>
             Professional Skills
           </h2>
           <div className="grid grid-cols-5 gap-4">
@@ -140,7 +140,7 @@ const TimelineTemplate = ({ data }: TemplateProps) => {
               <div 
                 key={skill.id}
                 className="text-center p-4 rounded-lg border hover:shadow-md transition-shadow"
-                style={{ borderColor: `${data.themeColor}30` }}
+                style={{ borderColor: `${data.theme_color}30` }}
               >
                 <p className="font-semibold text-sm">{skill.name}</p>
                 {skill.level && (

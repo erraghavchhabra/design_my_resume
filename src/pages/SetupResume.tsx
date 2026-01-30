@@ -13,6 +13,10 @@ import ClassicTemplate from "../components/resume/ClassicTemplate";
 // import MinimalTemplate from "../components/resume/MinimalTemplate";
 // import ProfessionalTemplate from "../components/resume/ProfessionalTemplate";
 import CreativeTemplate from "../components/resume/CreativeTemplate";
+import { createResume_api } from "../api/ResumeApis";
+import axios from "axios";
+import Cookies from "js-cookie";
+import CircleLoading from "../components/ui/circle-loading";
 // import ExecutiveTemplate from "../components/resume/ExecutiveTemplate";
 // import CompactTemplate from "../components/resume/CompactTemplate";
 // import ElegantTemplate from "../components/resume/ElegantTemplate";
@@ -59,23 +63,100 @@ const SetupResume = () => {
   const { resumeData, updateResumeData, setTemplate, setThemeColor } =
     useResume();
   const [fullName, setFullName] = useState(
-    resumeData.personalInfo.fullName || ""
+    resumeData.personal_info.full_name || "",
   );
+  const [loading, setLoading] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState<string>(
-    resumeData.template || "modern"
+    resumeData.template || "modern",
   );
+  const [selectedColor, setSelectedColor] = useState(resumeData.theme_color);
 
-  const [selectedColor, setSelectedColor] = useState(resumeData.themeColor);
-
-  const handleStart = () => {
+  // const handleStart = async (theme: any) => {
+  //   if (!fullName.trim()) return;
+  //   setLoading(true);
+  //   updateResumeData({
+  //     personal_info: { ...resumeData.personal_info, full_name: fullName },
+  //   });
+  //   // setTemplate(selectedTemplate as any);
+  //   // setThemeColor(selectedColor);
+  //   const payload = {
+  //     template: theme,
+  //     theme_color: selectedColor,
+  //     font_family: resumeData.font_family,
+  //     personal_info: {
+  //       full_name: fullName,
+  //     },
+  //   };
+  //   const res = await axios.post(createResume_api, payload);
+  //   if (res?.data?.success) {
+  //     if (res?.data?.resume?.id) {
+  //       Cookies.set("first_resume_id", res?.data?.resume?.id, {
+  //         expires: 365, // 1year
+  //       });
+  //       Cookies.set("update_resume_id", res?.data?.resume?.id);
+  //       navigate("/builder");
+  //     }
+  //   }
+  //   setLoading(false);
+  // };
+  const handleStart = async (theme: any) => {
     if (!fullName.trim()) return;
 
-    updateResumeData({
-      personalInfo: { ...resumeData.personalInfo, fullName },
-    });
-    setTemplate(selectedTemplate as any);
-    setThemeColor(selectedColor);
-    navigate("/builder");
+    setLoading(true);
+
+    const token = Cookies.get("user_token");
+
+    const updatedData = {
+      ...resumeData,
+      template: theme,
+      theme_color: selectedColor,
+      personal_info: {
+        ...resumeData.personal_info,
+        full_name: fullName,
+      },
+    };
+
+    // Update local state
+    updateResumeData(updatedData);
+
+    // 🔐 If user logged in → create on backend
+    if (token) {
+      try {
+        const payload = {
+          template: theme,
+          theme_color: selectedColor,
+          font_family: resumeData.font_family,
+          personal_info: {
+            full_name: fullName,
+          },
+        };
+
+        const res = await axios.post(createResume_api, payload, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (res?.data?.success && res?.data?.resume?.id) {
+          Cookies.set("first_resume_id", res.data.resume.id, {
+            expires: 365,
+          });
+          Cookies.set("update_resume_id", res.data.resume.id);
+
+          navigate("/builder");
+        }
+      } catch (error) {
+        console.error("Resume creation failed:", error);
+      }
+    } else {
+      // 👤 Guest user → save to localStorage
+      localStorage.setItem("guest_resume_data", JSON.stringify(updatedData));
+      localStorage.setItem("guest_resume_created", "true");
+
+      navigate("/builder");
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -87,11 +168,13 @@ const SetupResume = () => {
                   pointer-events-none"
       />
       <div className="max-w-7xl mx-auto px-4 py-5 md:py-12 sticky top-0 z-20">
-        <img
-          src="/assets/svg/logo.svg"
-          className="max-md:hidden w-32"
-          alt="logo"
-        />
+        <Link to="/">
+          <img
+            src="/assets/svg/logo.svg"
+            className="max-md:hidden w-32"
+            alt="logo"
+          />
+        </Link>
         <div className="flex flex-col items-center">
           <div className="text-center ">
             <p className="text-xl md:text-4xl text-black font-bold md:mb-2 ">
@@ -108,9 +191,9 @@ const SetupResume = () => {
               onChange={(e: any) => {
                 if (e.target.value.length > 20) return;
                 updateResumeData({
-                  personalInfo: {
-                    ...resumeData.personalInfo,
-                    fullName: e.target.value,
+                  personal_info: {
+                    ...resumeData.personal_info,
+                    full_name: e.target.value,
                   },
                 });
                 setFullName(e.target.value);
@@ -171,11 +254,18 @@ const SetupResume = () => {
                   onClick={() => {
                     setSelectedTemplate(template.id);
                     setTemplate(template.id as any);
-                    handleStart();
+                    handleStart(template.id);
                   }}
+                  disabled={loading}
                   className="max-md:text-xs absolute bottom-5 md:bottom-10 left-2/4 -translate-x-2/4 rounded-full max-w-48 max-md:h-8 md:w-full"
                 >
-                  Choose <span className="max-md:hidden">template</span>
+                  {resumeData?.template === template.id && loading ? (
+                    <CircleLoading />
+                  ) : (
+                    <>
+                      Choose <span className="max-md:hidden">template</span>
+                    </>
+                  )}
                 </Button>
                 {/* <p className="text-center font-medium mt-2">
                     {template.name}
@@ -211,8 +301,6 @@ const SetupResume = () => {
           />
         ))}
       </div>
-
-      
     </div>
   );
 };
