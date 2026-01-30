@@ -77,21 +77,25 @@ function ResumeIntro() {
       setLoading(true);
 
       // 🔐 Logged-in user
-      if (token && first_resume_id) {
-        const res = await axios.get(getResume_api(first_resume_id), {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+      // if (token && first_resume_id) {
+      //   const res = await axios.get(getResume_api(first_resume_id), {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   });
 
-        if (res?.data?.id) {
-          // Cookies.set("update_resume_id", res.data.id);
-          navigate(`/builder/${res.data.id}`);
-          return;
-        } else {
-          navigate("/setup");
-          return;
-        }
+      //   if (res?.data?.id) {
+      //     // Cookies.set("update_resume_id", res.data.id);
+      //     navigate(`/builder/${res.data.id}`);
+      //     return;
+      //   } else {
+      //     navigate("/setup");
+      //     return;
+      //   }
+      // }
+      if(token){
+        navigate("/setup");
+        return
       }
 
       // 👤 Guest user

@@ -54,6 +54,7 @@ import { getResume_api, updateResume_api } from "../api/ResumeApis";
 import Cookies from "js-cookie";
 import CircleLoading from "../components/ui/circle-loading";
 import { ResumeData } from "../types/resume";
+import UnsavedChangesGuard from "../components/unsaved-changes/UnsavedChangesGuard";
 
 const Builder = () => {
   const navigate = useNavigate();
@@ -76,6 +77,7 @@ const Builder = () => {
   const resumeWidth = 800;
   const previewWidth = 360;
   const scale = previewWidth / resumeWidth;
+  const [editMode, setEditMode] = useState(true);
 
   const templates = [
     {
@@ -242,7 +244,7 @@ const Builder = () => {
             };
             updateResumeData(formattedData);
           } else {
-            navigate("/resume-intro");
+            navigate("/setup");
           }
         }
 
@@ -452,8 +454,10 @@ const Builder = () => {
       const goToUpdateStep = () => {
         toast.success("Section updated!");
         if (id) {
+          setEditMode(false);
           navigate(`/final-resume/${id}`);
         } else {
+          setEditMode(false);
           navigate(`/final-resume`);
         }
       };
@@ -515,8 +519,10 @@ const Builder = () => {
           setCurrentStep(currentStep + 1);
         } else {
           if (id) {
+            setEditMode(false);
             navigate(`/final-resume/${id}`);
           } else {
+            setEditMode(false);
             navigate(`/final-resume`);
           }
         }
@@ -986,6 +992,7 @@ const Builder = () => {
           </SheetContent>
         </Sheet>
       )}
+      <UnsavedChangesGuard when={editMode} />
     </div>
   );
 };

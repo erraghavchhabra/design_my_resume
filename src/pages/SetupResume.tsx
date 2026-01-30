@@ -141,9 +141,9 @@ const SetupResume = () => {
           Cookies.set("first_resume_id", res.data.resume.id, {
             expires: 365,
           });
-          Cookies.set("update_resume_id", res.data.resume.id);
+          // Cookies.set("update_resume_id", res.data.resume.id);
 
-          navigate("/builder");
+          navigate(`/builder/${res?.data?.resume?.id}`);
         }
       } catch (error) {
         console.error("Resume creation failed:", error);

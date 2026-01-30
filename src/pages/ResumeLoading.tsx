@@ -39,11 +39,12 @@ export default function ResumeLoading() {
   // Last me next page pe jao
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (token) {
-        navigate("/resume-dashboard");
-      } else {
-        navigate("/resume-intro");
-      }
+      // if (token) {
+      //   navigate("/resume-dashboard");
+      // } else {
+      //   navigate("/resume-intro");
+      // }
+      navigate("/resume-intro");
     }, 2800); // total animation ke baad
     return () => clearTimeout(timer);
   }, [navigate]);
