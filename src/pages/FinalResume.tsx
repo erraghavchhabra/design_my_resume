@@ -48,6 +48,7 @@ import axios from "axios";
 import { createResume_api, getResume_api } from "../api/ResumeApis";
 import Cookies from "js-cookie";
 import CircleLoading from "../components/ui/circle-loading";
+import AuthDialog from "./auth/AuthDialog";
 // import ExecutiveProTemplate from "../components/resume/ExecutiveProTemplate";
 // import MinimalTemplate from "../components/resume/MinimalTemplate";
 // import ProfessionalTemplate from "../components/resume/ProfessionalTemplate";
@@ -228,6 +229,7 @@ const FinalResume = () => {
     setFontFamily,
     updateResumeData,
   } = useResume();
+  const [authLoginOpen, setAuthLoginOpen] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [customizeDialog, setCustomizeDialog] = useState(false);
   const [editSheet, setEditSheet] = useState(false);
@@ -275,8 +277,8 @@ const FinalResume = () => {
           }
         }
 
-        // 👤 If NOT logged in → load guest resume
-        else if (!token) {
+        // Edge case: logged in but no id
+        else {
           const guestData = localStorage.getItem("guest_resume_data");
 
           if (guestData) {
@@ -284,11 +286,6 @@ const FinalResume = () => {
           } else {
             navigate("/resume-intro");
           }
-        }
-
-        // Edge case: logged in but no id
-        else {
-          navigate("/resume-intro");
         }
       } catch (error) {
         console.error("Failed to fetch resume:", error);
@@ -400,7 +397,11 @@ const FinalResume = () => {
     return <TemplateComponent data={resumeData} editMod={true} />;
   };
   const handleEditSection = (stepId: number) => {
-    navigate(`/builder?step=${stepId}&mode=edit`);
+    if (id) {
+      navigate(`/builder/${id}?step=${stepId}&mode=edit`);
+    } else {
+      navigate(`/builder?step=${stepId}&mode=edit`);
+    }
   };
   const isMobile = useMediaQuery("(max-width: 768px)");
 
@@ -461,10 +462,11 @@ const FinalResume = () => {
               icon: <Save />,
               onClick: () => {
                 if (!token) {
-                  navigate(`/login?redirect=/final-resume`);
+                  // navigate(`/login?redirect=/final-resume`);
+                  setAuthLoginOpen(true);
                   return;
                 }
-                createResumeFunc();
+                setDonwloadDialog(true);
               },
               disabled: isDownloading || loading,
               loadings: loading,
@@ -653,10 +655,11 @@ const FinalResume = () => {
                   icon: <Save />,
                   onClick: () => {
                     if (!token) {
-                      navigate(`/login?redirect=/final-resume`);
+                      // navigate(`/login?redirect=/final-resume`);
+                      setAuthLoginOpen(true);
                       return;
                     }
-                    createResumeFunc();
+                    setDonwloadDialog(true);
                   },
                   disabled: isDownloading || loading,
                   loadings: loading,
@@ -840,6 +843,11 @@ const FinalResume = () => {
           </SheetContent>
         </Sheet>
       )}
+      <AuthDialog
+        open={authLoginOpen}
+        onClose={() => setAuthLoginOpen(false)}
+        onLogin={() => createResumeFunc()}
+      />
     </section>
   );
 };
