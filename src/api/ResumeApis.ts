@@ -8,3 +8,4 @@ export const getResume_api = (id: any) => `${BaseUrl}/api/resume/${id}`;
 
 
 export const importResume_api = `${BaseUrl}/api/resume/import`;
+export const userResumes_api = `${BaseUrl}/api/resume/user`;

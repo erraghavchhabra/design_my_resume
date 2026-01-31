@@ -1,48 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
-import { ArrowRight, ArrowLeft } from "lucide-react";
+import { ArrowRight, ArrowLeft, Check } from "lucide-react";
 import { useResume } from "../context/ResumeContext";
 import ModernTemplate from "../components/resume/ModernTemplate";
 import ClassicTemplate from "../components/resume/ClassicTemplate";
-// import ExecutiveProTemplate from "../components/resume/ExecutiveProTemplate";
-// import MinimalTemplate from "../components/resume/MinimalTemplate";
-// import ProfessionalTemplate from "../components/resume/ProfessionalTemplate";
 import CreativeTemplate from "../components/resume/CreativeTemplate";
 import { createResume_api } from "../api/ResumeApis";
 import axios from "axios";
 import Cookies from "js-cookie";
 import CircleLoading from "../components/ui/circle-loading";
-// import ExecutiveTemplate from "../components/resume/ExecutiveTemplate";
-// import CompactTemplate from "../components/resume/CompactTemplate";
-// import ElegantTemplate from "../components/resume/ElegantTemplate";
-// import BoldTemplate from "../components/resume/BoldTemplate";
-// import TechnicalTemplate from "../components/resume/TechnicalTemplate";
-// import AcademicTemplate from "../components/resume/AcademicTemplate";
-// import InfographicTemplate from "../components/resume/InfographicTemplate";
-// import TimelineTemplate from "../components/resume/TimelineTemplate";
-// import ModernProfessionalTemplate from "../components/resume/ModernProfessionalTemplate";
+import { useMediaQuery } from "../lib/useMediaQuery";
+import { Dialog, DialogContent } from "../components/ui/dialog";
+import { Sheet, SheetContent } from "../components/ui/sheet";
+import { MdAutoFixHigh, MdZoomIn } from "react-icons/md";
+import { CiEdit } from "react-icons/ci";
+import { FaDownload, FaLightbulb } from "react-icons/fa";
+import { RiPencilRuler2Fill } from "react-icons/ri";
 
 const templates = [
   { id: "modern", name: "Modern", preview: ModernTemplate },
   { id: "classic", name: "Classic", preview: ClassicTemplate },
   { id: "creative", name: "Creative", preview: CreativeTemplate },
-  // { id: "executive", name: "Executive Pro", preview: ExecutiveProTemplate },
-  // { id: 'modern', name: 'Modern Professional', preview: ModernProfessionalTemplate },
-  // { id: "minimal", name: "Minimal", preview: MinimalTemplate },
-  // { id: "professional", name: "Professional", preview: ProfessionalTemplate },
-  // { id: "executive", name: "Executive", preview: ExecutiveTemplate },
-  // { id: "compact", name: "Compact", preview: CompactTemplate },
-  // { id: "elegant", name: "Elegant", preview: ElegantTemplate },
-  // { id: "bold", name: "Bold", preview: BoldTemplate },
-  // { id: "technical", name: "Technical", preview: TechnicalTemplate },
-  // { id: "academic", name: "Academic", preview: AcademicTemplate },
-  // { id: "infographic", name: "Infographic", preview: InfographicTemplate },
-  // { id: "timeline", name: "Timeline", preview: TimelineTemplate },
 ];
 
 const themeColors = [
@@ -59,6 +42,7 @@ const themeColors = [
 ];
 
 const SetupResume = () => {
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const navigate = useNavigate();
   const { resumeData, updateResumeData, setTemplate, setThemeColor } =
     useResume();
@@ -69,8 +53,16 @@ const SetupResume = () => {
   const [selectedTemplate, setSelectedTemplate] = useState<string>(
     resumeData.template || "modern",
   );
+  // const [openQuestionUI, setOpenQuestionUI] = useState(false);
   const [selectedColor, setSelectedColor] = useState(resumeData.theme_color);
+  const [detailDailogOpen, setDetailDialogOpen] = useState(false);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setOpenQuestionUI(true);
+  //   }, 1000);
 
+  //   return () => clearTimeout(timer);
+  // }, []);
   // const handleStart = async (theme: any) => {
   //   if (!fullName.trim()) return;
   //   setLoading(true);
@@ -158,7 +150,28 @@ const SetupResume = () => {
 
     setLoading(false);
   };
+  const renderTemplate = () => {
+    const template = templates.find((t) => t.id === selectedTemplate);
+    const TemplateComponent = template?.preview || ModernTemplate;
+    return <TemplateComponent data={resumeData} />;
+  };
+  const selectedTemplateData = templates.find((t) => t.id === selectedTemplate);
+  const handleNext = () => {
+    const currentIndex = templates.findIndex((t) => t.id === selectedTemplate);
 
+    const nextIndex = (currentIndex + 1) % templates.length;
+
+    setSelectedTemplate(templates[nextIndex].id);
+    setTemplate(templates[nextIndex].id as any);
+  };
+  const handlePrevious = () => {
+    const currentIndex = templates.findIndex((t) => t.id === selectedTemplate);
+
+    const prevIndex = (currentIndex - 1 + templates.length) % templates.length;
+
+    setSelectedTemplate(templates[prevIndex].id);
+    setTemplate(templates[prevIndex].id as any);
+  };
   return (
     <div className="min-h-screen bg-background relative ">
       {/* Bottom inner shadow */}
@@ -241,7 +254,7 @@ const SetupResume = () => {
               whileTap={{ scale: 0.98 }}
             >
               <Card
-                className={` group transition-all relative duration-400 outline outline-transparent hover:outline-4 hover:outline-[#2f5cf8]`}
+                className={` group transition-all relative duration-400 outline outline-transparent rounded-sm md:rounded-md hover:outline-4 hover:outline-[#2f5cf8]`}
               >
                 <div className="aspect-[3/4]  bg-muted rounded-sm md:rounded-md flex items-center justify-center overflow-hidden relative">
                   <div className="absolute inset-0 transform scale-[0.20] md:scale-[0.38] origin-top-left pointer-events-none w-full">
@@ -250,6 +263,17 @@ const SetupResume = () => {
                     </div>
                   </div>
                 </div>
+                <button
+                  disabled={loading}
+                  onClick={() => {
+                    setSelectedTemplate(template.id);
+                    setTemplate(template.id as any);
+                    setDetailDialogOpen(true);
+                  }}
+                  className="md:opacity-0 group-hover:opacity-100 absolute top-2/4 left-2/4 -translate-x-2/4 hover:scale-105 transition-all duration-300 -translate-y-2/4 rounded-full w-12 h-12 flex items-center justify-center bg-[#4e46e5db] hover:bg-[#4e46e5ef] text-white text-3xl"
+                >
+                  <MdZoomIn />
+                </button>
                 <Button
                   onClick={() => {
                     setSelectedTemplate(template.id);
@@ -301,6 +325,221 @@ const SetupResume = () => {
           />
         ))}
       </div>
+      {/* Desktop Dialog */}
+      <Dialog open={detailDailogOpen} onOpenChange={setDetailDialogOpen}>
+        <DialogContent
+          className=" max-w-5xl p-0 overflow-hidden max-h-[90vh]"
+          onInteractOutside={(e) => e.preventDefault()}
+        >
+          <button
+            onClick={handlePrevious}
+            className="absolute left-2 top-1/2 -translate-y-1/2 
+                 bg-white shadow-lg rounded-full p-3 
+                 hover:scale-110 transition z-20"
+          >
+            <ArrowLeft size={22} />
+          </button>
+
+          {/* RIGHT BUTTON */}
+          <button
+            onClick={handleNext}
+            className="absolute right-2 top-1/2 -translate-y-1/2 
+                 bg-white shadow-lg rounded-full p-3 
+                 hover:scale-110 transition z-20"
+          >
+            <ArrowRight size={22} />
+          </button>
+          <div className="grid grid-cols-2 ">
+            <div className="bg-[#F4F5FB] p-8 relative max-h-[90vh] h-full overflow-hidden">
+              <div>
+                <div
+                  style={{
+                    transform: `scale(0.49)`,
+                    transformOrigin: "left top",
+                    width: "900px",
+                  }}
+                  className="bg-white shadow-xl border rounded-md overflow-hidden flex-1 "
+                >
+                  {renderTemplate()}
+                </div>
+              </div>
+              <div className="hidden md:flex items-center gap-2 absolute left-2/4 -translate-x-2/4 bottom-5 z-30">
+                <p>Colors</p>
+                {themeColors?.slice(0, 8).map((color) => (
+                  <motion.button
+                    key={color.value}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => {
+                      setSelectedColor(color.value);
+                      setThemeColor(color.value);
+                    }}
+                    onMouseOver={() => {
+                      setSelectedColor(color.value);
+                      setThemeColor(color.value);
+                    }}
+                    className={`w-6 h-6 rounded-full transition-all ${
+                      selectedColor === color.value
+                        ? "ring-1 ring-primary ring-offset-2"
+                        : "hover:ring-1 hover:ring-muted-foreground"
+                    }`}
+                    style={{ backgroundColor: color.value }}
+                    title={color.name}
+                  />
+                ))}
+              </div>
+            </div>
+            <div className=" bg-white p-8 relative flex flex-col">
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  {[
+                    { name: "Recommended", className: "bg-[#C9EDFF]" },
+                    { name: "Modern", className: "bg-[#FFEDCE]" },
+                  ]?.map((item) => {
+                    return (
+                      <div
+                        className={`px-2 py-1 shadow-sm font-semibold text-[10px] text-[#402300] rounded-sm ${item.className}`}
+                      >
+                        {item.name}
+                      </div>
+                    );
+                  })}
+                </div>
+                <h1 className="text-4xl mt-5 font-extrabold text-black">
+                  {selectedTemplateData?.name}
+                </h1>
+                <div className="flex flex-col gap-2 mt-10">
+                  {[
+                    "ATS-optimized",
+                    "1-column layout",
+                    "Editable sample content",
+                    "Download as PDF, Word, or TXT file",
+                  ]?.map((item) => {
+                    return (
+                      <div className="flex items-center gap-2">
+                        <Check size={18} />
+                        <p className="text-xm text-black">{item}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+                <Button
+                  onClick={() => {
+                    setTemplate(selectedTemplateData?.id as any);
+                    handleStart(selectedTemplateData?.id);
+                  }}
+                  disabled={loading}
+                  className="max-md:text-xs font-bold mt-10  rounded-full max-w-48 max-md:h-8 md:w-full"
+                >
+                  {loading ? <CircleLoading /> : <>Use this template</>}
+                </Button>
+              </div>
+              <div className="grid grid-cols-2 gap-6">
+                {[
+                  {
+                    icon: <RiPencilRuler2Fill size={20} />,
+                    name: "Customize your design",
+                    description: "Match the resume to your professional style.",
+                  },
+                  {
+                    icon: <MdAutoFixHigh size={20} />,
+                    name: "Get personalized suggestions",
+                    description:
+                      "Use AI-generated content personalized to previous roles.",
+                  },
+                  {
+                    icon: <FaLightbulb size={20} />,
+                    name: "Access writing help",
+                    description:
+                      "Beat ATS by using suggested keywords from the job listing.",
+                  },
+                  {
+                    icon: <FaDownload size={20} />,
+                    name: "Download in multiple formats",
+                    description:
+                      "Easily download your resume in various file formats.",
+                  },
+                ]?.map((item) => {
+                  return (
+                    <div className="flex items-start gap-2 ">
+                      {item.icon}
+                      <div className="flex items-start flex-col gap-2 ">
+                        <p className="text-xs font-bold text-black">
+                          {item.name}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {item.description}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+      {/* {!isMobile && (
+        <Dialog open={openQuestionUI} onOpenChange={setOpenQuestionUI}>
+          <DialogContent className="max-w-lg rounded-xl">
+            <h2 className="text-2xl font-bold mb-4">A few quick questions</h2>
+
+            <div className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                This will help us personalize your resume.
+              </p>
+
+              <div>
+                <label className="font-medium">Are you a fresher?</label>
+                <div className="flex gap-3 mt-2">
+                  <Button variant="outline">Yes</Button>
+                  <Button variant="outline">No</Button>
+                </div>
+              </div>
+            </div>
+
+            <Button
+              className="w-full mt-6 rounded-full"
+              onClick={() => setOpenQuestionUI(false)}
+            >
+              Continue
+            </Button>
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {isMobile && (
+        <Sheet open={openQuestionUI} onOpenChange={setOpenQuestionUI}>
+          <SheetContent
+            side="bottom"
+            className="rounded-t-3xl p-6 w-full border-none outline-none "
+          >
+            <img
+              src="/assets/img/resume_questions.png"
+              alt="resume_questions"
+            />
+            
+            <div className="flex items-center flex-col gap-4 mt-5">
+              <h2 className="text-2xl font-bold  text-center">
+                Simple questions to your best template
+              </h2>
+
+              <p className="text-base text-center font-semibold text-muted-foreground">
+                Get recommendations to match your style, field, and career
+                goals.
+              </p>
+              <Button size="lg" className="px-5 mt-6  rounded-full">Let's go</Button>
+              <button
+                className="w-full font-bold text-primary"
+                onClick={() => setOpenQuestionUI(false)}
+              >
+                No thanks
+              </button>
+            </div>
+
+          </SheetContent>
+        </Sheet>
+      )} */}
     </div>
   );
 };

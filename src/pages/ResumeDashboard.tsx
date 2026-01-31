@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import HomeLayout from "../layout/HomeLayout";
+import { userResumes_api } from "../api/ResumeApis";
 
 interface Resume {
   id: number;
@@ -28,7 +29,7 @@ const ResumeDashboard = () => {
 
         // 🔐 Logged-in user
         if (token) {
-          const res = await axios.get("/api/resumes", {
+          const res = await axios.get(userResumes_api, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -69,7 +70,7 @@ const ResumeDashboard = () => {
   }
 
   return (
-    <HomeLayout >
+    <HomeLayout>
       <div className="min-h-screen p-10 bg-gray-50 relative">
         <div className="pointer-events-none z-0 absolute top-5 md:top-40 -left-32 h-40 w-40 md:h-96 md:w-96 rounded-full bg-[#FDE4C8] blur-3xl opacity-60" />
         <div className="pointer-events-none z-0 absolute -top-10 left-48 h-40 w-40  md:h-80 md:w-80 rounded-full bg-[#b29cdf] blur-[90px] opacity-50" />

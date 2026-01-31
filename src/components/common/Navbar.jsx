@@ -635,6 +635,16 @@ export default function Navbar({ className }) {
               </div>
             </div>
           </div>
+          {token && (
+            <div className="group relative">
+              <Link
+                to={"/resume-dashboard"}
+                className="flex items-center gap-1 px-2 py-4 hover:text-indigo-600 transition font-semibold"
+              >
+                Dashboard
+              </Link>
+            </div>
+          )}
         </nav>
 
         {/* Desktop Buttons */}

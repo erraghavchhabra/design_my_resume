@@ -1,13 +1,12 @@
-import { useState, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '../components/ui/button';
-import { Card } from '../components/ui/card';
-import { Edit, Check } from 'lucide-react';
-import { useResume } from '../context/ResumeContext';
-import ModernTemplate from '../components/resume/ModernTemplate';
-import ClassicTemplate from '../components/resume/ClassicTemplate';
-import MinimalTemplate from '../components/resume/MinimalTemplate';
+import { useState, useRef } from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { Button } from "../components/ui/button";
+import { Card } from "../components/ui/card";
+import { Edit, Check } from "lucide-react";
+import { useResume } from "../context/ResumeContext";
+import ModernTemplate from "../components/resume/ModernTemplate";
+import ClassicTemplate from "../components/resume/ClassicTemplate";
 
 const ReviewResume = () => {
   const navigate = useNavigate();
@@ -16,15 +15,15 @@ const ReviewResume = () => {
   const resumeRef = useRef<HTMLDivElement>(null);
 
   const sections = [
-    { id: 'basic', name: 'Personal Info', step: 0 },
-    { id: 'summary', name: 'Summary', step: 1 },
-    { id: 'experiences', name: 'Experience', step: 2 },
-    { id: 'education', name: 'Education', step: 3 },
-    { id: 'skills', name: 'Skills', step: 4 },
-    { id: 'projects', name: 'Projects', step: 5 },
-    { id: 'achievements', name: 'Achievements', step: 6 },
-    { id: 'languages', name: 'Languages', step: 7 },
-    { id: 'interests', name: 'Interests', step: 8 },
+    { id: "basic", name: "Personal Info", step: 0 },
+    { id: "summary", name: "Summary", step: 1 },
+    { id: "experiences", name: "Experience", step: 2 },
+    { id: "education", name: "Education", step: 3 },
+    { id: "skills", name: "Skills", step: 4 },
+    { id: "projects", name: "Projects", step: 5 },
+    { id: "achievements", name: "Achievements", step: 6 },
+    { id: "languages", name: "Languages", step: 7 },
+    { id: "interests", name: "Interests", step: 8 },
   ];
 
   const handleEdit = (step: number) => {
@@ -32,20 +31,17 @@ const ReviewResume = () => {
   };
 
   const handleComplete = () => {
-    navigate('/final-resume');
+    navigate("/final-resume");
   };
 
   const renderTemplate = () => {
     switch (resumeData.template) {
-      case 'modern':
-      case 'professional':
+      case "modern":
+      case "professional":
         return <ModernTemplate data={resumeData} />;
-      case 'classic':
-      case 'creative':
+      case "classic":
+      case "creative":
         return <ClassicTemplate data={resumeData} />;
-      case 'minimal':
-      case 'executive':
-        return <MinimalTemplate data={resumeData} />;
       default:
         return <ModernTemplate data={resumeData} />;
     }
@@ -57,7 +53,8 @@ const ReviewResume = () => {
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Review Your Resume</h1>
           <p className="text-muted-foreground">
-            Hover over any section to edit it. Once you're happy, proceed to download.
+            Hover over any section to edit it. Once you're happy, proceed to
+            download.
           </p>
         </div>
 
@@ -80,11 +77,7 @@ const ReviewResume = () => {
                 </button>
               ))}
             </div>
-            <Button
-              onClick={handleComplete}
-              className="w-full mt-6"
-              size="lg"
-            >
+            <Button onClick={handleComplete} className="w-full mt-6" size="lg">
               Complete & Download
             </Button>
           </Card>
@@ -98,21 +91,21 @@ const ReviewResume = () => {
               ref={resumeRef}
               className="bg-white shadow-2xl mx-auto relative"
               style={{
-                width: '210mm',
-                minHeight: '297mm',
-                maxWidth: '100%',
+                width: "210mm",
+                minHeight: "297mm",
+                maxWidth: "100%",
               }}
             >
               {renderTemplate()}
-              
+
               {/* Edit Overlays */}
               {sections.map((section) => (
                 <div
                   key={section.id}
                   className={`absolute inset-0 pointer-events-none transition-all ${
                     hoveredSection === section.id
-                      ? 'bg-primary/5 border-2 border-primary'
-                      : ''
+                      ? "bg-primary/5 border-2 border-primary"
+                      : ""
                   }`}
                   onMouseEnter={() => setHoveredSection(section.id)}
                   onMouseLeave={() => setHoveredSection(null)}

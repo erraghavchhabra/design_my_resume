@@ -34,22 +34,6 @@ const templates = [
   { id: "modern", name: "Modern", preview: ModernTemplate },
   { id: "classic", name: "Classic", preview: ClassicTemplate },
   { id: "creative", name: "Creative", preview: CreativeTemplate },
-  // { id: "executive", name: "Executive Pro", preview: ExecutiveProTemplate },
-  // {
-  //   id: "modern",
-  //   name: "Modern Professional",
-  //   preview: ModernProfessionalTemplate,
-  // },
-  // { id: 'minimal', name: 'Minimal', preview: MinimalTemplate },
-  // { id: 'professional', name: 'Professional', preview: ProfessionalTemplate },
-  // { id: "executive", name: "Executive", preview: ExecutiveTemplate },
-  // { id: 'compact', name: 'Compact', preview: CompactTemplate },
-  // { id: 'elegant', name: 'Elegant', preview: ElegantTemplate },
-  // { id: 'bold', name: 'Bold', preview: BoldTemplate },
-  // { id: 'technical', name: 'Technical', preview: TechnicalTemplate },
-  // { id: 'academic', name: 'Academic', preview: AcademicTemplate },
-  // { id: 'infographic', name: 'Infographic', preview: InfographicTemplate },
-  // { id: 'timeline', name: 'Timeline', preview: TimelineTemplate },
 ];
 
 const themeColors = [

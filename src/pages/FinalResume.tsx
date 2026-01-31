@@ -49,18 +49,6 @@ import { createResume_api, getResume_api } from "../api/ResumeApis";
 import Cookies from "js-cookie";
 import CircleLoading from "../components/ui/circle-loading";
 import AuthDialog from "./auth/AuthDialog";
-// import ExecutiveProTemplate from "../components/resume/ExecutiveProTemplate";
-// import MinimalTemplate from "../components/resume/MinimalTemplate";
-// import ProfessionalTemplate from "../components/resume/ProfessionalTemplate";
-// import ExecutiveTemplate from "../components/resume/ExecutiveTemplate";
-// import CompactTemplate from "../components/resume/CompactTemplate";
-// import ElegantTemplate from "../components/resume/ElegantTemplate";
-// import BoldTemplate from "../components/resume/BoldTemplate";
-// import TechnicalTemplate from "../components/resume/TechnicalTemplate";
-// import AcademicTemplate from "../components/resume/AcademicTemplate";
-// import InfographicTemplate from "../components/resume/InfographicTemplate";
-// import TimelineTemplate from "../components/resume/TimelineTemplate";
-// import ModernProfessionalTemplate from "../components/resume/ModernProfessionalTemplate";
 
 const templates = [
   {
@@ -103,22 +91,6 @@ const templates = [
     steps: ["basic", "summary", "experiences", "education", "skills"],
     profileImage: false,
   },
-  // { id: "executive", name: "Executive Pro", preview: ExecutiveProTemplate },
-  // {
-  //   id: "modern",
-  //   name: "Modern Professional",
-  //   preview: ModernProfessionalTemplate,
-  // },
-  // { id: 'minimal', name: 'Minimal', preview: MinimalTemplate },
-  // { id: 'professional', name: 'Professional', preview: ProfessionalTemplate },
-  // { id: "executive", name: "Executive", preview: ExecutiveTemplate },
-  // { id: 'compact', name: 'Compact', preview: CompactTemplate },
-  // { id: 'elegant', name: 'Elegant', preview: ElegantTemplate },
-  // { id: 'bold', name: 'Bold', preview: BoldTemplate },
-  // { id: 'technical', name: 'Technical', preview: TechnicalTemplate },
-  // { id: 'academic', name: 'Academic', preview: AcademicTemplate },
-  // { id: 'infographic', name: 'Infographic', preview: InfographicTemplate },
-  // { id: 'timeline', name: 'Timeline', preview: TimelineTemplate },
 ];
 
 const themeColors = [

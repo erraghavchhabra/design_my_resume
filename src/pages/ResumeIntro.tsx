@@ -22,6 +22,7 @@ function ResumeIntro() {
   const first_resume_id = Cookies.get("first_resume_id");
 
   const [active, setActive] = useState(0);
+  const [mobileActiveTab, setMovileActiveTab] = useState(0);
   const [loading, setLoading] = useState(false);
   const steps = [
     {
@@ -47,6 +48,13 @@ function ResumeIntro() {
       if (i < steps.length) setActive(i);
       else clearInterval(interval);
     }, 1100);
+    return () => clearInterval(interval);
+  }, []);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMovileActiveTab((prev) => (prev + 1) % steps.length);
+    }, 4000);
+
     return () => clearInterval(interval);
   }, []);
   // async function continueFunc() {
@@ -93,9 +101,9 @@ function ResumeIntro() {
       //     return;
       //   }
       // }
-      if(token){
+      if (token) {
         navigate("/setup");
-        return
+        return;
       }
 
       // 👤 Guest user
@@ -113,7 +121,7 @@ function ResumeIntro() {
       setLoading(false);
     }
   }
-
+  const ActiveIcon = steps[active].icon;
   return (
     <div className="min-h-screen relative  ">
       <div className="pointer-events-none z-0 absolute top-5 md:top-40 -left-32 h-40 w-40 md:h-96 md:w-96 rounded-full bg-[#FDE4C8] blur-3xl opacity-60" />
@@ -130,7 +138,7 @@ function ResumeIntro() {
             Here’s how we get you hired
           </h1>
 
-          <div className="grid md:grid-cols-3 gap-4 md:gap-8 w-full ">
+          <div className="hidden md:grid  md:grid-cols-3 gap-4 md:gap-8 w-full ">
             {steps.map((s, idx) => {
               const isVisible = idx <= active;
               const Icon = s.icon;
@@ -223,6 +231,55 @@ function ResumeIntro() {
                 </motion.div>
               );
             })}
+          </div>
+          <div className="md:hidden w-full max-w-sm mx-auto relative h-[280px] overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={mobileActiveTab}
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -40 }}
+                transition={{ duration: 0.4 }}
+                className="border p-6 rounded-xl shadow-md bg-white absolute w-full"
+              >
+                {/* Progress Bar */}
+                <div className="h-1 w-full bg-gray-200 rounded-full mb-6 overflow-hidden">
+                  <motion.div
+                    className="h-full bg-green-400"
+                    initial={{ width: 0 }}
+                    animate={{ width: "100%" }}
+                    transition={{ duration: 4, ease: "linear" }}
+                  />
+                </div>
+
+                {/* Icon */}
+                {(() => {
+                  const ActiveIcon = steps[mobileActiveTab].icon;
+                  return (
+                    <ActiveIcon
+                      size={40}
+                      strokeWidth={1.8}
+                      className="text-gray-800 mb-4"
+                    />
+                  );
+                })()}
+
+                {/* Title */}
+                <h3 className="font-bold text-2xl mb-4">
+                  {steps[mobileActiveTab].title}
+                </h3>
+
+                {/* Points */}
+                <ul className="space-y-2 text-gray-700">
+                  {steps[mobileActiveTab].points.map((p, i) => (
+                    <li key={i} className="flex items-center gap-2">
+                      <Circle size={8} className="text-green-500" />
+                      {p}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            </AnimatePresence>
           </div>
 
           <motion.div

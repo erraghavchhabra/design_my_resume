@@ -31,21 +31,9 @@ import InterestsForm from "../components/builder/InterestsForm";
 
 import ModernTemplate from "../components/resume/ModernTemplate";
 import ClassicTemplate from "../components/resume/ClassicTemplate";
-import ExecutiveProTemplate from "../components/resume/ExecutiveProTemplate";
 
 import Stepper from "../components/ui/Stepper";
-import ModernProfessionalTemplate from "../components/resume/ModernProfessionalTemplate";
-import MinimalTemplate from "../components/resume/MinimalTemplate";
-import ProfessionalTemplate from "../components/resume/ProfessionalTemplate";
 import CreativeTemplate from "../components/resume/CreativeTemplate";
-import ExecutiveTemplate from "../components/resume/ExecutiveTemplate";
-import CompactTemplate from "../components/resume/CompactTemplate";
-import ElegantTemplate from "../components/resume/ElegantTemplate";
-import BoldTemplate from "../components/resume/BoldTemplate";
-import TechnicalTemplate from "../components/resume/TechnicalTemplate";
-import AcademicTemplate from "../components/resume/AcademicTemplate";
-import InfographicTemplate from "../components/resume/InfographicTemplate";
-import TimelineTemplate from "../components/resume/TimelineTemplate";
 import ThemeCustomizer from "../components/builder/ThemeCustomizer";
 import { useMediaQuery } from "../lib/useMediaQuery";
 import { Sheet, SheetContent, SheetHeader } from "../components/ui/sheet";
@@ -120,97 +108,7 @@ const Builder = () => {
       steps: ["basic", "summary", "experiences", "education", "skills"],
       profileImage: false,
     },
-    // { id: "executive", name: "Executive Pro", preview: ExecutiveProTemplate },
-    // {
-    //   id: "modern",
-    //   name: "Modern Professional",
-    //   preview: ModernProfessionalTemplate,
-    // },
-    // { id: "minimal", name: "Minimal", preview: MinimalTemplate },
-    // { id: "professional", name: "Professional", preview: ProfessionalTemplate },
-    // { id: "executive", name: "Executive", preview: ExecutiveTemplate },
-    // { id: "compact", name: "Compact", preview: CompactTemplate },
-    // { id: "elegant", name: "Elegant", preview: ElegantTemplate },
-    // { id: "bold", name: "Bold", preview: BoldTemplate },
-    // { id: "technical", name: "Technical", preview: TechnicalTemplate },
-    // { id: "academic", name: "Academic", preview: AcademicTemplate },
-    // { id: "infographic", name: "Infographic", preview: InfographicTemplate },
-    // { id: "timeline", name: "Timeline", preview: TimelineTemplate },
   ];
-  // useEffect(() => {
-  //   async function fetchResumeData() {
-  //     try {
-  //       setLoading(true);
-  //       if (update_resume_id) {
-  //         const res = await axios.get(getResume_api(update_resume_id));
-  //         if (res?.data?.id) {
-  //           // updateResumeData({ ...resumeData, ...res?.data });
-  //           updateResumeData(res?.data);
-  //           // updateResumeData((prev: ResumeData) => ({
-  //           //   // ...prev,
-
-  //           //   ...res.data,
-
-  //           //   // personal_info: {
-  //           //   //   // ...prev.personal_info,
-  //           //   //   ...res.data.personal_info,
-  //           //   // },
-
-  //           //   // summary: {
-  //           //   //   ...prev.summary,
-  //           //   //   ...res.data.summary,
-  //           //   // },
-
-  //           //   // experiences:
-  //           //   //   res.data.experiences?.length > 0
-  //           //   //     ? res.data.experiences
-  //           //   //     : prev.experiences,
-
-  //           //   // education:
-  //           //   //   res.data.education?.length > 0
-  //           //   //     ? res.data.education
-  //           //   //     : prev.education,
-
-  //           //   // skills:
-  //           //   //   res.data.skills?.length > 0 ? res.data.skills : prev.skills,
-
-  //           //   // projects:
-  //           //   //   res.data.projects?.length > 0
-  //           //   //     ? res.data.projects
-  //           //   //     : prev.projects,
-
-  //           //   // achievements:
-  //           //   //   res.data.achievements?.length > 0
-  //           //   //     ? res.data.achievements
-  //           //   //     : prev.achievements,
-
-  //           //   // languages:
-  //           //   //   res.data.languages?.length > 0
-  //           //   //     ? res.data.languages
-  //           //   //     : prev.languages,
-
-  //           //   // interests:
-  //           //   //   res.data.interests?.length > 0
-  //           //   //     ? res.data.interests
-  //           //   //     : prev.interests,
-  //           // }));
-  //         } else {
-  //           navigate("/resume-intro");
-  //         }
-  //       } else {
-  //         navigate("/resume-intro");
-  //       }
-  //     } catch (err) {
-  //       console.log(err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //     // navigate("/setup")
-  //   }
-  //   if (token) {
-  //     fetchResumeData();
-  //   }
-  // }, []);
   useEffect(() => {
     const fetchResumeData = async () => {
       try {
